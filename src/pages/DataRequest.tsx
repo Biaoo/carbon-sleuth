@@ -49,53 +49,80 @@ const DataRequest: React.FC = () => {
     },
   });
   
-  // Handle form submission
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    // Prepare preview data
-    const selectedItems = values.requestItems.map(
-      itemId => dataItems.find(item => item.id === itemId)?.label || ""
-    ).filter(Boolean);
+  // Handle preview button click - modified to allow incomplete form
+  const handlePreview = () => {
+    // Get current form values regardless of validation
+    const values = form.getValues();
     
-    // Generate email subject and content based on form values
-    const subject = `数据请求：${values.productName} - ${values.supplierName}`;
-    const urgencyText = {
+    // Prepare preview data with fallbacks for empty values
+    const selectedItems = values.requestItems && values.requestItems.length > 0
+      ? values.requestItems.map(
+          itemId => dataItems.find(item => item.id === itemId)?.label || ""
+        ).filter(Boolean)
+      : ["未选择数据项"];
+    
+    // Generate email subject and content based on form values with fallbacks
+    const subject = `数据请求：${values.productName || "未指定产品"} - ${values.supplierName || "未指定供应商"}`;
+    const urgencyText = values.urgency ? {
       low: "低优先级",
       medium: "普通优先级",
       high: "高优先级"
-    }[values.urgency];
+    }[values.urgency] : "普通优先级";
     
-    const content = `尊敬的${values.supplierName}：
+    // Include industry benchmarking data in the email content
+    const competitorsSection = `
+市场对比数据：
+${mockCompetitorsData.map(comp => `- ${comp.name}: ${comp.carbonValue} ${comp.unit} (${comp.difference})`).join('\n')}
 
-我们正在进行产品碳足迹评估分析，需要贵公司提供${values.productName}的相关数据信息。
+行业基准数据：
+${mockIndustryBenchmarks.map(bench => `- ${bench.name}: ${bench.value} ${bench.unit}`).join('\n')}`;
+
+    const reportsSection = `
+相关报告链接：
+${mockReportLinks.map(link => `- ${link.name}: ${window.location.origin}${link.url}`).join('\n')}`;
+    
+    const content = `尊敬的${values.supplierName || "供应商"}：
+
+我们正在进行产品碳足迹评估分析，需要贵公司提供${values.productName || "相关产品"}的数据信息。
 
 请求数据项：
 ${selectedItems.map(item => `- ${item}`).join('\n')}
 
-请在${format(values.deadline, 'yyyy年MM月dd日')}前提供上述信息。
+${values.deadline ? `请在${format(values.deadline, 'yyyy年MM月dd日')}前提供上述信息。` : '请尽快提供上述信息。'}
 此请求${urgencyText}。
+
+${competitorsSection}
+
+${reportsSection}
 
 ${values.additionalInfo ? `附加说明：\n${values.additionalInfo}` : ''}
 
 感谢您的配合！`;
     
     setPreviewData({
-      supplier: values.supplierName,
-      product: values.productName,
+      supplier: values.supplierName || "未指定供应商",
+      product: values.productName || "未指定产品",
       dataItems: selectedItems,
       competitorsData: mockCompetitorsData,
       industryBenchmarks: mockIndustryBenchmarks,
       reportLinks: mockReportLinks,
       contact: {
-        name: values.contactName,
-        email: values.contactEmail,
-        phone: values.contactPhone
+        name: values.contactName || "未指定联系人",
+        email: values.contactEmail || "未指定邮箱",
+        phone: values.contactPhone || ""
       },
-      deadline: format(values.deadline, 'yyyy年MM月dd日'),
+      deadline: values.deadline ? format(values.deadline, 'yyyy年MM月dd日') : "尽快",
       subject,
       content,
     });
     
     setPreviewOpen(true);
+  };
+  
+  // Handle form submission - only for valid form
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    // Use the handlePreview function which now handles both valid and invalid forms
+    handlePreview();
   };
   
   // Handle final submission
@@ -147,9 +174,13 @@ ${values.additionalInfo ? `附加说明：\n${values.additionalInfo}` : ''}
               {/* Additional Information */}
               <AdditionalInfoSection form={form} />
               
-              <div className="flex justify-end">
+              <div className="flex justify-between">
+                {/* Added a Preview button that doesn't require form validation */}
+                <Button type="button" variant="outline" onClick={handlePreview}>
+                  预览请求（忽略验证）
+                </Button>
                 <Button type="submit">
-                  预览请求
+                  验证并预览
                 </Button>
               </div>
             </form>
