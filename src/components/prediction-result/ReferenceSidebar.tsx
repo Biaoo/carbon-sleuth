@@ -1,14 +1,7 @@
 
 import React from 'react';
 import { Library } from 'lucide-react';
-
-interface Reference {
-  id: number | string;
-  name?: string;
-  text: string;
-  type?: string;
-  url?: string;
-}
+import { Reference } from './types';
 
 interface ReferenceSidebarProps {
   references: Reference[];

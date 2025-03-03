@@ -7,13 +7,7 @@ import {
   CardHeader, 
   CardTitle 
 } from '@/components/ui/card';
-
-interface Reference {
-  id: string;
-  name: string;
-  type: string;
-  url: string;
-}
+import { Reference } from './types';
 
 interface UnifiedReferenceSidebarProps {
   references: Reference[];
@@ -43,9 +37,11 @@ export const UnifiedReferenceSidebar: React.FC<UnifiedReferenceSidebarProps> = (
                   <div className="font-medium text-sm">{source.name}</div>
                   <div className="text-xs text-muted-foreground mt-1">{source.type}</div>
                 </div>
-                <a href={source.url} className="text-primary hover:text-primary/80">
-                  <Link className="h-4 w-4" />
-                </a>
+                {source.url && (
+                  <a href={source.url} className="text-primary hover:text-primary/80">
+                    <Link className="h-4 w-4" />
+                  </a>
+                )}
               </div>
             </div>
           ))}

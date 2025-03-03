@@ -9,17 +9,13 @@ import {
 } from '@/components/ui/card';
 import MarkdownContent from './MarkdownContent';
 import ReferenceSidebar from './ReferenceSidebar';
-
-interface Citation {
-  id: number;
-  text: string;
-}
+import { Reference } from './types';
 
 interface ProductInfoCardProps {
   title: string;
   icon: LucideIcon;
   markdownContent: string;
-  citations: Citation[];
+  citations: Reference[];
 }
 
 export const ProductInfoCard: React.FC<ProductInfoCardProps> = ({
