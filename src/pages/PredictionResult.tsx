@@ -1,4 +1,4 @@
-<lov-code>
+
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
@@ -714,4 +714,247 @@ const PredictionResult: React.FC = () => {
                       可信度：{resultData.inferenceData.carbonFootprintResult.confidenceLevel}
                     </Badge>
                   </div>
-                  <div className="
+                  <div className="space-y-3">
+                    {resultData.inferenceData.carbonFootprintResult.breakdown.map((item, index) => (
+                      <div key={index} className="space-y-1">
+                        <div className="flex justify-between">
+                          <span className="text-sm font-medium">{item.name}</span>
+                          <div className="text-sm">
+                            <span>{item.value}</span>
+                            <span className="text-muted-foreground ml-2">({item.percentage}%)</span>
+                          </div>
+                        </div>
+                        <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-primary" 
+                            style={{ width: `${item.percentage}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          {/* 依据说明选项卡 */}
+          <TabsContent value="explanation" className="space-y-8">
+            <Card>
+              <CardHeader>
+                <CardTitle>预测依据与技术说明</CardTitle>
+                <CardDescription>
+                  碳足迹预测所依据的数据来源和技术方法
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* 参考来源 */}
+                <div className="p-5 border rounded-lg">
+                  <div className="flex items-center mb-4">
+                    <Library className="h-5 w-5 text-primary mr-2" />
+                    <h3 className="text-lg font-medium">{resultData.explanatoryInfo.references.title}</h3>
+                  </div>
+                  <div className="space-y-3">
+                    {resultData.explanatoryInfo.references.sources.map((source, index) => (
+                      <div key={index} className="flex justify-between p-2 hover:bg-muted/50 rounded-lg">
+                        <span className="font-medium">{source.name}</span>
+                        <Badge variant="outline">{source.type}</Badge>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* 技术依据 */}
+                <div className="p-5 border rounded-lg">
+                  <div className="flex items-center mb-4">
+                    <Info className="h-5 w-5 text-primary mr-2" />
+                    <h3 className="text-lg font-medium">{resultData.explanatoryInfo.technicalBasis.title}</h3>
+                  </div>
+                  <div className="space-y-4">
+                    {resultData.explanatoryInfo.technicalBasis.methods.map((method, index) => (
+                      <div key={index} className="p-3 bg-muted/50 rounded-lg">
+                        <h4 className="font-medium mb-1">{method.name}</h4>
+                        <p className="text-sm text-muted-foreground">
+                          {method.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* 行业基准对比 */}
+                <div className="p-5 border rounded-lg">
+                  <div className="flex items-center mb-3">
+                    <BarChart className="h-5 w-5 text-primary mr-2" />
+                    <h3 className="text-lg font-medium">{resultData.comparativeAnalysis.industryBenchmark.title}</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {resultData.comparativeAnalysis.industryBenchmark.description}
+                  </p>
+                  <div className="space-y-4">
+                    {resultData.comparativeAnalysis.industryBenchmark.data.map((item, index) => (
+                      <div key={index} className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
+                        <div>
+                          <h4 className="font-medium">{item.category}</h4>
+                          <div className="flex items-center">
+                            <span className="text-lg font-medium">{item.value}</span>
+                            <span className="text-sm ml-1 text-muted-foreground">{item.unit}</span>
+                          </div>
+                        </div>
+                        <Badge className={item.difference < 0 ? 
+                          'bg-green-500/10 text-green-600' : 
+                          'bg-amber-500/10 text-amber-600'}>
+                          {item.difference < 0 ? '' : '+'}
+                          {item.difference} {item.unit.split('/')[0]}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* 竞品对比分析 */}
+                <div className="p-5 border rounded-lg">
+                  <div className="flex items-center mb-3">
+                    <LineChart className="h-5 w-5 text-primary mr-2" />
+                    <h3 className="text-lg font-medium">{resultData.comparativeAnalysis.competitorsComparison.title}</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {resultData.comparativeAnalysis.competitorsComparison.description}
+                  </p>
+                  <div className="space-y-2 mb-5">
+                    {resultData.comparativeAnalysis.competitorsComparison.competitorData.map((item, index) => (
+                      <div key={index} className={`flex justify-between items-center p-3 rounded-lg ${item.highlight ? 'bg-primary/10 border border-primary/20' : 'bg-muted/50'}`}>
+                        <span className={`font-medium ${item.highlight ? 'text-primary' : ''}`}>{item.name}</span>
+                        <div className="flex items-center">
+                          <span className="font-medium">{item.value}</span>
+                          <span className="text-sm ml-1 text-muted-foreground">{item.unit}</span>
+                          {item.difference && (
+                            <Badge className="ml-2" variant="outline">
+                              {item.difference}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div>
+                    <h4 className="font-medium mb-2">主要差异化优势</h4>
+                    <div className="space-y-1">
+                      {resultData.comparativeAnalysis.competitorsComparison.keyDifferentiators.map((item, index) => (
+                        <div key={index} className="flex items-start">
+                          <CheckCircle className="h-4 w-4 text-green-600 mr-1.5 mt-0.5" />
+                          <p className="text-sm">{item}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                
+                {/* 类别表现 */}
+                <div className="p-5 border rounded-lg">
+                  <h3 className="text-lg font-medium mb-4">不同类别表现</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {resultData.comparativeAnalysis.performanceByCategory.map((item, index) => (
+                      <div key={index} className="p-3 bg-muted/50 rounded-lg">
+                        <h4 className="font-medium text-sm">{item.category}</h4>
+                        <div className="flex justify-between items-center mt-1">
+                          <Badge className={
+                            item.performance === '优秀' ? 'bg-green-500/10 text-green-600' : 
+                            item.performance === '良好' ? 'bg-blue-500/10 text-blue-600' : 
+                            'bg-amber-500/10 text-amber-600'
+                          }>
+                            {item.performance}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">{item.industryPosition}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          {/* 改进建议选项卡 */}
+          <TabsContent value="suggestions" className="space-y-8">
+            <Card>
+              <CardHeader>
+                <CardTitle>改进建议详情</CardTitle>
+                <CardDescription>
+                  基于碳足迹分析提出的产品碳减排建议
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-5">
+                  {resultData.improvementSuggestions.map((suggestion, index) => (
+                    <div 
+                      key={index} 
+                      className="border rounded-lg overflow-hidden"
+                    >
+                      <div 
+                        className="p-4 bg-muted/50 flex items-start justify-between cursor-pointer"
+                        onClick={() => toggleSuggestion(suggestion.title)}
+                      >
+                        <div className="flex items-start">
+                          {difficultyIcons[suggestion.difficulty as keyof typeof difficultyIcons].icon}
+                          <div className="ml-2">
+                            <h4 className="font-medium">{suggestion.title}</h4>
+                            <div className="flex items-center mt-1">
+                              <Badge className="mr-2" variant="outline">
+                                {suggestion.timeline}
+                              </Badge>
+                              <span className="text-xs text-green-600 font-medium">
+                                减排 {suggestion.reduction} kg CO₂e
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          {expandedSuggestions.includes(suggestion.title) ? 
+                            <ChevronUp className="h-4 w-4" /> : 
+                            <ChevronDown className="h-4 w-4" />
+                          }
+                        </Button>
+                      </div>
+                      
+                      {expandedSuggestions.includes(suggestion.title) && (
+                        <div className="p-4 border-t">
+                          <p className="text-sm">{suggestion.description}</p>
+                          
+                          <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="p-3 bg-muted/50 rounded-lg">
+                              <p className="text-xs text-muted-foreground mb-1">减排潜力</p>
+                              <div className="flex items-baseline">
+                                <span className="text-xl font-medium text-green-600">{suggestion.reduction}</span>
+                                <span className="text-sm ml-1 text-muted-foreground">kg CO₂e</span>
+                              </div>
+                            </div>
+                            
+                            <div className="p-3 bg-muted/50 rounded-lg">
+                              <p className="text-xs text-muted-foreground mb-1">实施难度</p>
+                              <div className="flex items-center">
+                                {difficultyIcons[suggestion.difficulty as keyof typeof difficultyIcons].icon}
+                                <span className="ml-1">{difficultyIcons[suggestion.difficulty as keyof typeof difficultyIcons].label}</span>
+                              </div>
+                            </div>
+                            
+                            <div className="p-3 bg-muted/50 rounded-lg">
+                              <p className="text-xs text-muted-foreground mb-1">建议实施时间</p>
+                              <span>{suggestion.timeline}</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </Layout>
+  );
+};
+
+export default PredictionResult;
