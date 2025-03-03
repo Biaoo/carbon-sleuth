@@ -190,3 +190,34 @@ export interface PredictionResultData {
   explanatoryInfo: ExplanatoryInfo;
   comparativeAnalysis: ComparativeAnalysis;
 }
+
+// Data Request types
+export interface DataRequestPreviewData {
+  supplier: string;
+  product: string;
+  dataItems: string[];
+  competitorsData: Array<{
+    name: string;
+    carbonValue: number;
+    unit: string;
+    difference: string;
+  }>;
+  industryBenchmarks: Array<{
+    name: string;
+    value: number;
+    unit: string;
+  }>;
+  reportLinks: Array<{
+    name: string;
+    url: string;
+    type: 'prediction' | 'ilcd' | 'other';
+  }>;
+  contact: {
+    name: string;
+    email: string;
+    phone?: string;
+  };
+  deadline: string;
+  subject: string;
+  content: string;
+}
