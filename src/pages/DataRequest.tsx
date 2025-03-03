@@ -48,6 +48,14 @@ const DataRequest: React.FC = () => {
     ]
   };
   
+  // Mock data submission link - a unique URL for each supplier/product combination
+  const generateDataSubmissionLink = (supplier: string, product: string) => {
+    const timestamp = Date.now();
+    const encodedSupplier = encodeURIComponent(supplier || "unknown");
+    const encodedProduct = encodeURIComponent(product || "unknown");
+    return `${window.location.origin}/data-submission/${encodedSupplier}/${encodedProduct}/${timestamp}`;
+  };
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,6 +74,9 @@ const DataRequest: React.FC = () => {
   const handlePreview = () => {
     // Get current form values regardless of validation
     const values = form.getValues();
+    
+    // Generate a data submission link for this specific request
+    const dataSubmissionLink = generateDataSubmissionLink(values.supplierName, values.productName);
     
     // Prepare preview data with fallbacks for empty values
     const selectedItems = values.requestItems && values.requestItems.length > 0
@@ -105,7 +116,7 @@ ${mockReportLinks.map(link => `• ${link.name}: ${window.location.origin}${link
 • 预测结果可能无法完全反映实际生产情况或特定工艺差异
 • 获取您的实际数据将帮助我们提高预测准确性，并为您提供更有针对性的减碳建议`;
 
-    // Add new section about current product prediction
+    // Add section about current product prediction
     const currentProductPredictionSection = `
 【当前产品预测结果】
 根据我们平台对${values.productName || "该产品"}的初步碳足迹预测：
@@ -115,6 +126,14 @@ ${mockReportLinks.map(link => `• ${link.name}: ${window.location.origin}${link
 • 主要贡献因素：${mockCurrentProductPrediction.mainContributors.join('、')}
 
 以上预测结果可能与实际情况存在差异，我们希望通过获取更准确的数据来优化此预测结果。`;
+
+    // Add data submission link section to the email
+    const dataSubmissionSection = `
+【数据填报链接】
+为了方便您提交相关数据，我们创建了一个专属数据填报页面，您可以通过以下链接进行填报：
+${dataSubmissionLink}
+
+该链接是为贵公司专门生成的安全链接，无需注册即可直接填报数据。链接有效期为30天。`;
     
     const content = `尊敬的${values.supplierName || "供应商"}团队：
 
@@ -134,6 +153,8 @@ ${competitorsSection}
 ${platformPredictionSection}
 
 ${reportsSection}
+
+${dataSubmissionSection}
 
 如果贵公司能够提供这些数据，将极大地帮助我们评估${values.productName || "该产品"}在我们供应链中的环保表现，并为后续可能的合作奠定基础。${values.deadline ? `由于项目进度安排，希望能在${format(values.deadline, 'yyyy年MM月dd日')}前收到相关信息。` : '希望能尽快收到您的回复。'}此请求为${urgencyText}。
 
@@ -161,7 +182,7 @@ ${values.contactPhone ? values.contactPhone : ""}
       deadline: values.deadline ? format(values.deadline, 'yyyy年MM月dd日') : "尽快",
       subject,
       content,
-      // Add current product prediction data to preview
+      dataSubmissionLink, // Include the data submission link in the preview data
       currentProductPrediction: mockCurrentProductPrediction
     });
     

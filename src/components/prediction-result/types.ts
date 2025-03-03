@@ -1,4 +1,3 @@
-
 import { LucideIcon } from 'lucide-react';
 
 // Base types
@@ -220,7 +219,7 @@ export interface DataRequestPreviewData {
   deadline: string;
   subject: string;
   content: string;
-  // Add current product prediction data
+  dataSubmissionLink?: string;
   currentProductPrediction?: {
     carbonValue: number;
     unit: string;
@@ -229,4 +228,3 @@ export interface DataRequestPreviewData {
     mainContributors: string[];
   };
 }
-
