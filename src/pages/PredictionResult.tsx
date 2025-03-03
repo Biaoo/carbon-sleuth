@@ -1,9 +1,9 @@
+
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { 
   Card, 
@@ -40,7 +40,18 @@ import {
   ArrowRight,
   Link
 } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ErrorBar, Cell } from 'recharts';
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  Legend, 
+  ResponsiveContainer, 
+  ErrorBar, 
+  Cell 
+} from 'recharts';
 
 // 模拟数据
 const mockResultData = {
@@ -474,7 +485,6 @@ const PredictionResult: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('overview');
   const [expandedSuggestions, setExpandedSuggestions] = useState<string[]>([]);
   
   // 使用ID获取数据，这里使用模拟数据
@@ -533,4 +543,437 @@ const PredictionResult: React.FC = () => {
               </Button>
               <Button variant="outline" className="flex items-center">
                 <Download className="h-4 w-4 mr-2" />
-                导
+                导出报告
+              </Button>
+            </div>
+          </div>
+        </div>
+        
+        {/* 总体碳足迹结果 */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <Card className="col-span-1 lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="flex items-center text-xl">
+                <BarChart2 className="h-5 w-5 mr-2 text-muted-foreground" />
+                碳足迹预测结果
+              </CardTitle>
+              <CardDescription>产品碳足迹值与行业对比分析</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center mb-2">
+                <span className="text-4xl font-bold">{resultData.carbonValue}</span>
+                <span className="ml-2 text-muted-foreground">{resultData.unit}</span>
+              </div>
+              
+              <div className="mt-6">
+                <p className="mb-2 font-medium text-sm">行业对比分析</p>
+                <div className="h-72">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={resultData.comparativeAnalysis.chartData}
+                      margin={{ top: 20, right: 30, left: 0, bottom: 60 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis 
+                        dataKey="name" 
+                        tick={(props) => {
+                          const { x, y, payload } = props;
+                          return (
+                            <text 
+                              x={x} 
+                              y={y + 12} 
+                              textAnchor="middle" 
+                              fill="#666"
+                              fontSize={12}
+                            >
+                              {payload.value}
+                            </text>
+                          );
+                        }}
+                      />
+                      <YAxis label={{ value: 'kg CO₂e/件', angle: -90, position: 'insideLeft', offset: -15 }} />
+                      <Tooltip formatter={(value) => [`${value} kg CO₂e/件`, '碳足迹']} />
+                      <Legend verticalAlign="top" height={36} />
+                      <Bar 
+                        dataKey="value" 
+                        name="碳足迹值" 
+                        fill="#4f46e5"
+                      >
+                        {resultData.comparativeAnalysis.chartData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                        ))}
+                        <ErrorBar dataKey="error" width={4} strokeWidth={2} />
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="flex items-center mt-2 text-sm text-muted-foreground">
+                  <Info className="h-4 w-4 mr-1" />
+                  误差棒表示碳足迹计算的不确定度范围
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* 主要成分分析 */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl">主要组成分析</CardTitle>
+              <CardDescription>碳足迹主要来源组成</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-5">
+                {resultData.components.map((component, index) => (
+                  <div key={index}>
+                    <div className="flex justify-between mb-1">
+                      <div className="font-medium text-sm">{component.name}</div>
+                      <div className="text-sm text-muted-foreground">{component.value} {component.unit} ({component.percentage}%)</div>
+                    </div>
+                    <Progress value={component.percentage} className="h-2" />
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        
+        {/* 碳足迹生命周期阶段分析 */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="text-xl">生命周期阶段分析</CardTitle>
+            <CardDescription>产品全生命周期各阶段碳足迹分布</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-5">
+                {resultData.phases.map((phase, index) => (
+                  <div key={index}>
+                    <div className="flex justify-between mb-1">
+                      <div className="font-medium text-sm">{phase.name}</div>
+                      <div className="text-sm text-muted-foreground">{phase.value} {phase.unit} ({phase.percentage}%)</div>
+                    </div>
+                    <Progress value={phase.percentage} className="h-2" />
+                  </div>
+                ))}
+              </div>
+              
+              <div className="h-60 md:h-auto">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={resultData.phases}
+                    layout="vertical"
+                    margin={{ top: 5, right: 30, left: 60, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis type="number" />
+                    <YAxis 
+                      type="category" 
+                      dataKey="name" 
+                      width={120} 
+                    />
+                    <Tooltip formatter={(value) => [`${value} kg CO₂e`, '碳足迹']} />
+                    <Bar dataKey="value" name="碳足迹值" fill="#4f46e5" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* 产品信息卡片列表 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* 产品基础信息 */}
+          <Card>
+            <CardHeader className="flex flex-row items-start space-y-0 pb-2">
+              <div className="flex-1">
+                <CardTitle className="text-xl flex items-center">
+                  <BookOpen className="h-5 w-5 mr-2 text-muted-foreground" />
+                  {resultData.inferenceData.productBasicInfo.title}
+                </CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-2">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                <div className="lg:col-span-8">
+                  <MarkdownContent content={resultData.inferenceData.productBasicInfo.markdownContent} />
+                </div>
+                <div className="lg:col-span-4">
+                  <ReferenceSidebar references={resultData.inferenceData.productBasicInfo.citations} />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* 产品组成信息 */}
+          <Card>
+            <CardHeader className="flex flex-row items-start space-y-0 pb-2">
+              <div className="flex-1">
+                <CardTitle className="text-xl flex items-center">
+                  <Layers className="h-5 w-5 mr-2 text-muted-foreground" />
+                  {resultData.inferenceData.productComposition.title}
+                </CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-2">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                <div className="lg:col-span-8">
+                  <MarkdownContent content={resultData.inferenceData.productComposition.markdownContent} />
+                </div>
+                <div className="lg:col-span-4">
+                  <ReferenceSidebar references={resultData.inferenceData.productComposition.citations} />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* 生产技术信息 */}
+          <Card>
+            <CardHeader className="flex flex-row items-start space-y-0 pb-2">
+              <div className="flex-1">
+                <CardTitle className="text-xl flex items-center">
+                  <Cog className="h-5 w-5 mr-2 text-muted-foreground" />
+                  {resultData.inferenceData.productionTechnology.title}
+                </CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-2">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                <div className="lg:col-span-8">
+                  <MarkdownContent content={resultData.inferenceData.productionTechnology.markdownContent} />
+                </div>
+                <div className="lg:col-span-4">
+                  <ReferenceSidebar references={resultData.inferenceData.productionTechnology.citations} />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* 相关竞品供应商 */}
+          <Card>
+            <CardHeader className="flex flex-row items-start space-y-0 pb-2">
+              <div className="flex-1">
+                <CardTitle className="text-xl flex items-center">
+                  <Users className="h-5 w-5 mr-2 text-muted-foreground" />
+                  {resultData.inferenceData.competitorsInfo.title}
+                </CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-2">
+              <div className="grid grid-cols-1 gap-2">
+                {resultData.inferenceData.competitorsInfo.data.map((competitor, index) => (
+                  <div key={index} className="p-3 bg-muted/30 rounded-lg">
+                    <div className="font-medium">{competitor.name}</div>
+                    <div className="text-sm text-muted-foreground">{competitor.product}</div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        
+        {/* LCA模型和碳足迹预测结果 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* LCA模型 */}
+          <Card>
+            <CardHeader className="flex flex-row items-start space-y-0 pb-2">
+              <div className="flex-1">
+                <CardTitle className="text-xl flex items-center">
+                  <BarChartIcon className="h-5 w-5 mr-2 text-muted-foreground" />
+                  {resultData.inferenceData.lcaModel.title}
+                </CardTitle>
+                <CardDescription>{resultData.inferenceData.lcaModel.description}</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-2">
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                {resultData.inferenceData.lcaModel.parameters.map((param, index) => (
+                  <div key={index} className="p-2 bg-muted/30 rounded-lg">
+                    <div className="text-xs text-muted-foreground">{param.name}</div>
+                    <div className="text-sm font-medium">{param.value}</div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="mt-4">
+                <h4 className="text-sm font-medium mb-3">LCA模型流程图</h4>
+                <LcaFlowchart nodes={resultData.inferenceData.lcaModel.flowchart} />
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* 碳足迹预测结果 */}
+          <Card>
+            <CardHeader className="flex flex-row items-start space-y-0 pb-2">
+              <div className="flex-1">
+                <CardTitle className="text-xl flex items-center">
+                  <BarChart2 className="h-5 w-5 mr-2 text-muted-foreground" />
+                  {resultData.inferenceData.carbonFootprintResult.title}
+                </CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-2">
+              <div className="flex items-center mb-4">
+                <span className="text-3xl font-bold">{resultData.inferenceData.carbonFootprintResult.totalValue}</span>
+                <span className="ml-2 text-muted-foreground">{resultData.inferenceData.carbonFootprintResult.unit}</span>
+                <Badge className="ml-3 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
+                  不确定度：{resultData.inferenceData.carbonFootprintResult.uncertaintyRange}
+                </Badge>
+              </div>
+              
+              <div className="space-y-3 mt-4">
+                <h4 className="text-sm font-medium">碳足迹组成明细</h4>
+                {resultData.inferenceData.carbonFootprintResult.breakdown.map((item, index) => (
+                  <div key={index}>
+                    <div className="flex justify-between mb-1">
+                      <div className="text-sm">{item.name}</div>
+                      <div className="text-sm text-muted-foreground">{item.value} kg CO₂e ({item.percentage}%)</div>
+                    </div>
+                    <Progress value={item.percentage} className="h-2" />
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        
+        {/* 参考文献和技术依据 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* 参考文献 */}
+          <Card>
+            <CardHeader className="flex flex-row items-start space-y-0 pb-2">
+              <div className="flex-1">
+                <CardTitle className="text-xl flex items-center">
+                  <Library className="h-5 w-5 mr-2 text-muted-foreground" />
+                  {resultData.explanatoryInfo.references.title}
+                </CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-2">
+              <div className="grid grid-cols-1 gap-2">
+                {resultData.explanatoryInfo.references.sources.map((source, index) => (
+                  <div key={index} className="p-3 bg-muted/30 rounded-lg">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <div className="font-medium text-sm">{source.name}</div>
+                        <div className="text-xs text-muted-foreground mt-1">{source.type}</div>
+                      </div>
+                      <a href={source.url} className="text-primary hover:text-primary/80">
+                        <Link className="h-4 w-4" />
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* 技术依据 */}
+          <Card>
+            <CardHeader className="flex flex-row items-start space-y-0 pb-2">
+              <div className="flex-1">
+                <CardTitle className="text-xl flex items-center">
+                  <Info className="h-5 w-5 mr-2 text-muted-foreground" />
+                  {resultData.explanatoryInfo.technicalBasis.title}
+                </CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-2">
+              <div className="space-y-3">
+                {resultData.explanatoryInfo.technicalBasis.methods.map((method, index) => (
+                  <div key={index} className="p-3 bg-muted/30 rounded-lg">
+                    <div className="font-medium text-sm">{method.name}</div>
+                    <div className="text-sm text-muted-foreground mt-1">{method.description}</div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        
+        {/* 改进建议 */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="text-xl">减排优化建议</CardTitle>
+            <CardDescription>基于产品特性和行业最佳实践的碳减排建议</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {resultData.improvementSuggestions.map((suggestion, index) => (
+                <div key={index} className="border rounded-lg overflow-hidden">
+                  <div 
+                    className="p-4 bg-muted/30 flex justify-between items-center cursor-pointer"
+                    onClick={() => toggleSuggestion(suggestion.title)}
+                  >
+                    <div className="flex items-center">
+                      {difficultyIcons[suggestion.difficulty as keyof typeof difficultyIcons].icon}
+                      <span className="font-medium ml-2">{suggestion.title}</span>
+                      <Badge className="ml-3 bg-green-100 text-green-800 hover:bg-green-200 border-green-200">
+                        潜在减排 {suggestion.reduction} kg CO₂e
+                      </Badge>
+                    </div>
+                    <div className="flex items-center">
+                      <Badge variant="outline" className="mr-2">
+                        {difficultyIcons[suggestion.difficulty as keyof typeof difficultyIcons].label}
+                      </Badge>
+                      <Badge variant="outline">
+                        {suggestion.timeline}
+                      </Badge>
+                      {expandedSuggestions.includes(suggestion.title) ? (
+                        <ChevronUp className="h-5 w-5 ml-2 text-muted-foreground" />
+                      ) : (
+                        <ChevronDown className="h-5 w-5 ml-2 text-muted-foreground" />
+                      )}
+                    </div>
+                  </div>
+                  
+                  {expandedSuggestions.includes(suggestion.title) && (
+                    <div className="p-4 border-t">
+                      <p>{suggestion.description}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* 相似产品对比 */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl">相似产品对比</CardTitle>
+            <CardDescription>与市场上同类产品的碳足迹对比</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {resultData.similarProducts.map((product, index) => (
+                <div key={index} className="p-4 border rounded-lg">
+                  <div className="flex justify-between">
+                    <div>
+                      <div className="font-medium">{product.name}</div>
+                      <div className="text-sm text-muted-foreground">{product.supplier}</div>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="text-xl font-bold">{product.carbonValue}</span>
+                      <span className="ml-1 text-muted-foreground">{product.unit}</span>
+                      <Badge 
+                        className={`ml-3 ${
+                          product.differencePercentage < 0 
+                            ? 'bg-green-100 text-green-800 hover:bg-green-200 border-green-200' 
+                            : 'bg-amber-100 text-amber-800 hover:bg-amber-200 border-amber-200'
+                        }`}
+                      >
+                        {product.differencePercentage > 0 ? '+' : ''}{product.differencePercentage}%
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </Layout>
+  );
+};
+
+export default PredictionResult;
