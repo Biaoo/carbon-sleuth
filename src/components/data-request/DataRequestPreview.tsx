@@ -224,6 +224,20 @@ const DataRequestPreview: React.FC<DataRequestPreviewProps> = ({
                     <div className="p-2 bg-muted/40 rounded mt-1 whitespace-pre-line">
                       {data.content}
                     </div>
+                    {/* 添加对比图到邮件内容 */}
+                    <div className="mt-4 p-3 border border-dashed rounded-md">
+                      <p className="text-sm font-medium mb-2">此邮件将包含以下碳足迹对比图：</p>
+                      <div className="h-48">
+                        <ComparisonChartPreview 
+                          competitorsData={data.competitorsData}
+                          industryBenchmarks={data.industryBenchmarks}
+                          height="100%"
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-2 italic">
+                        注：此图表将作为图片附件或嵌入内容发送
+                      </p>
+                    </div>
                   </div>
                 </div>
               </CardContent>
