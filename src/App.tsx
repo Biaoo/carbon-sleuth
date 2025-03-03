@@ -7,6 +7,7 @@ import Search from "@/pages/Search";
 import Inference from "@/pages/Inference";
 import DataRequest from "@/pages/DataRequest";
 import Recommendation from "@/pages/Recommendation";
+import PredictionResult from "@/pages/PredictionResult";
 import NotFound from "@/pages/NotFound";
 import "./App.css";
 
@@ -22,6 +23,8 @@ export default function App() {
         <Route path="/" element={<Index />} />
         <Route path="/search" element={<Search />} />
         <Route path="/inference" element={<Inference />} />
+        <Route path="/prediction-result" element={<PredictionResult />} />
+        <Route path="/prediction-result/:id" element={<PredictionResult />} />
         <Route path="/data-request" element={<DataRequest />} />
         <Route path="/recommendation" element={<Recommendation />} />
         <Route path="*" element={<NotFound />} />
