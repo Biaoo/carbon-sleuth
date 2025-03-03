@@ -24,6 +24,14 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
 import { 
   Mail, 
   Phone, 
@@ -34,7 +42,8 @@ import {
   X, 
   AlertCircle, 
   Download, 
-  Upload
+  Upload,
+  Eye
 } from 'lucide-react';
 
 // 模拟数据
@@ -101,6 +110,23 @@ const DataRequest: React.FC = () => {
   const [activeTab, setActiveTab] = useState('create');
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
   const [selectedTemplate, setSelectedTemplate] = useState('template1');
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    supplier: 'supplier1',
+    product: 'product1',
+    dataItems: ['data1', 'data2', 'data3'],
+    contactMethod: 'email',
+    contact: 'contact@greenenergy.com',
+    deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    subject: '产品碳足迹数据请求 - 太阳能电池板 Model-SE300',
+    content: `尊敬的供应商：
+
+您好！我们是贵司产品的采购方，正在进行供应链碳足迹评估工作。我们的系统对贵司的太阳能电池板 Model-SE300 进行了碳足迹预测分析。为了确保数据准确性，我们希望能获取贵司的实际碳足迹数据。
+
+我们的预测结果显示，该产品的碳足迹约为 45.6 kgCO2e/件。如果贵司有实际测算数据，请提供给我们，以便我们更准确地评估整体供应链的碳排放情况。
+
+感谢您的配合！`
+  });
   const { toast } = useToast();
 
   // 处理创建请求
@@ -109,12 +135,86 @@ const DataRequest: React.FC = () => {
       title: "请求已创建",
       description: "您的数据请求已成功创建并发送。",
     });
+    setPreviewOpen(false);
     setActiveTab('manage');
   };
 
   // 处理选择请求
   const handleSelectRequest = (request: any) => {
     setSelectedRequest(request);
+  };
+
+  // 处理表单输入变化
+  const handleInputChange = (field: string, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  // 处理数据项复选框变化
+  const handleDataItemChange = (itemId: string, checked: boolean) => {
+    setFormData(prev => {
+      if (checked) {
+        return {
+          ...prev,
+          dataItems: [...prev.dataItems, itemId]
+        };
+      } else {
+        return {
+          ...prev,
+          dataItems: prev.dataItems.filter(id => id !== itemId)
+        };
+      }
+    });
+  };
+
+  // 处理联系方式选择
+  const handleContactMethodChange = (method: string) => {
+    setFormData(prev => ({
+      ...prev,
+      contactMethod: method
+    }));
+  };
+
+  // 预览请求
+  const handlePreview = () => {
+    setPreviewOpen(true);
+  };
+
+  // 获取供应商名称
+  const getSupplierName = (id: string) => {
+    const supplierMap: Record<string, string> = {
+      'supplier1': '上海绿能科技有限公司',
+      'supplier2': '江苏新材料科技股份有限公司',
+      'supplier3': '广东高效能源有限公司',
+      'supplier4': '北京清洁能源技术有限公司'
+    };
+    return supplierMap[id] || id;
+  };
+
+  // 获取产品名称
+  const getProductName = (id: string) => {
+    const productMap: Record<string, string> = {
+      'product1': '太阳能电池板 Model-SE300',
+      'product2': '复合材料 XM-200',
+      'product3': '锂电池组件 LB-500',
+      'product4': '风力发电机叶片 FP-120'
+    };
+    return productMap[id] || id;
+  };
+
+  // 获取数据项名称
+  const getDataItemName = (id: string) => {
+    const dataItemMap: Record<string, string> = {
+      'data1': '产品碳足迹数据',
+      'data2': '生产工艺信息',
+      'data3': '原材料组成',
+      'data4': '能源消耗数据',
+      'data5': '运输信息',
+      'data6': '第三方验证报告'
+    };
+    return dataItemMap[id] || id;
   };
 
   return (
@@ -142,7 +242,10 @@ const DataRequest: React.FC = () => {
                 <CardContent className="space-y-6">
                   <div className="space-y-3">
                     <label className="text-sm font-medium">目标供应商</label>
-                    <Select defaultValue="supplier1">
+                    <Select 
+                      value={formData.supplier} 
+                      onValueChange={(value) => handleInputChange('supplier', value)}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="选择供应商" />
                       </SelectTrigger>
@@ -157,7 +260,10 @@ const DataRequest: React.FC = () => {
                   
                   <div className="space-y-3">
                     <label className="text-sm font-medium">产品信息</label>
-                    <Select defaultValue="product1">
+                    <Select 
+                      value={formData.product} 
+                      onValueChange={(value) => handleInputChange('product', value)}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="选择产品" />
                       </SelectTrigger>
@@ -174,27 +280,63 @@ const DataRequest: React.FC = () => {
                     <label className="text-sm font-medium">请求数据项</label>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="flex items-center space-x-2">
-                        <input type="checkbox" id="data1" className="rounded border-gray-300" defaultChecked />
+                        <input 
+                          type="checkbox" 
+                          id="data1" 
+                          className="rounded border-gray-300" 
+                          checked={formData.dataItems.includes('data1')}
+                          onChange={(e) => handleDataItemChange('data1', e.target.checked)}
+                        />
                         <label htmlFor="data1">产品碳足迹数据</label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <input type="checkbox" id="data2" className="rounded border-gray-300" defaultChecked />
+                        <input 
+                          type="checkbox" 
+                          id="data2" 
+                          className="rounded border-gray-300" 
+                          checked={formData.dataItems.includes('data2')}
+                          onChange={(e) => handleDataItemChange('data2', e.target.checked)}
+                        />
                         <label htmlFor="data2">生产工艺信息</label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <input type="checkbox" id="data3" className="rounded border-gray-300" defaultChecked />
+                        <input 
+                          type="checkbox" 
+                          id="data3" 
+                          className="rounded border-gray-300" 
+                          checked={formData.dataItems.includes('data3')}
+                          onChange={(e) => handleDataItemChange('data3', e.target.checked)}
+                        />
                         <label htmlFor="data3">原材料组成</label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <input type="checkbox" id="data4" className="rounded border-gray-300" />
+                        <input 
+                          type="checkbox" 
+                          id="data4" 
+                          className="rounded border-gray-300" 
+                          checked={formData.dataItems.includes('data4')}
+                          onChange={(e) => handleDataItemChange('data4', e.target.checked)}
+                        />
                         <label htmlFor="data4">能源消耗数据</label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <input type="checkbox" id="data5" className="rounded border-gray-300" />
+                        <input 
+                          type="checkbox" 
+                          id="data5" 
+                          className="rounded border-gray-300" 
+                          checked={formData.dataItems.includes('data5')}
+                          onChange={(e) => handleDataItemChange('data5', e.target.checked)}
+                        />
                         <label htmlFor="data5">运输信息</label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <input type="checkbox" id="data6" className="rounded border-gray-300" />
+                        <input 
+                          type="checkbox" 
+                          id="data6" 
+                          className="rounded border-gray-300" 
+                          checked={formData.dataItems.includes('data6')}
+                          onChange={(e) => handleDataItemChange('data6', e.target.checked)}
+                        />
                         <label htmlFor="data6">第三方验证报告</label>
                       </div>
                     </div>
@@ -203,19 +345,35 @@ const DataRequest: React.FC = () => {
                   <div className="space-y-3">
                     <label className="text-sm font-medium">请求方式</label>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                      <Button variant="outline" className="flex flex-col h-20 justify-center items-center space-y-1 bg-primary/5">
+                      <Button 
+                        variant="outline" 
+                        className={`flex flex-col h-20 justify-center items-center space-y-1 ${formData.contactMethod === 'email' ? 'bg-primary/5' : ''}`}
+                        onClick={() => handleContactMethodChange('email')}
+                      >
                         <Mail className="h-5 w-5" />
                         <span className="text-xs">邮件</span>
                       </Button>
-                      <Button variant="outline" className="flex flex-col h-20 justify-center items-center space-y-1">
+                      <Button 
+                        variant="outline" 
+                        className={`flex flex-col h-20 justify-center items-center space-y-1 ${formData.contactMethod === 'sms' ? 'bg-primary/5' : ''}`}
+                        onClick={() => handleContactMethodChange('sms')}
+                      >
                         <Phone className="h-5 w-5" />
                         <span className="text-xs">短信</span>
                       </Button>
-                      <Button variant="outline" className="flex flex-col h-20 justify-center items-center space-y-1">
+                      <Button 
+                        variant="outline" 
+                        className={`flex flex-col h-20 justify-center items-center space-y-1 ${formData.contactMethod === 'wechat' ? 'bg-primary/5' : ''}`}
+                        onClick={() => handleContactMethodChange('wechat')}
+                      >
                         <Send className="h-5 w-5" />
                         <span className="text-xs">微信</span>
                       </Button>
-                      <Button variant="outline" className="flex flex-col h-20 justify-center items-center space-y-1">
+                      <Button 
+                        variant="outline" 
+                        className={`flex flex-col h-20 justify-center items-center space-y-1 ${formData.contactMethod === 'dingtalk' ? 'bg-primary/5' : ''}`}
+                        onClick={() => handleContactMethodChange('dingtalk')}
+                      >
                         <Send className="h-5 w-5" />
                         <span className="text-xs">钉钉</span>
                       </Button>
@@ -224,12 +382,20 @@ const DataRequest: React.FC = () => {
                   
                   <div className="space-y-3">
                     <label className="text-sm font-medium">联系人信息</label>
-                    <Input placeholder="联系人邮箱" defaultValue="contact@greenenergy.com" />
+                    <Input 
+                      placeholder="联系人邮箱" 
+                      value={formData.contact}
+                      onChange={(e) => handleInputChange('contact', e.target.value)}
+                    />
                   </div>
                   
                   <div className="space-y-3">
                     <label className="text-sm font-medium">请求截止日期</label>
-                    <Input type="date" defaultValue={new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]} />
+                    <Input 
+                      type="date" 
+                      value={formData.deadline}
+                      onChange={(e) => handleInputChange('deadline', e.target.value)}
+                    />
                   </div>
                 </CardContent>
               </Card>
@@ -259,7 +425,11 @@ const DataRequest: React.FC = () => {
                   
                   <div className="space-y-3">
                     <label className="text-sm font-medium">请求主题</label>
-                    <Input placeholder="请求主题" defaultValue="产品碳足迹数据请求 - 太阳能电池板 Model-SE300" />
+                    <Input 
+                      placeholder="请求主题" 
+                      value={formData.subject}
+                      onChange={(e) => handleInputChange('subject', e.target.value)}
+                    />
                   </div>
                   
                   <div className="space-y-3">
@@ -267,13 +437,8 @@ const DataRequest: React.FC = () => {
                     <Textarea 
                       placeholder="请输入请求内容" 
                       className="min-h-[200px]"
-                      defaultValue={`尊敬的供应商：
-
-您好！我们是贵司产品的采购方，正在进行供应链碳足迹评估工作。我们的系统对贵司的太阳能电池板 Model-SE300 进行了碳足迹预测分析。为了确保数据准确性，我们希望能获取贵司的实际碳足迹数据。
-
-我们的预测结果显示，该产品的碳足迹约为 45.6 kgCO2e/件。如果贵司有实际测算数据，请提供给我们，以便我们更准确地评估整体供应链的碳排放情况。
-
-感谢您的配合！`}
+                      value={formData.content}
+                      onChange={(e) => handleInputChange('content', e.target.value)}
                     />
                   </div>
                   
@@ -294,7 +459,10 @@ const DataRequest: React.FC = () => {
             
             <div className="flex justify-end space-x-3 mt-6">
               <Button variant="outline">保存草稿</Button>
-              <Button variant="outline">预览</Button>
+              <Button variant="outline" onClick={handlePreview}>
+                <Eye className="mr-2 h-4 w-4" />
+                预览
+              </Button>
               <Button onClick={handleCreateRequest}>发送请求</Button>
             </div>
           </TabsContent>
@@ -491,6 +659,89 @@ const DataRequest: React.FC = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* 预览对话框 */}
+      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>数据请求预览</DialogTitle>
+            <DialogDescription>
+              以下是您的数据请求预览，确认无误后可以发送
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-6 py-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-1">目标供应商</h3>
+                  <p className="font-medium">{getSupplierName(formData.supplier)}</p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-1">产品</h3>
+                  <p className="font-medium">{getProductName(formData.product)}</p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-1">请求数据项</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {formData.dataItems.map(item => (
+                      <Badge key={item} variant="outline">
+                        {getDataItemName(item)}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-1">联系方式</h3>
+                  <div className="flex items-center">
+                    {methodMap[formData.contactMethod as keyof typeof methodMap]?.icon && (
+                      React.createElement(methodMap[formData.contactMethod as keyof typeof methodMap].icon, { className: "h-4 w-4 mr-2" })
+                    )}
+                    <p>{formData.contact}</p>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-1">请求截止日期</h3>
+                  <p>{formData.deadline}</p>
+                </div>
+              </div>
+            </div>
+            
+            <Separator />
+            
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground mb-1">请求主题</h3>
+                <p className="font-medium">{formData.subject}</p>
+              </div>
+              <div>
+                <h3 className="text-sm font-medium text-muted-foreground mb-1">请求内容</h3>
+                <div className="bg-muted/50 rounded-md p-4 text-sm whitespace-pre-line">
+                  {formData.content}
+                </div>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <h3 className="text-sm font-medium text-muted-foreground mb-1">附件</h3>
+              <div className="flex items-center justify-between bg-muted/50 rounded-md p-3">
+                <div className="flex items-center">
+                  <FileText className="h-5 w-5 mr-2 text-muted-foreground" />
+                  <span>产品碳足迹预测报告.pdf</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setPreviewOpen(false)}>返回编辑</Button>
+            <Button onClick={handleCreateRequest}>确认发送</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 };
