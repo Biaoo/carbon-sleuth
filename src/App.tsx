@@ -26,7 +26,7 @@ export default function App() {
         <Route path="/prediction-result/:id" element={<PredictionResult />} />
         <Route path="/recommendation" element={<Recommendation />} />
         <Route path="/dashboard" element={<Navigate to="/workspace" replace />} />
-        <Route path="/inference" element={<Navigate to="/workspace" replace />} />
+        <Route path="/inference" element={<Navigate to="/workspace?tab=inference" replace />} />
         <Route path="/data-request" element={<Navigate to="/workspace?tab=data-request" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

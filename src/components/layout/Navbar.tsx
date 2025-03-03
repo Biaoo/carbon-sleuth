@@ -5,12 +5,12 @@ import { Button } from '@/components/ui/button';
 import { 
   Search, 
   BarChart2, 
-  Mail, 
   Leaf, 
   Menu, 
   X,
   Globe,
-  User
+  User,
+  Briefcase
 } from 'lucide-react';
 
 const Navbar = () => {
@@ -32,10 +32,9 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
-    { name: '首页', path: '/', icon: <Globe className="h-4 w-4" /> },
+    { name: '首页', path: '/', icon: <Leaf className="h-4 w-4" /> },
     { name: '产品搜索', path: '/search', icon: <Search className="h-4 w-4" /> },
-    { name: 'LCA模型推理', path: '/inference', icon: <BarChart2 className="h-4 w-4" /> },
-    { name: '数据请求', path: '/data-request', icon: <Mail className="h-4 w-4" /> },
+    { name: '工作台', path: '/workspace', icon: <Briefcase className="h-4 w-4" /> },
     { name: '低碳推荐', path: '/recommendation', icon: <Leaf className="h-4 w-4" /> },
   ];
 

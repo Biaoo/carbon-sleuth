@@ -1,9 +1,9 @@
 
 import React from 'react';
 import Layout from '@/components/layout/Layout';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { BarChart2, FileText, Home } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Home } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -17,14 +17,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   description
 }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  
-  // Determine active tab based on current path
-  const getActiveTab = () => {
-    const path = location.pathname;
-    if (path.includes('/workspace')) return 'workspace';
-    return 'home';
-  };
 
   return (
     <Layout>
@@ -40,31 +32,20 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 )}
               </div>
               
-              {/* Navigation Tabs */}
-              <Tabs value={getActiveTab()} className="w-full md:w-auto">
-                <TabsList className="grid grid-cols-2 w-full md:w-auto">
-                  <TabsTrigger 
-                    value="home" 
-                    onClick={() => navigate('/')}
-                    className="flex items-center gap-2"
-                  >
-                    <Home className="h-4 w-4" />
-                    <span className="hidden sm:inline">主页</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="workspace" 
-                    onClick={() => navigate('/workspace')}
-                    className="flex items-center gap-2"
-                  >
-                    <BarChart2 className="h-4 w-4" />
-                    <span className="hidden sm:inline">工作台</span>
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
+              {/* Simple navigation */}
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => navigate('/')}
+                className="flex items-center gap-2"
+              >
+                <Home className="h-4 w-4" />
+                返回首页
+              </Button>
             </div>
             
             {/* Dashboard Content */}
-            <div className="bg-background rounded-xl shadow-md">
+            <div className="bg-background rounded-xl shadow-md overflow-hidden">
               {children}
             </div>
           </div>
