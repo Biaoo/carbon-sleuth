@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ConsoleLayout from '@/components/layout/ConsoleLayout';
@@ -9,6 +8,7 @@ import { Leaf } from 'lucide-react';
 import WorkspaceSidebar from '@/components/workspace/WorkspaceSidebar';
 import WorkspaceInferenceContent from '@/components/workspace/WorkspaceInferenceContent';
 import WorkspaceDataRequestContent from '@/components/workspace/WorkspaceDataRequestContent';
+import WorkspaceRequestManagementContent from '@/components/workspace/WorkspaceRequestManagementContent';
 
 // Import types
 import { HistoryItem } from '@/components/inference/HistoryList';
@@ -41,34 +41,6 @@ const historyItems: HistoryItem[] = [
     status: 'completed',
     result: 8.5,
     unit: 'kg CO₂e/unit'
-  }
-];
-
-// Mock request management data
-const requestHistoryItems = [
-  {
-    id: 201,
-    supplierName: '绿环包装科技',
-    productName: '可降解塑料餐具',
-    requestDate: '2023-07-15',
-    status: 'pending',
-    requestType: '产品碳足迹数据'
-  },
-  {
-    id: 202,
-    supplierName: '自然家居集团',
-    productName: '竹纤维床单',
-    requestDate: '2023-07-10',
-    status: 'completed',
-    requestType: '生产过程数据'
-  },
-  {
-    id: 203,
-    supplierName: '绿能科技',
-    productName: '太阳能移动电源',
-    requestDate: '2023-07-05',
-    status: 'in-progress',
-    requestType: '材料构成数据'
   }
 ];
 
@@ -152,48 +124,7 @@ const renderModuleContent = (
         </div>
       );
     case 'request-management':
-      return (
-        <div className="p-6">
-          <h2 className="text-2xl font-semibold mb-6">请求管理</h2>
-          <div className="bg-card rounded-lg shadow-sm border border-border">
-            <div className="p-4 border-b border-border bg-muted/30">
-              <h3 className="font-medium">历史请求列表</h3>
-            </div>
-            <div className="divide-y divide-border">
-              {requestHistoryItems.map(item => (
-                <div key={item.id} className="p-4 hover:bg-muted/20 transition-colors">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h4 className="font-medium">{item.productName}</h4>
-                      <p className="text-sm text-muted-foreground">{item.supplierName}</p>
-                      <div className="flex items-center mt-2 text-sm">
-                        <span className="text-muted-foreground">请求日期: {item.requestDate}</span>
-                        <span className="mx-2">•</span>
-                        <span className={`font-medium ${
-                          item.status === 'completed' ? 'text-green-600' : 
-                          item.status === 'pending' ? 'text-amber-600' : 'text-blue-600'
-                        }`}>
-                          {item.status === 'completed' ? '已完成' : 
-                           item.status === 'pending' ? '等待处理' : '处理中'}
-                        </span>
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        请求类型: {item.requestType}
-                      </p>
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">查看详情</Button>
-                      {item.status === 'completed' && (
-                        <Button size="sm" variant="default">下载数据</Button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      );
+      return <WorkspaceRequestManagementContent />;
     default:
       return <div>未知模块</div>;
   }
@@ -236,12 +167,10 @@ const Workspace = () => {
   
   // Handle starting a prediction
   const handleStartPrediction = (productName: string, supplierName: string) => {
-    // Start prediction process
     setIsLoading(true);
     setProgress(0);
     setStage('正在收集产品基础信息...');
     
-    // Simulate prediction process
     const simulatePrediction = () => {
       const stages = [
         { progress: 10, text: '正在收集产品基础信息...' },
@@ -263,7 +192,6 @@ const Workspace = () => {
           currentStage++;
         } else {
           clearInterval(interval);
-          // Navigate to result page after short delay
           setTimeout(() => {
             setIsLoading(false);
             navigate('/prediction-result');
@@ -272,7 +200,6 @@ const Workspace = () => {
       }, 800);
     };
     
-    // Start simulation after short delay
     setTimeout(simulatePrediction, 500);
   };
   
