@@ -13,6 +13,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { FileText, FileDown, BarChart2, Link as LinkIcon, CalendarIcon, User, Mail, Phone } from 'lucide-react';
 import { DataRequestPreviewData } from '@/components/prediction-result/types';
+import ComparisonChartPreview from './ComparisonChartPreview';
 
 interface DataRequestPreviewProps {
   open: boolean;
@@ -108,9 +109,23 @@ const DataRequestPreview: React.FC<DataRequestPreviewProps> = ({
             </Card>
           </div>
           
-          {/* 竞品对比数据 */}
+          {/* 竞品对比数据图表 */}
           <div>
             <h3 className="text-sm font-medium text-muted-foreground mb-2">竞品对比数据</h3>
+            <Card>
+              <CardContent className="p-4">
+                <ComparisonChartPreview 
+                  competitorsData={data.competitorsData}
+                  industryBenchmarks={data.industryBenchmarks}
+                  height={300}
+                />
+              </CardContent>
+            </Card>
+          </div>
+          
+          {/* 竞品对比数据详情 - 保留原有的列表视图作为补充 */}
+          <div>
+            <h3 className="text-sm font-medium text-muted-foreground mb-2">竞品对比详细数据</h3>
             <Card>
               <CardContent className="p-4">
                 <div className="space-y-3">
@@ -230,3 +245,4 @@ const DataRequestPreview: React.FC<DataRequestPreviewProps> = ({
 };
 
 export default DataRequestPreview;
+
