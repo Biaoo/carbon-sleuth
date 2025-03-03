@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ConsoleLayout from '@/components/layout/ConsoleLayout';
 import { Button } from '@/components/ui/button';
-import { Leaf } from 'lucide-react';
+import { Leaf, Home } from 'lucide-react';
 
 // Import workspace components
 import WorkspaceSidebar from '@/components/workspace/WorkspaceSidebar';
@@ -132,6 +132,17 @@ const Workspace = () => {
             </div>
             <span className="font-display text-lg font-semibold">CarbonSleuth</span>
           </div>
+          <div className="ml-auto">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={navigateToHome}
+              className="flex items-center gap-1"
+            >
+              <Home className="h-4 w-4" />
+              返回主页
+            </Button>
+          </div>
         </div>
         
         {/* Mobile toolbar */}
@@ -142,14 +153,25 @@ const Workspace = () => {
             </div>
             <span className="font-display text-lg font-semibold">CarbonSleuth</span>
           </div>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="md:hidden"
-          >
-            {sidebarOpen ? "关闭" : "菜单"}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={navigateToHome}
+              className="flex items-center gap-1"
+            >
+              <Home className="h-4 w-4" />
+              返回
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="md:hidden"
+            >
+              {sidebarOpen ? "关闭" : "菜单"}
+            </Button>
+          </div>
         </div>
         
         {/* Desktop sidebar */}
