@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ConsoleLayout from '@/components/layout/ConsoleLayout';
@@ -6,9 +7,7 @@ import { Leaf } from 'lucide-react';
 
 // Import workspace components
 import WorkspaceSidebar from '@/components/workspace/WorkspaceSidebar';
-import WorkspaceInferenceContent from '@/components/workspace/WorkspaceInferenceContent';
-import WorkspaceDataRequestContent from '@/components/workspace/WorkspaceDataRequestContent';
-import WorkspaceRequestManagementContent from '@/components/workspace/WorkspaceRequestManagementContent';
+import WorkspaceModuleRenderer from '@/components/workspace/WorkspaceModuleRenderer';
 
 // Import types
 import { HistoryItem } from '@/components/inference/HistoryList';
@@ -43,92 +42,6 @@ const historyItems: HistoryItem[] = [
     unit: 'kg CO₂e/unit'
   }
 ];
-
-// Render specific module content based on active module
-const renderModuleContent = (
-  activeModule: string, 
-  handleStartPrediction: (productName: string, supplierName: string) => void,
-  isLoading: boolean,
-  progress: number,
-  stage: string,
-  navigateToHome: () => void
-) => {
-  switch (activeModule) {
-    case 'inference':
-      return (
-        <WorkspaceInferenceContent 
-          onStartPrediction={handleStartPrediction}
-          isLoading={isLoading}
-          progress={progress}
-          stage={stage}
-          historyItems={historyItems}
-        />
-      );
-    case 'inference-history':
-      return (
-        <div className="p-6">
-          <h2 className="text-2xl font-semibold mb-6">预测历史记录</h2>
-          <div className="bg-card rounded-lg shadow-sm border border-border">
-            <div className="p-4 border-b border-border bg-muted/30">
-              <h3 className="font-medium">历史预测列表</h3>
-            </div>
-            <div className="divide-y divide-border">
-              {historyItems.map(item => (
-                <div key={item.id} className="p-4 hover:bg-muted/20 transition-colors">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h4 className="font-medium">{item.productName}</h4>
-                      <p className="text-sm text-muted-foreground">{item.supplierName}</p>
-                      <div className="flex items-center mt-2 text-sm">
-                        <span className="text-muted-foreground">预测日期: {item.date}</span>
-                        <span className="mx-2">•</span>
-                        <span className="font-medium text-green-600">{item.result} {item.unit}</span>
-                      </div>
-                    </div>
-                    <Button size="sm" variant="outline">查看详情</Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      );
-    case 'data-request':
-      return (
-        <WorkspaceDataRequestContent
-          navigateToHome={navigateToHome}
-        />
-      );
-    case 'data-collections':
-      return (
-        <div className="p-6">
-          <h2 className="text-2xl font-semibold mb-6">数据集合</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-card rounded-lg shadow-sm border border-border p-4">
-              <h3 className="font-medium mb-3">产品碳足迹数据</h3>
-              <p className="text-sm text-muted-foreground mb-4">包含50个不同产品的碳足迹数据</p>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">最后更新: 2023-07-20</span>
-                <Button size="sm" variant="outline">查看</Button>
-              </div>
-            </div>
-            <div className="bg-card rounded-lg shadow-sm border border-border p-4">
-              <h3 className="font-medium mb-3">生产工艺数据</h3>
-              <p className="text-sm text-muted-foreground mb-4">包含30种不同生产工艺的能耗数据</p>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">最后更新: 2023-07-15</span>
-                <Button size="sm" variant="outline">查看</Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    case 'request-management':
-      return <WorkspaceRequestManagementContent />;
-    default:
-      return <div>未知模块</div>;
-  }
-};
 
 const Workspace = () => {
   const navigate = useNavigate();
@@ -264,7 +177,15 @@ const Workspace = () => {
         
         {/* Main content area */}
         <div className="flex-1 md:ml-64 pt-14 h-full overflow-auto transition-all duration-300" id="main-content">
-          {renderModuleContent(activeModule, handleStartPrediction, isLoading, progress, stage, navigateToHome)}
+          <WorkspaceModuleRenderer 
+            activeModule={activeModule}
+            handleStartPrediction={handleStartPrediction}
+            isLoading={isLoading}
+            progress={progress}
+            stage={stage}
+            navigateToHome={navigateToHome}
+            historyItems={historyItems}
+          />
         </div>
       </div>
     </ConsoleLayout>
