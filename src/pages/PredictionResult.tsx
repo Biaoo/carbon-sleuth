@@ -1,4 +1,4 @@
-
+<lov-code>
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
@@ -29,7 +29,15 @@ import {
   ChevronDown,
   ChevronUp,
   Copy,
-  Check
+  CheckCircle,
+  BookOpen,
+  Database,
+  Layers,
+  Cog,
+  Users,
+  BarChart,
+  LineChart,
+  Library
 } from 'lucide-react';
 
 // 模拟数据
@@ -120,7 +128,152 @@ const mockResultData = {
       unit: 'kg CO₂e/件',
       differencePercentage: -18
     }
-  ]
+  ],
+  // 新增：推理过程数据
+  inferenceData: {
+    productBasicInfo: {
+      title: "产品基础信息",
+      icon: BookOpen,
+      data: [
+        { name: "产品类别", value: "可再生能源设备" },
+        { name: "产品规格", value: "300W 单晶硅光伏板" },
+        { name: "产品尺寸", value: "1650mm × 992mm × 35mm" },
+        { name: "产品重量", value: "18.5kg" },
+        { name: "产品寿命", value: "25年" }
+      ]
+    },
+    productComposition: {
+      title: "产品组成信息",
+      icon: Layers,
+      data: [
+        { name: "单晶硅电池", value: "60片", percentage: 48 },
+        { name: "钢化玻璃", value: "3.2mm厚", percentage: 25 },
+        { name: "EVA封装膜", value: "0.5mm×2层", percentage: 8 },
+        { name: "铝合金边框", value: "35mm厚", percentage: 15 },
+        { name: "背板", value: "复合材料", percentage: 4 }
+      ]
+    },
+    productionTechnology: {
+      title: "生产技术信息",
+      icon: Cog,
+      data: [
+        { name: "电池制备工艺", value: "PERC技术" },
+        { name: "组件层压工艺", value: "全自动层压" },
+        { name: "焊接技术", value: "多主栅技术" },
+        { name: "生产能耗", value: "低于行业平均15%" },
+        { name: "质量控制", value: "自动化检测系统" }
+      ]
+    },
+    competitorsInfo: {
+      title: "相关竞品供应商",
+      icon: Users,
+      data: [
+        { name: "江苏新能源科技有限公司", product: "单晶硅光伏板 NS-310" },
+        { name: "浙江太阳能技术股份有限公司", product: "高效光伏组件 HE-305" },
+        { name: "广东光能科技有限公司", product: "双面光伏板 BF-290" },
+        { name: "德国SolarTech GmbH", product: "Premium Solar Panel SP-320" }
+      ]
+    },
+    lcaModel: {
+      title: "LCA模型",
+      icon: BarChart,
+      modelName: "光伏产品全生命周期评估模型 v3.2",
+      description: "该模型基于ISO 14040/14044标准，采用「摇篮到大门」边界，综合考虑原材料获取、生产制造、包装运输等阶段的环境影响。",
+      parameters: [
+        { name: "功能单位", value: "1件标准产品" },
+        { name: "参考流", value: "1块300W光伏板" },
+        { name: "地理边界", value: "中国生产系统" },
+        { name: "时间范围", value: "2022-2023年数据" },
+        { name: "技术覆盖", value: "当前主流生产技术" }
+      ]
+    },
+    carbonFootprintResult: {
+      title: "碳足迹预测结果",
+      icon: BarChart2,
+      totalValue: 42.8,
+      unit: "kg CO₂e/件",
+      breakdown: [
+        { name: "原材料获取", value: 22.6, percentage: 52.8 },
+        { name: "制造加工", value: 12.4, percentage: 29.0 },
+        { name: "包装运输", value: 5.2, percentage: 12.1 },
+        { name: "其他过程", value: 2.6, percentage: 6.1 }
+      ],
+      uncertaintyRange: "±15%",
+      confidenceLevel: "高"
+    }
+  },
+  // 新增：可解释性信息
+  explanatoryInfo: {
+    references: {
+      title: "参考来源",
+      icon: Library,
+      sources: [
+        { name: "中国光伏行业协会碳足迹数据库 (2023)", type: "行业数据" },
+        { name: "光伏产品生命周期评价指南 GB/T 34664-2021", type: "标准文献" },
+        { name: "类似产品实测碳足迹案例集 (n=24)", type: "案例研究" },
+        { name: "国际能源署太阳能光伏系统项目组报告", type: "国际报告" },
+        { name: "材料碳排放因子数据库 CLCD-China-ECER", type: "排放因子" }
+      ]
+    },
+    technicalBasis: {
+      title: "技术依据",
+      icon: Info,
+      methods: [
+        { 
+          name: "混合LCA方法", 
+          description: "结合过程分析法和投入产出法的优势，对关键过程使用详细流程数据，对次要过程使用投入产出数据" 
+        },
+        { 
+          name: "机器学习数据填补", 
+          description: "使用梯度提升树模型对缺失数据进行智能填补，基于同类产品的已知参数" 
+        },
+        { 
+          name: "蒙特卡洛不确定性分析", 
+          description: "通过10,000次模拟评估结果的稳健性和不确定度" 
+        },
+        { 
+          name: "敏感性分析", 
+          description: "识别影响结果的关键参数，确定改进的优先领域" 
+        }
+      ]
+    }
+  },
+  // 新增：行业对比分析
+  comparativeAnalysis: {
+    industryBenchmark: {
+      title: "行业基准对比",
+      description: "与光伏产品行业基准相比，本产品碳足迹表现优异",
+      data: [
+        { category: "行业领先水平", value: 35.0, unit: "kg CO₂e/件", difference: -7.8 },
+        { category: "行业平均水平", value: 65.2, unit: "kg CO₂e/件", difference: 22.4 },
+        { category: "行业基准线", value: 80.0, unit: "kg CO₂e/件", difference: 37.2 }
+      ]
+    },
+    competitorsComparison: {
+      title: "竞品对比分析",
+      description: "与市场上主要竞争产品的碳足迹对比",
+      competitorData: [
+        { name: "本产品", value: 42.8, unit: "kg CO₂e/件", highlight: true },
+        { name: "竞品A - NS-310", value: 47.5, unit: "kg CO₂e/件", difference: "+11.0%" },
+        { name: "竞品B - HE-305", value: 51.2, unit: "kg CO₂e/件", difference: "+19.6%" },
+        { name: "竞品C - BF-290", value: 49.8, unit: "kg CO₂e/件", difference: "+16.4%" },
+        { name: "竞品D - SP-320", value: 39.5, unit: "kg CO₂e/件", difference: "-7.7%" }
+      ],
+      keyDifferentiators: [
+        "采用先进PERC技术，提高能源转换效率",
+        "优化铝合金框架设计，减少材料使用",
+        "制造过程采用部分可再生能源电力",
+        "供应链本地化程度高，减少运输碳排放"
+      ]
+    },
+    performanceByCategory: [
+      { category: "原材料使用", performance: "良好", industryPosition: "前30%" },
+      { category: "生产能效", performance: "优秀", industryPosition: "前20%" },
+      { category: "再生材料占比", performance: "一般", industryPosition: "行业平均" },
+      { category: "产品寿命", performance: "优秀", industryPosition: "前15%" },
+      { category: "可回收性", performance: "良好", industryPosition: "前25%" }
+    ]
+  }
 };
 
 // 难度图标映射
@@ -341,9 +494,11 @@ const PredictionResult: React.FC = () => {
         </div>
         
         <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="mt-6">
-          <TabsList className="grid w-full max-w-md grid-cols-3 mb-8">
+          <TabsList className="grid w-full max-w-md grid-cols-5 mb-8">
             <TabsTrigger value="overview">碳足迹概览</TabsTrigger>
+            <TabsTrigger value="inference">推理过程</TabsTrigger>
             <TabsTrigger value="details">详细分析</TabsTrigger>
+            <TabsTrigger value="explanation">依据说明</TabsTrigger>
             <TabsTrigger value="suggestions">改进建议</TabsTrigger>
           </TabsList>
           
@@ -438,270 +593,125 @@ const PredictionResult: React.FC = () => {
             </Card>
           </TabsContent>
           
-          <TabsContent value="details" className="space-y-8">
+          {/* 新增：推理过程选项卡 */}
+          <TabsContent value="inference" className="space-y-8">
             <Card>
               <CardHeader>
-                <CardTitle>预测方法说明</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div>
-                  <h3 className="font-medium mb-2">数据来源</h3>
-                  <p className="text-sm text-muted-foreground">
-                    本预测分析基于以下数据源生成：
-                  </p>
-                  <ul className="list-disc list-inside text-sm text-muted-foreground mt-2 space-y-1">
-                    <li>行业碳足迹基准数据库</li>
-                    <li>产品类别平均排放因子</li>
-                    <li>供应商历史碳足迹数据（如有）</li>
-                    <li>制造工艺碳足迹估算模型</li>
-                    <li>材料组成碳足迹计算参数</li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h3 className="font-medium mb-2">预测模型</h3>
-                  <p className="text-sm text-muted-foreground">
-                    碳足迹预测采用多级混合LCA方法，结合了过程分析法（Process-based LCA）和
-                    投入产出分析法（IO-LCA）的优势，通过机器学习模型对缺失数据进行补全和优化。
-                    模型准确度在相似产品测试中可达到±15%。
-                  </p>
-                </div>
-                
-                <div>
-                  <h3 className="font-medium mb-2">数据质量说明</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="text-sm font-medium mb-2">数据完整性</h4>
-                      <Progress value={85} className="h-2 mb-2" />
-                      <p className="text-xs text-muted-foreground">
-                        关键产品参数覆盖率高，部分生产工艺细节数据缺失
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="text-sm font-medium mb-2">时间代表性</h4>
-                      <Progress value={90} className="h-2 mb-2" />
-                      <p className="text-xs text-muted-foreground">
-                        使用的基准数据为近两年内更新
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="text-sm font-medium mb-2">地理代表性</h4>
-                      <Progress value={75} className="h-2 mb-2" />
-                      <p className="text-xs text-muted-foreground">
-                        主要基于本地区数据，部分使用国家平均水平
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="text-sm font-medium mb-2">技术代表性</h4>
-                      <Progress value={80} className="h-2 mb-2" />
-                      <p className="text-xs text-muted-foreground">
-                        与产品技术特征匹配度高，部分工艺参数为行业通用值
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
-                  <h3 className="font-medium mb-2">系统边界</h3>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    本预测采用"摇篮到大门"（Cradle-to-Gate）系统边界，包含从原材料开采到产品出厂的全部过程。
-                    具体包括以下阶段：
-                  </p>
-                  <div className="flex items-center overflow-x-auto pb-2">
-                    <div className="flex-shrink-0 w-[150px] px-3 py-2 border-r text-center">
-                      <p className="text-xs font-medium">原材料开采</p>
-                    </div>
-                    <div className="flex-shrink-0 w-[150px] px-3 py-2 border-r text-center">
-                      <p className="text-xs font-medium">材料加工</p>
-                    </div>
-                    <div className="flex-shrink-0 w-[150px] px-3 py-2 border-r text-center">
-                      <p className="text-xs font-medium">零部件制造</p>
-                    </div>
-                    <div className="flex-shrink-0 w-[150px] px-3 py-2 border-r text-center">
-                      <p className="text-xs font-medium">产品组装</p>
-                    </div>
-                    <div className="flex-shrink-0 w-[150px] px-3 py-2 border-r text-center">
-                      <p className="text-xs font-medium">包装</p>
-                    </div>
-                    <div className="flex-shrink-0 w-[150px] px-3 py-2 text-center">
-                      <p className="text-xs font-medium">厂内运输</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                  <Info className="h-5 w-5 text-amber-500 mr-3 flex-shrink-0" />
-                  <p className="text-sm text-amber-800">
-                    本预测结果应视为产品碳足迹的合理估计，但不能替代正式的产品碳足迹核算。
-                    建议在重要决策前，获取供应商提供的实际碳足迹数据或进行第三方验证。
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>详细数据表</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left py-2 font-medium text-sm">类别</th>
-                        <th className="text-left py-2 font-medium text-sm">项目</th>
-                        <th className="text-right py-2 font-medium text-sm">碳足迹值</th>
-                        <th className="text-right py-2 font-medium text-sm">占比</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y">
-                      {resultData.components.map((component, index) => (
-                        <tr key={`comp-${index}`} className="text-sm">
-                          <td className="py-3 text-muted-foreground">{index === 0 ? '组件构成' : ''}</td>
-                          <td className="py-3">{component.name}</td>
-                          <td className="py-3 text-right">{component.value} {component.unit}</td>
-                          <td className="py-3 text-right">{component.percentage}%</td>
-                        </tr>
-                      ))}
-                      
-                      {resultData.phases.map((phase, index) => (
-                        <tr key={`phase-${index}`} className="text-sm">
-                          <td className="py-3 text-muted-foreground">{index === 0 ? '生命周期阶段' : ''}</td>
-                          <td className="py-3">{phase.name}</td>
-                          <td className="py-3 text-right">{phase.value} {phase.unit}</td>
-                          <td className="py-3 text-right">{phase.percentage}%</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                    <tfoot>
-                      <tr className="font-medium text-sm border-t">
-                        <td colSpan={2} className="py-3">总计</td>
-                        <td className="py-3 text-right">{resultData.carbonValue} {resultData.unit}</td>
-                        <td className="py-3 text-right">100%</td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-                
-                <div className="mt-6 flex justify-end">
-                  <Button variant="outline" className="flex items-center">
-                    <FileText className="h-4 w-4 mr-2" />
-                    导出详细数据
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="suggestions" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>碳足迹改进建议</CardTitle>
+                <CardTitle>推理过程信息</CardTitle>
                 <CardDescription>
-                  针对预测结果的碳减排优化建议，可根据实际情况选择性实施
+                  AI预测过程中收集和分析的产品数据
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {resultData.improvementSuggestions.map((suggestion, index) => (
-                    <div 
-                      key={index} 
-                      className={`border rounded-lg overflow-hidden transition-all ${
-                        expandedSuggestions.includes(suggestion.title) ? 'bg-muted/30' : ''
-                      }`}
-                    >
-                      <div 
-                        className="p-4 flex justify-between items-center cursor-pointer"
-                        onClick={() => toggleSuggestion(suggestion.title)}
-                      >
-                        <div className="flex items-center">
-                          {difficultyIcons[suggestion.difficulty as keyof typeof difficultyIcons].icon}
-                          <h3 className="ml-2 font-medium">{suggestion.title}</h3>
-                        </div>
-                        <div className="flex items-center">
-                          <span className="text-green-600 text-sm font-medium mr-3">
-                            减排 {suggestion.reduction} kg CO₂e
-                          </span>
-                          {expandedSuggestions.includes(suggestion.title) ? 
-                            <ChevronUp className="h-4 w-4" /> : 
-                            <ChevronDown className="h-4 w-4" />
-                          }
-                        </div>
+              <CardContent className="space-y-6">
+                {/* 产品基础信息 */}
+                <div className="p-5 border rounded-lg">
+                  <div className="flex items-center mb-4">
+                    <BookOpen className="h-5 w-5 text-primary mr-2" />
+                    <h3 className="text-lg font-medium">{resultData.inferenceData.productBasicInfo.title}</h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {resultData.inferenceData.productBasicInfo.data.map((item, index) => (
+                      <div key={index} className="flex flex-col">
+                        <span className="text-sm text-muted-foreground">{item.name}</span>
+                        <span className="font-medium">{item.value}</span>
                       </div>
-                      
-                      {expandedSuggestions.includes(suggestion.title) && (
-                        <div className="px-4 pb-4 pt-0">
-                          <Separator className="mb-4" />
-                          <p className="text-sm mb-4">
-                            {suggestion.description}
-                          </p>
-                          <div className="grid grid-cols-3 gap-4 text-sm">
-                            <div className="p-3 bg-muted/50 rounded-lg">
-                              <p className="text-xs text-muted-foreground mb-1">实施难度</p>
-                              <div className="flex items-center">
-                                {difficultyIcons[suggestion.difficulty as keyof typeof difficultyIcons].icon}
-                                <span className="ml-1.5">{difficultyIcons[suggestion.difficulty as keyof typeof difficultyIcons].label}</span>
-                              </div>
-                            </div>
-                            <div className="p-3 bg-muted/50 rounded-lg">
-                              <p className="text-xs text-muted-foreground mb-1">实施周期</p>
-                              <span>{suggestion.timeline}</span>
-                            </div>
-                            <div className="p-3 bg-muted/50 rounded-lg">
-                              <p className="text-xs text-muted-foreground mb-1">减排效果</p>
-                              <span className="text-green-600">
-                                {((suggestion.reduction / resultData.carbonValue) * 100).toFixed(1)}%
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="mt-8 p-4 bg-muted/30 rounded-lg flex items-start">
-                  <Info className="h-5 w-5 text-primary mr-3 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="font-medium mb-2">总减排潜力</h3>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      全部建议实施后的最大减排潜力约为 {resultData.reductionPotential} kg CO₂e
-                      （{((resultData.reductionPotential / resultData.carbonValue) * 100).toFixed(1)}%）。
-                      建议根据成本效益、技术可行性选择合适的改进措施。
-                    </p>
-                    <Button variant="outline" size="sm" className="mt-2">
-                      获取详细改进方案
-                    </Button>
+                    ))}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-        
-        <div className="mt-12 flex justify-between items-center">
-          <Button 
-            variant="outline" 
-            onClick={() => navigate('/inference')}
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            返回推理页面
-          </Button>
-          
-          <div className="flex gap-2">
-            <Button variant="outline">
-              <FileText className="h-4 w-4 mr-2" />
-              生成数据请求
-            </Button>
-            <Button>
-              <BarChart2 className="h-4 w-4 mr-2" />
-              查看相似产品
-            </Button>
-          </div>
-        </div>
-      </div>
-    </Layout>
-  );
-};
 
-export default PredictionResult;
+                {/* 产品组成信息 */}
+                <div className="p-5 border rounded-lg">
+                  <div className="flex items-center mb-4">
+                    <Layers className="h-5 w-5 text-primary mr-2" />
+                    <h3 className="text-lg font-medium">{resultData.inferenceData.productComposition.title}</h3>
+                  </div>
+                  <div className="space-y-3">
+                    {resultData.inferenceData.productComposition.data.map((item, index) => (
+                      <div key={index} className="space-y-1">
+                        <div className="flex justify-between">
+                          <span className="text-sm font-medium">{item.name}</span>
+                          <div className="text-sm">
+                            <span>{item.value}</span>
+                            <span className="text-muted-foreground ml-2">({item.percentage}%)</span>
+                          </div>
+                        </div>
+                        <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-primary" 
+                            style={{ width: `${item.percentage}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 生产技术信息 */}
+                <div className="p-5 border rounded-lg">
+                  <div className="flex items-center mb-4">
+                    <Cog className="h-5 w-5 text-primary mr-2" />
+                    <h3 className="text-lg font-medium">{resultData.inferenceData.productionTechnology.title}</h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {resultData.inferenceData.productionTechnology.data.map((item, index) => (
+                      <div key={index} className="flex flex-col">
+                        <span className="text-sm text-muted-foreground">{item.name}</span>
+                        <span className="font-medium">{item.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 相关竞品供应商 */}
+                <div className="p-5 border rounded-lg">
+                  <div className="flex items-center mb-4">
+                    <Users className="h-5 w-5 text-primary mr-2" />
+                    <h3 className="text-lg font-medium">{resultData.inferenceData.competitorsInfo.title}</h3>
+                  </div>
+                  <div className="space-y-3">
+                    {resultData.inferenceData.competitorsInfo.data.map((item, index) => (
+                      <div key={index} className="flex justify-between items-center p-2 hover:bg-muted/50 rounded-lg">
+                        <span className="font-medium">{item.name}</span>
+                        <span className="text-sm text-muted-foreground">{item.product}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* LCA模型 */}
+                <div className="p-5 border rounded-lg">
+                  <div className="flex items-center mb-3">
+                    <BarChart className="h-5 w-5 text-primary mr-2" />
+                    <h3 className="text-lg font-medium">{resultData.inferenceData.lcaModel.title}</h3>
+                  </div>
+                  <p className="text-base font-medium mb-2">{resultData.inferenceData.lcaModel.modelName}</p>
+                  <p className="text-sm text-muted-foreground mb-4">{resultData.inferenceData.lcaModel.description}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {resultData.inferenceData.lcaModel.parameters.map((param, index) => (
+                      <div key={index} className="p-3 bg-secondary/30 rounded-lg">
+                        <p className="text-xs text-muted-foreground mb-1">{param.name}</p>
+                        <p className="text-sm font-medium">{param.value}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 碳足迹预测结果 */}
+                <div className="p-5 border rounded-lg">
+                  <div className="flex items-center mb-4">
+                    <BarChart2 className="h-5 w-5 text-primary mr-2" />
+                    <h3 className="text-lg font-medium">{resultData.inferenceData.carbonFootprintResult.title}</h3>
+                  </div>
+                  <div className="flex items-center mb-5">
+                    <div className="text-3xl font-bold mr-2">
+                      {resultData.inferenceData.carbonFootprintResult.totalValue}
+                    </div>
+                    <div className="text-lg text-muted-foreground">
+                      {resultData.inferenceData.carbonFootprintResult.unit}
+                    </div>
+                    <Badge className="ml-4">{resultData.inferenceData.carbonFootprintResult.uncertaintyRange}</Badge>
+                    <Badge variant="outline" className="ml-2">
+                      可信度：{resultData.inferenceData.carbonFootprintResult.confidenceLevel}
+                    </Badge>
+                  </div>
+                  <div className="
