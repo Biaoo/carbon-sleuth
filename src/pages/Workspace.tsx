@@ -2,12 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ConsoleLayout from '@/components/layout/ConsoleLayout';
-import { Button } from '@/components/ui/button';
-import { Leaf, Home } from 'lucide-react';
 
 // Import workspace components
 import WorkspaceSidebar from '@/components/workspace/WorkspaceSidebar';
 import WorkspaceModuleRenderer from '@/components/workspace/WorkspaceModuleRenderer';
+import WorkspaceMobileSidebar from '@/components/workspace/WorkspaceMobileSidebar';
+import { WorkspaceDesktopHeader, WorkspaceMobileHeader } from '@/components/workspace/WorkspaceHeader';
+import { usePredictionSimulation } from '@/components/workspace/usePredictionSimulation';
 
 // Import types
 import { HistoryItem } from '@/components/inference/HistoryList';
@@ -57,10 +58,8 @@ const Workspace = () => {
   // Mobile sidebar state
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
-  // Inference states
-  const [isLoading, setIsLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [stage, setStage] = useState('');
+  // Get prediction simulation hooks
+  const { isLoading, progress, stage, handleStartPrediction } = usePredictionSimulation();
   
   // Update URL when module changes
   useEffect(() => {
@@ -78,44 +77,6 @@ const Workspace = () => {
     setSidebarOpen(false); // Close mobile sidebar when module changes
   };
   
-  // Handle starting a prediction
-  const handleStartPrediction = (productName: string, supplierName: string) => {
-    setIsLoading(true);
-    setProgress(0);
-    setStage('正在收集产品基础信息...');
-    
-    const simulatePrediction = () => {
-      const stages = [
-        { progress: 10, text: '正在收集产品基础信息...' },
-        { progress: 25, text: '分析产品组成信息...' },
-        { progress: 40, text: '获取生产技术信息...' },
-        { progress: 55, text: '识别相关竞品供应商...' },
-        { progress: 70, text: '构建LCA模型...' },
-        { progress: 85, text: '计算碳足迹值...' },
-        { progress: 95, text: '生成预测报告...' },
-        { progress: 100, text: '预测完成！' }
-      ];
-      
-      let currentStage = 0;
-      
-      const interval = setInterval(() => {
-        if (currentStage < stages.length) {
-          setProgress(stages[currentStage].progress);
-          setStage(stages[currentStage].text);
-          currentStage++;
-        } else {
-          clearInterval(interval);
-          setTimeout(() => {
-            setIsLoading(false);
-            navigate('/prediction-result');
-          }, 500);
-        }
-      }, 800);
-    };
-    
-    setTimeout(simulatePrediction, 500);
-  };
-  
   // Navigate to home function for data request
   const navigateToHome = () => {
     navigate('/');
@@ -125,54 +86,14 @@ const Workspace = () => {
     <ConsoleLayout>
       <div className="flex h-screen bg-secondary/10">
         {/* App branding header - only visible on desktop */}
-        <div className="hidden md:flex items-center h-14 px-6 bg-background border-b border-border w-full fixed top-0 left-0 z-10">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-data-blue to-eco-green rounded-lg flex items-center justify-center">
-              <Leaf className="h-5 w-5 text-white" />
-            </div>
-            <span className="font-display text-lg font-semibold">CarbonSleuth</span>
-          </div>
-          <div className="ml-auto">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={navigateToHome}
-              className="flex items-center gap-1"
-            >
-              <Home className="h-4 w-4" />
-              返回主页
-            </Button>
-          </div>
-        </div>
+        <WorkspaceDesktopHeader navigateToHome={navigateToHome} />
         
         {/* Mobile toolbar */}
-        <div className="md:hidden flex items-center justify-between h-14 px-4 bg-background border-b border-border w-full fixed top-0 z-10">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-data-blue to-eco-green rounded-lg flex items-center justify-center">
-              <Leaf className="h-5 w-5 text-white" />
-            </div>
-            <span className="font-display text-lg font-semibold">CarbonSleuth</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={navigateToHome}
-              className="flex items-center gap-1"
-            >
-              <Home className="h-4 w-4" />
-              返回
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="md:hidden"
-            >
-              {sidebarOpen ? "关闭" : "菜单"}
-            </Button>
-          </div>
-        </div>
+        <WorkspaceMobileHeader 
+          navigateToHome={navigateToHome} 
+          sidebarOpen={sidebarOpen} 
+          setSidebarOpen={setSidebarOpen} 
+        />
         
         {/* Desktop sidebar */}
         <div className="hidden md:block fixed left-0 top-14 bottom-0">
@@ -184,18 +105,12 @@ const Workspace = () => {
         </div>
         
         {/* Mobile sidebar (overlay) */}
-        {sidebarOpen && (
-          <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm md:hidden">
-            <div className="fixed inset-y-0 left-0 z-50 w-full max-w-xs">
-              <WorkspaceSidebar 
-                activeModule={activeModule}
-                onChangeModule={handleChangeModule}
-                isMobile={true}
-                onClose={() => setSidebarOpen(false)}
-              />
-            </div>
-          </div>
-        )}
+        <WorkspaceMobileSidebar 
+          sidebarOpen={sidebarOpen}
+          activeModule={activeModule}
+          onChangeModule={handleChangeModule}
+          onClose={() => setSidebarOpen(false)}
+        />
         
         {/* Main content area */}
         <div className="flex-1 md:ml-64 pt-14 h-full overflow-auto transition-all duration-300" id="main-content">
