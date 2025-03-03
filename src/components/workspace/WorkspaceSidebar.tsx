@@ -102,7 +102,7 @@ const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({
               <Button
                 variant="ghost"
                 className="w-full justify-start text-sm h-9"
-                onClick={() => console.log('View history')}
+                onClick={() => onChangeModule('inference-history')}
               >
                 <History className="h-3.5 w-3.5 mr-2" />
                 历史记录
@@ -117,9 +117,9 @@ const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({
           >
             <div className="flex items-center">
               <Button
-                variant={activeModule === 'data-request' ? 'secondary' : 'ghost'}
+                variant={activeModule === 'data-request' || activeModule === 'request-management' ? 'secondary' : 'ghost'}
                 className={`${collapsed ? 'justify-center w-10 p-0 mx-auto' : 'w-full justify-start'} text-sm h-11 ${
-                  activeModule === 'data-request' ? 'bg-secondary/80' : ''
+                  activeModule === 'data-request' || activeModule === 'request-management' ? 'bg-secondary/80' : ''
                 }`}
                 onClick={() => onChangeModule('data-request')}
               >
@@ -149,7 +149,7 @@ const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({
               <Button
                 variant="ghost"
                 className="w-full justify-start text-sm h-9"
-                onClick={() => console.log('View data collections')}
+                onClick={() => onChangeModule('data-collections')}
               >
                 <Folder className="h-3.5 w-3.5 mr-2" />
                 数据集合
@@ -158,7 +158,7 @@ const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({
               <Button
                 variant="ghost"
                 className="w-full justify-start text-sm h-9"
-                onClick={() => console.log('View request history')}
+                onClick={() => onChangeModule('request-management')}
               >
                 <Clock className="h-3.5 w-3.5 mr-2" />
                 历史请求

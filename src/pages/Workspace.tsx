@@ -44,6 +44,161 @@ const historyItems: HistoryItem[] = [
   }
 ];
 
+// Mock request management data
+const requestHistoryItems = [
+  {
+    id: 201,
+    supplierName: '绿环包装科技',
+    productName: '可降解塑料餐具',
+    requestDate: '2023-07-15',
+    status: 'pending',
+    requestType: '产品碳足迹数据'
+  },
+  {
+    id: 202,
+    supplierName: '自然家居集团',
+    productName: '竹纤维床单',
+    requestDate: '2023-07-10',
+    status: 'completed',
+    requestType: '生产过程数据'
+  },
+  {
+    id: 203,
+    supplierName: '绿能科技',
+    productName: '太阳能移动电源',
+    requestDate: '2023-07-05',
+    status: 'in-progress',
+    requestType: '材料构成数据'
+  }
+];
+
+// Render specific module content based on active module
+const renderModuleContent = (
+  activeModule: string, 
+  handleStartPrediction: (productName: string, supplierName: string) => void,
+  isLoading: boolean,
+  progress: number,
+  stage: string,
+  navigateToHome: () => void
+) => {
+  switch (activeModule) {
+    case 'inference':
+      return (
+        <WorkspaceInferenceContent 
+          onStartPrediction={handleStartPrediction}
+          isLoading={isLoading}
+          progress={progress}
+          stage={stage}
+          historyItems={historyItems}
+        />
+      );
+    case 'inference-history':
+      return (
+        <div className="p-6">
+          <h2 className="text-2xl font-semibold mb-6">预测历史记录</h2>
+          <div className="bg-card rounded-lg shadow-sm border border-border">
+            <div className="p-4 border-b border-border bg-muted/30">
+              <h3 className="font-medium">历史预测列表</h3>
+            </div>
+            <div className="divide-y divide-border">
+              {historyItems.map(item => (
+                <div key={item.id} className="p-4 hover:bg-muted/20 transition-colors">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-medium">{item.productName}</h4>
+                      <p className="text-sm text-muted-foreground">{item.supplierName}</p>
+                      <div className="flex items-center mt-2 text-sm">
+                        <span className="text-muted-foreground">预测日期: {item.date}</span>
+                        <span className="mx-2">•</span>
+                        <span className="font-medium text-green-600">{item.result} {item.unit}</span>
+                      </div>
+                    </div>
+                    <Button size="sm" variant="outline">查看详情</Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    case 'data-request':
+      return (
+        <WorkspaceDataRequestContent
+          navigateToHome={navigateToHome}
+        />
+      );
+    case 'data-collections':
+      return (
+        <div className="p-6">
+          <h2 className="text-2xl font-semibold mb-6">数据集合</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-card rounded-lg shadow-sm border border-border p-4">
+              <h3 className="font-medium mb-3">产品碳足迹数据</h3>
+              <p className="text-sm text-muted-foreground mb-4">包含50个不同产品的碳足迹数据</p>
+              <div className="flex justify-between items-center">
+                <span className="text-sm">最后更新: 2023-07-20</span>
+                <Button size="sm" variant="outline">查看</Button>
+              </div>
+            </div>
+            <div className="bg-card rounded-lg shadow-sm border border-border p-4">
+              <h3 className="font-medium mb-3">生产工艺数据</h3>
+              <p className="text-sm text-muted-foreground mb-4">包含30种不同生产工艺的能耗数据</p>
+              <div className="flex justify-between items-center">
+                <span className="text-sm">最后更新: 2023-07-15</span>
+                <Button size="sm" variant="outline">查看</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    case 'request-management':
+      return (
+        <div className="p-6">
+          <h2 className="text-2xl font-semibold mb-6">请求管理</h2>
+          <div className="bg-card rounded-lg shadow-sm border border-border">
+            <div className="p-4 border-b border-border bg-muted/30">
+              <h3 className="font-medium">历史请求列表</h3>
+            </div>
+            <div className="divide-y divide-border">
+              {requestHistoryItems.map(item => (
+                <div key={item.id} className="p-4 hover:bg-muted/20 transition-colors">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="font-medium">{item.productName}</h4>
+                      <p className="text-sm text-muted-foreground">{item.supplierName}</p>
+                      <div className="flex items-center mt-2 text-sm">
+                        <span className="text-muted-foreground">请求日期: {item.requestDate}</span>
+                        <span className="mx-2">•</span>
+                        <span className={`font-medium ${
+                          item.status === 'completed' ? 'text-green-600' : 
+                          item.status === 'pending' ? 'text-amber-600' : 'text-blue-600'
+                        }`}>
+                          {item.status === 'completed' ? '已完成' : 
+                           item.status === 'pending' ? '等待处理' : '处理中'}
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        请求类型: {item.requestType}
+                      </p>
+                    </div>
+                    <div className="flex space-x-2">
+                      <Button size="sm" variant="outline">查看详情</Button>
+                      {item.status === 'completed' && (
+                        <Button size="sm" variant="default">下载数据</Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    default:
+      return <div>未知模块</div>;
+  }
+};
+
 const Workspace = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -182,19 +337,7 @@ const Workspace = () => {
         
         {/* Main content area */}
         <div className="flex-1 md:ml-64 pt-14 h-full overflow-auto transition-all duration-300" id="main-content">
-          {activeModule === 'inference' ? (
-            <WorkspaceInferenceContent 
-              onStartPrediction={handleStartPrediction}
-              isLoading={isLoading}
-              progress={progress}
-              stage={stage}
-              historyItems={historyItems}
-            />
-          ) : (
-            <WorkspaceDataRequestContent
-              navigateToHome={navigateToHome}
-            />
-          )}
+          {renderModuleContent(activeModule, handleStartPrediction, isLoading, progress, stage, navigateToHome)}
         </div>
       </div>
     </ConsoleLayout>
