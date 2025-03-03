@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
+import { z } from 'zod'; // Added missing import
 import { zodResolver } from '@hookform/resolvers/zod';
 import DataRequestPreview from '@/components/data-request/DataRequestPreview';
 import { DataRequestPreviewData } from '@/components/prediction-result/types';
