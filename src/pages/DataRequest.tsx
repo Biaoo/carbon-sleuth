@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
@@ -82,6 +81,15 @@ ${mockIndustryBenchmarks.map(bench => `• ${bench.name}: ${bench.value} ${bench
     const reportsSection = `
 以下是我们整理的相关行业报告，您可能会感兴趣：
 ${mockReportLinks.map(link => `• ${link.name}: ${window.location.origin}${link.url}`).join('\n')}`;
+
+    // Add new section about the platform's prediction data
+    const platformPredictionSection = `
+【关于平台预测数据说明】
+请注意，我们平台提供的碳足迹预测数据具有以下特点：
+• 预测结果主要基于公开披露的行业数据及AI推理技术
+• 预测数据存在一定程度的不确定性（通常在±15%范围内）
+• 预测结果可能无法完全反映实际生产情况或特定工艺差异
+• 获取您的实际数据将帮助我们提高预测准确性，并为您提供更有针对性的减碳建议`;
     
     const content = `尊敬的${values.supplierName || "供应商"}团队：
 
@@ -95,6 +103,8 @@ ${mockReportLinks.map(link => `• ${link.name}: ${window.location.origin}${link
 ${selectedItems.map(item => `• ${item}`).join('\n')}
 
 ${competitorsSection}
+
+${platformPredictionSection}
 
 ${reportsSection}
 
