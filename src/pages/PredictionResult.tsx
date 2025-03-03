@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
@@ -31,21 +30,18 @@ import {
   Link
 } from 'lucide-react';
 
-// Import new components
 import ProgressItem from '@/components/prediction-result/ProgressItem';
 import ComparisonChart from '@/components/prediction-result/ComparisonChart';
 import PhaseAnalysisChart from '@/components/prediction-result/PhaseAnalysisChart';
-import ProductInfoCard from '@/components/prediction-result/ProductInfoCard';
 import CompetitorsList from '@/components/prediction-result/CompetitorsList';
 import LcaModelCard from '@/components/prediction-result/LcaModelCard';
 import CarbonFootprintResultCard from '@/components/prediction-result/CarbonFootprintResultCard';
-import UnifiedReferenceSidebar from '@/components/prediction-result/UnifiedReferenceSidebar';
 import TechnicalBasisCard from '@/components/prediction-result/TechnicalBasisCard';
 import ImprovementSuggestionCard from '@/components/prediction-result/ImprovementSuggestionCard';
 import SimilarProductCard from '@/components/prediction-result/SimilarProductCard';
 import { PredictionResultData } from '@/components/prediction-result/types';
+import ProductInfoSection from '@/components/prediction-result/ProductInfoSection';
 
-// 模拟数据
 const mockResultData: PredictionResultData = {
   id: 'pred-123456',
   productName: '太阳能电池板 Model-SE300',
@@ -53,7 +49,7 @@ const mockResultData: PredictionResultData = {
   date: '2023-11-20',
   carbonValue: 42.8,
   unit: 'kg CO₂e/件',
-  confidenceLevel: 'high', // high, medium, low
+  confidenceLevel: 'high',
   industryAvg: 65.2,
   reductionPotential: 22.4,
   dataQuality: 85,
@@ -134,7 +130,6 @@ const mockResultData: PredictionResultData = {
       differencePercentage: -18
     }
   ],
-  // 新增：推理过程数据
   inferenceData: {
     productBasicInfo: {
       title: "产品基础信息",
@@ -213,7 +208,7 @@ Model-SE300太阳能电池板主要由以下几部分组成：
 - **选择性发射极**: 优化电池正面金属化区域掺杂，降低接触电阻
 
 ### 组件封装技术
-- **全自动层压**: 采用精确控温的全自动层压工艺，确保无气泡
+- **全自动层压**: 采用精确控��的全自动层压工艺，确保无气泡
 - **智能EL检测**: 100%EL检测，排除微裂纹和隐裂隐患
 - **自动化串焊**: 高精度串焊技术，焊带对准精度<±0.2mm
 
@@ -277,7 +272,6 @@ Model-SE300太阳能电池板主要由以下几部分组成：
       confidenceLevel: "高"
     }
   },
-  // 新增：可解释性信息
   explanatoryInfo: {
     references: {
       title: "参考来源",
@@ -319,7 +313,6 @@ Model-SE300太阳能电池板主要由以下几部分组成：
       ]
     }
   },
-  // 行业对比分析
   comparativeAnalysis: {
     industryBenchmark: {
       title: "行业基准对比",
@@ -347,7 +340,6 @@ Model-SE300太阳能电池板主要由以下几部分组成：
         "供应链本地化程度高，减少运输碳排放"
       ]
     },
-    // 合并行业和竞品数据用于图表展示
     chartData: [
       { name: "本产品", value: 42.8, error: 6.4, highlight: true, fill: "#ef4444" },
       { name: "竞品A", value: 47.5, error: 7.1, fill: "#64748b" },
@@ -366,10 +358,8 @@ const PredictionResult: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  // 使用ID获取数据，这里使用模拟数据
   const resultData = mockResultData;
   
-  // 复制结果链接
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     toast({
@@ -419,185 +409,133 @@ const PredictionResult: React.FC = () => {
           </div>
         </div>
         
-        {/* 主内容区域和统一参考侧边栏的布局 */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* 主内容区域 */}
-          <div className="lg:col-span-9">
-            {/* 总体碳足迹结果 */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              <Card className="col-span-1 lg:col-span-2">
-                <CardHeader>
-                  <CardTitle className="flex items-center text-xl">
-                    <BarChart2 className="h-5 w-5 mr-2 text-muted-foreground" />
-                    碳足迹预测结果
-                  </CardTitle>
-                  <CardDescription>产品碳足迹值与行业对比分析</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center mb-2">
-                    <span className="text-4xl font-bold">{resultData.carbonValue}</span>
-                    <span className="ml-2 text-muted-foreground">{resultData.unit}</span>
-                  </div>
-                  
-                  <div className="mt-6">
-                    <p className="mb-2 font-medium text-sm">行业对比分析</p>
-                    <div className="h-72">
-                      <ComparisonChart data={resultData.comparativeAnalysis.chartData} />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* 主要成分分析 */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-xl">主要组成分析</CardTitle>
-                  <CardDescription>碳足迹主要来源组成</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-5">
-                    {resultData.components.map((component, index) => (
-                      <ProgressItem 
-                        key={index} 
-                        name={component.name} 
-                        value={component.value} 
-                        percentage={component.percentage} 
-                        unit={component.unit} 
-                      />
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            
-            {/* 碳足迹生命周期阶段分析 */}
-            <Card className="mb-8">
+        <div className="lg:col-span-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <Card className="col-span-1 lg:col-span-2">
               <CardHeader>
-                <CardTitle className="text-xl">生命周期阶段分析</CardTitle>
-                <CardDescription>产品全生命周期各阶段碳足迹分布</CardDescription>
+                <CardTitle className="flex items-center text-xl">
+                  <BarChart2 className="h-5 w-5 mr-2 text-muted-foreground" />
+                  碳足迹预测结果
+                </CardTitle>
+                <CardDescription>产品碳足迹值与行业对比分析</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-5">
-                    {resultData.phases.map((phase, index) => (
-                      <ProgressItem 
-                        key={index} 
-                        name={phase.name} 
-                        value={phase.value} 
-                        percentage={phase.percentage} 
-                        unit={phase.unit} 
-                      />
-                    ))}
-                  </div>
-                  
-                  <div className="h-60 md:h-auto">
-                    <PhaseAnalysisChart data={resultData.phases} />
+                <div className="flex items-center mb-2">
+                  <span className="text-4xl font-bold">{resultData.carbonValue}</span>
+                  <span className="ml-2 text-muted-foreground">{resultData.unit}</span>
+                </div>
+                
+                <div className="mt-6">
+                  <p className="mb-2 font-medium text-sm">行业对比分析</p>
+                  <div className="h-72">
+                    <ComparisonChart data={resultData.comparativeAnalysis.chartData} />
                   </div>
                 </div>
               </CardContent>
             </Card>
             
-            {/* 产品信息卡片列表 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {/* 产品基础信息 */}
-              <ProductInfoCard 
-                title={resultData.inferenceData.productBasicInfo.title}
-                icon={resultData.inferenceData.productBasicInfo.icon}
-                markdownContent={resultData.inferenceData.productBasicInfo.markdownContent}
-                citations={resultData.inferenceData.productBasicInfo.citations}
-              />
-              
-              {/* 产品组成信息 */}
-              <ProductInfoCard 
-                title={resultData.inferenceData.productComposition.title}
-                icon={resultData.inferenceData.productComposition.icon}
-                markdownContent={resultData.inferenceData.productComposition.markdownContent}
-                citations={resultData.inferenceData.productComposition.citations}
-              />
-              
-              {/* 生产技术信息 */}
-              <ProductInfoCard 
-                title={resultData.inferenceData.productionTechnology.title}
-                icon={resultData.inferenceData.productionTechnology.icon}
-                markdownContent={resultData.inferenceData.productionTechnology.markdownContent}
-                citations={resultData.inferenceData.productionTechnology.citations}
-              />
-              
-              {/* 相关竞品供应商 */}
-              <CompetitorsList 
-                title={resultData.inferenceData.competitorsInfo.title}
-                icon={resultData.inferenceData.competitorsInfo.icon}
-                competitors={resultData.inferenceData.competitorsInfo.data}
-              />
-            </div>
-            
-            {/* LCA模型和碳足迹预测结果 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {/* LCA模型 */}
-              <LcaModelCard 
-                title={resultData.inferenceData.lcaModel.title}
-                description={resultData.inferenceData.lcaModel.description}
-                parameters={resultData.inferenceData.lcaModel.parameters}
-                flowchart={resultData.inferenceData.lcaModel.flowchart}
-              />
-              
-              {/* 碳足迹预测结果 */}
-              <CarbonFootprintResultCard 
-                title={resultData.inferenceData.carbonFootprintResult.title}
-                totalValue={resultData.inferenceData.carbonFootprintResult.totalValue}
-                unit={resultData.inferenceData.carbonFootprintResult.unit}
-                uncertaintyRange={resultData.inferenceData.carbonFootprintResult.uncertaintyRange}
-                breakdown={resultData.inferenceData.carbonFootprintResult.breakdown}
-              />
-            </div>
-            
-            {/* 改进建议 */}
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle className="text-xl">减排优化建议</CardTitle>
-                <CardDescription>基于产品特性和行业最佳实践的碳减排建议</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {resultData.improvementSuggestions.map((suggestion, index) => (
-                    <ImprovementSuggestionCard key={index} suggestion={suggestion} />
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-            
-            {/* 相似产品对比 */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-xl">相似产品对比</CardTitle>
-                <CardDescription>与市场上同类产品的碳足迹对比</CardDescription>
+                <CardTitle className="text-xl">主要组成分析</CardTitle>
+                <CardDescription>碳足迹主要来源组成</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {resultData.similarProducts.map((product, index) => (
-                    <SimilarProductCard key={index} product={product} />
+                <div className="space-y-5">
+                  {resultData.components.map((component, index) => (
+                    <ProgressItem 
+                      key={index} 
+                      name={component.name} 
+                      value={component.value} 
+                      percentage={component.percentage} 
+                      unit={component.unit} 
+                    />
                   ))}
                 </div>
               </CardContent>
             </Card>
           </div>
           
-          {/* 统一的参考资料侧边栏 */}
-          <div className="lg:col-span-3">
-            <div className="space-y-6 lg:sticky lg:top-6">
-              {/* 参考来源 */}
-              <UnifiedReferenceSidebar 
-                references={resultData.explanatoryInfo.references.sources}
-                title={resultData.explanatoryInfo.references.title}
-              />
-              
-              {/* 技术依据 */}
-              <TechnicalBasisCard 
-                title={resultData.explanatoryInfo.technicalBasis.title}
-                methods={resultData.explanatoryInfo.technicalBasis.methods}
-              />
-            </div>
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="text-xl">生命周期阶段分析</CardTitle>
+              <CardDescription>产品全生命周期各阶段碳足迹分布</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-5">
+                  {resultData.phases.map((phase, index) => (
+                    <ProgressItem 
+                      key={index} 
+                      name={phase.name} 
+                      value={phase.value} 
+                      percentage={phase.percentage} 
+                      unit={phase.unit} 
+                    />
+                  ))}
+                </div>
+                
+                <div className="h-60 md:h-auto">
+                  <PhaseAnalysisChart data={resultData.phases} />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <ProductInfoSection 
+            inferenceData={resultData.inferenceData}
+            references={resultData.explanatoryInfo.references.sources}
+            referencesTitle={resultData.explanatoryInfo.references.title}
+          />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <LcaModelCard 
+              title={resultData.inferenceData.lcaModel.title}
+              description={resultData.inferenceData.lcaModel.description}
+              parameters={resultData.inferenceData.lcaModel.parameters}
+              flowchart={resultData.inferenceData.lcaModel.flowchart}
+            />
+            
+            <CarbonFootprintResultCard 
+              title={resultData.inferenceData.carbonFootprintResult.title}
+              totalValue={resultData.inferenceData.carbonFootprintResult.totalValue}
+              unit={resultData.inferenceData.carbonFootprintResult.unit}
+              uncertaintyRange={resultData.inferenceData.carbonFootprintResult.uncertaintyRange}
+              breakdown={resultData.inferenceData.carbonFootprintResult.breakdown}
+            />
           </div>
+          
+          <TechnicalBasisCard 
+            title={resultData.explanatoryInfo.technicalBasis.title}
+            methods={resultData.explanatoryInfo.technicalBasis.methods}
+          />
+          
+          <Card className="mb-8 mt-8">
+            <CardHeader>
+              <CardTitle className="text-xl">减排优化建议</CardTitle>
+              <CardDescription>基于产品特性和行业最佳实践的碳减排建议</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {resultData.improvementSuggestions.map((suggestion, index) => (
+                  <ImprovementSuggestionCard key={index} suggestion={suggestion} />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl">相似产品对比</CardTitle>
+              <CardDescription>与市场上同类产品的碳足迹对比</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {resultData.similarProducts.map((product, index) => (
+                  <SimilarProductCard key={index} product={product} />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </Layout>

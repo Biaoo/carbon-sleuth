@@ -8,21 +8,17 @@ import {
   CardTitle 
 } from '@/components/ui/card';
 import MarkdownContent from './MarkdownContent';
-import ReferenceSidebar from './ReferenceSidebar';
-import { Reference } from './types';
 
 interface ProductInfoCardProps {
   title: string;
   icon: LucideIcon;
   markdownContent: string;
-  citations: Reference[];
 }
 
 export const ProductInfoCard: React.FC<ProductInfoCardProps> = ({
   title,
   icon: Icon,
   markdownContent,
-  citations
 }) => {
   return (
     <Card>
@@ -35,14 +31,7 @@ export const ProductInfoCard: React.FC<ProductInfoCardProps> = ({
         </div>
       </CardHeader>
       <CardContent className="pt-2">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          <div className="lg:col-span-8">
-            <MarkdownContent content={markdownContent} />
-          </div>
-          <div className="lg:col-span-4">
-            <ReferenceSidebar references={citations} />
-          </div>
-        </div>
+        <MarkdownContent content={markdownContent} />
       </CardContent>
     </Card>
   );
