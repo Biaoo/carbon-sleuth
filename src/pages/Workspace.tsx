@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 import { BarChart2, FileText, Activity } from 'lucide-react';
 import InferenceForm from '@/components/inference/InferenceForm';
 import ProgressTracker from '@/components/inference/ProgressTracker';
