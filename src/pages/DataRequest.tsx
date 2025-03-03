@@ -62,42 +62,52 @@ const DataRequest: React.FC = () => {
       : ["未选择数据项"];
     
     // Generate email subject and content based on form values with fallbacks
-    const subject = `数据请求：${values.productName || "未指定产品"} - ${values.supplierName || "未指定供应商"}`;
+    const subject = `关于${values.productName || "产品"}碳足迹数据收集 - ${values.supplierName || "供应商"}`;
     const urgencyText = values.urgency ? {
       low: "低优先级",
-      medium: "普通优先级",
+      medium: "常规优先级",
       high: "高优先级"
-    }[values.urgency] : "普通优先级";
+    }[values.urgency] : "常规优先级";
     
     // Include industry benchmarking data in the email content
     const competitorsSection = `
-市场对比数据：
-${mockCompetitorsData.map(comp => `- ${comp.name}: ${comp.carbonValue} ${comp.unit} (${comp.difference})`).join('\n')}
+我们最近对市场上类似产品进行了碳足迹评估分析，现分享部分结果供您参考：
 
-行业基准数据：
-${mockIndustryBenchmarks.map(bench => `- ${bench.name}: ${bench.value} ${bench.unit}`).join('\n')}`;
+【市场对比数据】
+${mockCompetitorsData.map(comp => `• ${comp.name}: ${comp.carbonValue} ${comp.unit} (${comp.difference})`).join('\n')}
+
+【行业基准数据】
+${mockIndustryBenchmarks.map(bench => `• ${bench.name}: ${bench.value} ${bench.unit}`).join('\n')}`;
 
     const reportsSection = `
-相关报告链接：
-${mockReportLinks.map(link => `- ${link.name}: ${window.location.origin}${link.url}`).join('\n')}`;
+以下是我们整理的相关行业报告，您可能会感兴趣：
+${mockReportLinks.map(link => `• ${link.name}: ${window.location.origin}${link.url}`).join('\n')}`;
     
-    const content = `尊敬的${values.supplierName || "供应商"}：
+    const content = `尊敬的${values.supplierName || "供应商"}团队：
 
-我们正在进行产品碳足迹评估分析，需要贵公司提供${values.productName || "相关产品"}的数据信息。
+您好！
 
-请求数据项：
-${selectedItems.map(item => `- ${item}`).join('\n')}
+我们是${values.contactName ? values.contactName + "，" : ""}${values.contactName ? "来自" : ""}碳知源环保科技有限公司的采购团队。我们最近一直在关注贵公司的${values.productName || "相关产品"}，对其性能和环保特性非常感兴趣。
 
-${values.deadline ? `请在${format(values.deadline, 'yyyy年MM月dd日')}前提供上述信息。` : '请尽快提供上述信息。'}
-此请求${urgencyText}。
+作为一家重视可持续发展的企业，我们正在对所有供应链产品进行碳足迹评估，以期打造更加环保的产品线。在浏览贵公司产品资料的过程中，我们注意到${values.productName || "您的产品"}在行业内具有竞争力，因此希望能获取更详细的产品碳足迹数据，以便我们做出更全面的评估。
+
+具体来说，我们希望获取以下信息：
+${selectedItems.map(item => `• ${item}`).join('\n')}
 
 ${competitorsSection}
 
 ${reportsSection}
 
-${values.additionalInfo ? `附加说明：\n${values.additionalInfo}` : ''}
+如果贵公司能够提供这些数据，将极大地帮助我们评估${values.productName || "该产品"}在我们供应链中的环保表现，并为后续可能的合作奠定基础。${values.deadline ? `由于项目进度安排，希望能在${format(values.deadline, 'yyyy年MM月dd日')}前收到相关信息。` : '希望能尽快收到您的回复。'}此请求为${urgencyText}。
 
-感谢您的配合！`;
+${values.additionalInfo ? `补充说明：\n${values.additionalInfo}\n\n` : ''}感谢您的关注与支持！期待与贵公司进一步合作。
+
+祝商祺！
+
+${values.contactName || "采购团队"}
+${values.contactEmail ? values.contactEmail : ""}
+${values.contactPhone ? values.contactPhone : ""}
+碳知源环保科技有限公司`;
     
     setPreviewData({
       supplier: values.supplierName || "未指定供应商",
