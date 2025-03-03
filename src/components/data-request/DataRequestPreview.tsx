@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { FileText, FileDown, BarChart2, Link as LinkIcon, CalendarIcon, User, Mail, Phone } from 'lucide-react';
+import { FileText, FileDown, BarChart2, Link as LinkIcon, CalendarIcon, User, Mail, Phone, Activity } from 'lucide-react';
 import { DataRequestPreviewData } from '@/components/prediction-result/types';
 import ComparisonChartPreview from './ComparisonChartPreview';
 
@@ -92,6 +92,48 @@ const DataRequestPreview: React.FC<DataRequestPreviewProps> = ({
               </Card>
             </div>
           </div>
+          
+          {/* 当前产品预测结果 */}
+          {data.currentProductPrediction && (
+            <div>
+              <h3 className="text-sm font-medium text-muted-foreground mb-2">当前产品预测结果</h3>
+              <Card>
+                <CardContent className="p-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="flex flex-col">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium">预计碳足迹值</span>
+                        <div className="flex items-center">
+                          <Activity className="h-4 w-4 mr-1 text-blue-500" />
+                          <span className="font-medium text-blue-500">
+                            {data.currentProductPrediction.carbonValue} {data.currentProductPrediction.unit}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">置信水平</span>
+                        <span>{data.currentProductPrediction.confidenceLevel}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">不确定性范围</span>
+                        <span>{data.currentProductPrediction.uncertaintyRange}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium mb-2">主要贡献因素</p>
+                      <div className="space-y-1">
+                        {data.currentProductPrediction.mainContributors.map((contributor, i) => (
+                          <div key={i} className="text-sm py-1 px-2 bg-muted/40 rounded-sm">
+                            {contributor}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
           
           {/* 请求数据项 */}
           <div>

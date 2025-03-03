@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
@@ -33,6 +34,19 @@ const DataRequest: React.FC = () => {
   const { toast } = useToast();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewData, setPreviewData] = useState<DataRequestPreviewData | null>(null);
+  
+  // Mock data for current product prediction result
+  const mockCurrentProductPrediction = {
+    carbonValue: 42.8,
+    unit: "kg CO₂e",
+    confidenceLevel: "中等",
+    uncertaintyRange: "±15%",
+    mainContributors: [
+      "原材料生产 (58%)",
+      "制造工艺 (27%)",
+      "运输 (12%)"
+    ]
+  };
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -82,7 +96,7 @@ ${mockIndustryBenchmarks.map(bench => `• ${bench.name}: ${bench.value} ${bench
 以下是我们整理的相关行业报告，您可能会感兴趣：
 ${mockReportLinks.map(link => `• ${link.name}: ${window.location.origin}${link.url}`).join('\n')}`;
 
-    // Add new section about the platform's prediction data
+    // Add section about the platform's prediction data
     const platformPredictionSection = `
 【关于平台预测数据说明】
 请注意，我们平台提供的碳足迹预测数据具有以下特点：
@@ -90,6 +104,17 @@ ${mockReportLinks.map(link => `• ${link.name}: ${window.location.origin}${link
 • 预测数据存在一定程度的不确定性（通常在±15%范围内）
 • 预测结果可能无法完全反映实际生产情况或特定工艺差异
 • 获取您的实际数据将帮助我们提高预测准确性，并为您提供更有针对性的减碳建议`;
+
+    // Add new section about current product prediction
+    const currentProductPredictionSection = `
+【当前产品预测结果】
+根据我们平台对${values.productName || "该产品"}的初步碳足迹预测：
+• 预计碳足迹值：${mockCurrentProductPrediction.carbonValue} ${mockCurrentProductPrediction.unit}
+• 置信水平：${mockCurrentProductPrediction.confidenceLevel}
+• 不确定性范围：${mockCurrentProductPrediction.uncertaintyRange}
+• 主要贡献因素：${mockCurrentProductPrediction.mainContributors.join('、')}
+
+以上预测结果可能与实际情况存在差异，我们希望通过获取更准确的数据来优化此预测结果。`;
     
     const content = `尊敬的${values.supplierName || "供应商"}团队：
 
@@ -98,6 +123,8 @@ ${mockReportLinks.map(link => `• ${link.name}: ${window.location.origin}${link
 我们是${values.contactName ? values.contactName + "，" : ""}${values.contactName ? "来自" : ""}碳知源环保科技有限公司的采购团队。我们最近一直在关注贵公司的${values.productName || "相关产品"}，对其性能和环保特性非常感兴趣。
 
 作为一家重视可持续发展的企业，我们正在对所有供应链产品进行碳足迹评估，以期打造更加环保的产品线。在浏览贵公司产品资料的过程中，我们注意到${values.productName || "您的产品"}在行业内具有竞争力，因此希望能获取更详细的产品碳足迹数据，以便我们做出更全面的评估。
+
+${currentProductPredictionSection}
 
 具体来说，我们希望获取以下信息：
 ${selectedItems.map(item => `• ${item}`).join('\n')}
@@ -134,6 +161,8 @@ ${values.contactPhone ? values.contactPhone : ""}
       deadline: values.deadline ? format(values.deadline, 'yyyy年MM月dd日') : "尽快",
       subject,
       content,
+      // Add current product prediction data to preview
+      currentProductPrediction: mockCurrentProductPrediction
     });
     
     setPreviewOpen(true);

@@ -220,4 +220,13 @@ export interface DataRequestPreviewData {
   deadline: string;
   subject: string;
   content: string;
+  // Add current product prediction data
+  currentProductPrediction?: {
+    carbonValue: number;
+    unit: string;
+    confidenceLevel: string;
+    uncertaintyRange: string;
+    mainContributors: string[];
+  };
 }
+
