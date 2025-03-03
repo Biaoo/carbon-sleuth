@@ -1,10 +1,12 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Layout from '@/components/layout/Layout';
+import DashboardLayout from '@/components/layout/DashboardLayout';
 import InferenceForm from '@/components/inference/InferenceForm';
 import ProgressTracker from '@/components/inference/ProgressTracker';
 import HistoryList, { HistoryItem } from '@/components/inference/HistoryList';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { BarChart2, History, Activity } from 'lucide-react';
 
 // Mock historical predictions
 const historyItems: HistoryItem[] = [
@@ -42,6 +44,7 @@ const Inference = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [stage, setStage] = useState('');
+  const [activeTab, setActiveTab] = useState('new-prediction');
   
   const handleStartPrediction = (productName: string, supplierName: string) => {
     // Start prediction process
@@ -93,17 +96,30 @@ const Inference = () => {
   };
   
   return (
-    <Layout>
-      <section className="py-16 bg-secondary/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold mb-4">LCA模型推理</h1>
-              <p className="text-foreground/70">
-                输入产品和供应商信息，使用AI技术生成产品碳足迹预测分析。
-              </p>
-            </div>
-            
+    <DashboardLayout 
+      title="LCA模型推理工作台" 
+      description="基于AI技术的产品碳足迹评估分析与预测"
+    >
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <div className="border-b px-6 py-2">
+          <TabsList>
+            <TabsTrigger value="new-prediction" className="flex items-center gap-2">
+              <BarChart2 className="h-4 w-4" />
+              新建预测
+            </TabsTrigger>
+            <TabsTrigger value="history" className="flex items-center gap-2">
+              <History className="h-4 w-4" />
+              历史记录
+            </TabsTrigger>
+            <TabsTrigger value="active" className="flex items-center gap-2">
+              <Activity className="h-4 w-4" />
+              进行中
+            </TabsTrigger>
+          </TabsList>
+        </div>
+        
+        <div className="p-6">
+          <TabsContent value="new-prediction" className="m-0">
             <InferenceForm 
               onStartPrediction={handleStartPrediction}
               isLoading={isLoading}
@@ -114,12 +130,20 @@ const Inference = () => {
               progress={progress}
               stage={stage}
             />
-            
+          </TabsContent>
+          
+          <TabsContent value="history" className="m-0">
             <HistoryList historyItems={historyItems} />
-          </div>
+          </TabsContent>
+          
+          <TabsContent value="active" className="m-0">
+            <div className="py-12 text-center">
+              <p className="text-muted-foreground">当前没有进行中的预测任务</p>
+            </div>
+          </TabsContent>
         </div>
-      </section>
-    </Layout>
+      </Tabs>
+    </DashboardLayout>
   );
 };
 

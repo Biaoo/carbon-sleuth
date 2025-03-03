@@ -1,6 +1,6 @@
 
 import { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
 import Search from "@/pages/Search";
@@ -27,6 +27,7 @@ export default function App() {
         <Route path="/prediction-result/:id" element={<PredictionResult />} />
         <Route path="/data-request" element={<DataRequest />} />
         <Route path="/recommendation" element={<Recommendation />} />
+        <Route path="/dashboard" element={<Navigate to="/inference" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />

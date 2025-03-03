@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Layout from '@/components/layout/Layout';
+import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
@@ -210,25 +209,11 @@ ${values.contactPhone ? values.contactPhone : ""}
   };
   
   return (
-    <Layout>
-      <div className="container mx-auto px-4 py-8">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center text-muted-foreground mb-6 hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4 mr-1" />
-          返回
-        </button>
-        
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">数据请求</h1>
-          <p className="text-muted-foreground mt-2">
-            向供应商发起数据请求，获取产品碳足迹评估所需的详细信息
-          </p>
-        </div>
-        
-        <Separator className="my-6" />
-        
+    <DashboardLayout
+      title="数据请求工作台"
+      description="快速创建并发送产品碳足迹数据收集请求"
+    >
+      <div className="p-6">
         <div className="max-w-3xl mx-auto">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -267,7 +252,7 @@ ${values.contactPhone ? values.contactPhone : ""}
           onConfirm={handleConfirmSubmit}
         />
       )}
-    </Layout>
+    </DashboardLayout>
   );
 };
 
