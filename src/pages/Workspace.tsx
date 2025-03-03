@@ -130,7 +130,7 @@ const Workspace = () => {
     <ConsoleLayout>
       <div className="flex h-screen bg-secondary/10">
         {/* App branding header - only visible on desktop */}
-        <div className="hidden md:flex items-center h-14 px-6 bg-background border-b border-border w-64 fixed top-0 left-0">
+        <div className="hidden md:flex items-center h-14 px-6 bg-background border-b border-border w-full fixed top-0 left-0 z-10">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-br from-data-blue to-eco-green rounded-lg flex items-center justify-center">
               <Leaf className="h-5 w-5 text-white" />
@@ -158,7 +158,7 @@ const Workspace = () => {
         </div>
         
         {/* Desktop sidebar */}
-        <div className="hidden md:block fixed left-0 top-14 bottom-0 w-64">
+        <div className="hidden md:block fixed left-0 top-14 bottom-0">
           <WorkspaceSidebar 
             activeModule={activeModule}
             onChangeModule={handleChangeModule}
@@ -181,7 +181,7 @@ const Workspace = () => {
         )}
         
         {/* Main content area */}
-        <div className="flex-1 md:ml-64 pt-14 h-full overflow-auto">
+        <div className="flex-1 md:ml-64 pt-14 h-full overflow-auto transition-all duration-300" id="main-content">
           {activeModule === 'inference' ? (
             <WorkspaceInferenceContent 
               onStartPrediction={handleStartPrediction}
