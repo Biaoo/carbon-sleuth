@@ -9,7 +9,8 @@ import {
   ChevronRight,
   PlusCircle,
   History,
-  Folder
+  Folder,
+  Clock
 } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
@@ -152,6 +153,15 @@ const WorkspaceSidebar: React.FC<WorkspaceSidebarProps> = ({
               >
                 <Folder className="h-3.5 w-3.5 mr-2" />
                 数据集合
+              </Button>
+              
+              <Button
+                variant="ghost"
+                className="w-full justify-start text-sm h-9"
+                onClick={() => console.log('View request history')}
+              >
+                <Clock className="h-3.5 w-3.5 mr-2" />
+                历史请求
               </Button>
             </CollapsibleContent>
           </Collapsible>
