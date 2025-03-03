@@ -3,12 +3,19 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 import { 
   BarChart2, 
   Save, 
   RotateCcw,
-  Sparkles
+  Sparkles,
+  ArrowRight,
+  Box,
+  Factory,
+  Leaf,
+  Info
 } from 'lucide-react';
+import { Form, FormField, FormItem, FormControl, FormDescription } from '@/components/ui/form';
 
 interface InferenceFormProps {
   onStartPrediction: (productName: string, supplierName: string) => void;
@@ -17,7 +24,9 @@ interface InferenceFormProps {
 
 const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => {
   const [productName, setProductName] = useState('');
+  const [productCategory, setProductCategory] = useState('');
   const [supplierName, setSupplierName] = useState('');
+  const [productDescription, setProductDescription] = useState('');
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,38 +59,91 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
       </h2>
       
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 gap-6 mb-8">
-          <div className="group">
-            <label className="block text-sm font-medium mb-2">
-              产品名称 <span className="text-destructive">*</span>
-            </label>
-            <div className="relative transition-all duration-300 focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-md rounded-lg">
-              <Input
-                type="text"
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-                placeholder="输入产品名称（如：有机棉T恤、太阳能充电宝等）"
-                className="h-12 border-secondary/80 bg-white/80 backdrop-blur-sm focus:border-primary/40 transition-all pl-4"
-                disabled={isLoading}
-                required
-              />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Left Column */}
+          <div className="space-y-6">
+            <div className="group">
+              <Label className="flex items-center text-sm font-medium mb-2">
+                <Box className="h-4 w-4 mr-2 text-primary/70" />
+                产品信息
+                <span className="text-destructive ml-1">*</span>
+              </Label>
+              
+              <div className="relative transition-all duration-300 focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-md rounded-lg mb-4">
+                <Input
+                  type="text"
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
+                  placeholder="产品名称（如：有机棉T恤）"
+                  className="h-12 border-secondary/80 bg-white/80 backdrop-blur-sm focus:border-primary/40 transition-all pl-4"
+                  disabled={isLoading}
+                  required
+                />
+              </div>
+
+              <div className="relative transition-all duration-300 focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-md rounded-lg">
+                <Input
+                  type="text"
+                  value={productCategory}
+                  onChange={(e) => setProductCategory(e.target.value)}
+                  placeholder="产品类别（如：纺织品、电子产品）"
+                  className="h-12 border-secondary/80 bg-white/80 backdrop-blur-sm focus:border-primary/40 transition-all pl-4"
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
+
+            <div className="group">
+              <Label className="flex items-center text-sm font-medium mb-2">
+                <Factory className="h-4 w-4 mr-2 text-primary/70" />
+                供应商信息
+                <span className="text-destructive ml-1">*</span>
+              </Label>
+              
+              <div className="relative transition-all duration-300 focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-md rounded-lg">
+                <Input
+                  type="text"
+                  value={supplierName}
+                  onChange={(e) => setSupplierName(e.target.value)}
+                  placeholder="供应商名称（如：绿能科技有限公司）"
+                  className="h-12 border-secondary/80 bg-white/80 backdrop-blur-sm focus:border-primary/40 transition-all pl-4"
+                  disabled={isLoading}
+                  required
+                />
+              </div>
             </div>
           </div>
-          
-          <div className="group">
-            <label className="block text-sm font-medium mb-2">
-              供应商名称 <span className="text-destructive">*</span>
-            </label>
-            <div className="relative transition-all duration-300 focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-md rounded-lg">
-              <Input
-                type="text"
-                value={supplierName}
-                onChange={(e) => setSupplierName(e.target.value)}
-                placeholder="输入供应商名称（如：绿能科技有限公司、可持续时装集团等）"
-                className="h-12 border-secondary/80 bg-white/80 backdrop-blur-sm focus:border-primary/40 transition-all pl-4"
-                disabled={isLoading}
-                required
-              />
+
+          {/* Right Column */}
+          <div className="space-y-6">
+            <div className="group">
+              <Label className="flex items-center text-sm font-medium mb-2">
+                <Info className="h-4 w-4 mr-2 text-primary/70" />
+                产品描述（可选）
+              </Label>
+              
+              <div className="relative transition-all duration-300 focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-md rounded-lg">
+                <textarea
+                  value={productDescription}
+                  onChange={(e) => setProductDescription(e.target.value)}
+                  placeholder="简要描述产品特性、材料、制造工艺等信息，将有助于提高预测准确性"
+                  className="h-[164px] w-full rounded-md border border-secondary/80 bg-white/80 backdrop-blur-sm focus:border-primary/40 transition-all p-4 text-base resize-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:text-sm"
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Environmental tips */}
+        <div className="bg-accent/5 rounded-lg p-4 mb-8 border border-accent/20">
+          <div className="flex items-start">
+            <Leaf className="h-5 w-5 text-accent mr-3 mt-0.5 flex-shrink-0" />
+            <div>
+              <h4 className="text-sm font-medium mb-1">环保小贴士</h4>
+              <p className="text-sm text-muted-foreground">
+                提供详细的产品信息可以帮助我们更准确地预测碳足迹。如有产品技术文档，可在预测后上传以提高准确性。
+              </p>
             </div>
           </div>
         </div>
@@ -113,6 +175,7 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
               >
                 <BarChart2 className="h-4 w-4 mr-2" />
                 开始预测
+                <ArrowRight className="h-4 w-4 ml-1" />
               </Button>
             </>
           )}
