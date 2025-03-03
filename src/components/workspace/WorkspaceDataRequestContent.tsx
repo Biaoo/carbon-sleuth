@@ -28,6 +28,7 @@ const WorkspaceDataRequestContent: React.FC<WorkspaceDataRequestContentProps> = 
       requestItems: [],
       urgency: "medium" as "low" | "medium" | "high",
       additionalInfo: "",
+      deadline: undefined
     },
   });
   
