@@ -2,7 +2,7 @@
 import React from 'react';
 import Layout from '@/components/layout/Layout';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { BarChart2, FileText, Home, Settings } from 'lucide-react';
+import { BarChart2, FileText, Home } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 interface DashboardLayoutProps {
@@ -22,8 +22,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   // Determine active tab based on current path
   const getActiveTab = () => {
     const path = location.pathname;
-    if (path.includes('/inference')) return 'inference';
-    if (path.includes('/data-request')) return 'data-request';
+    if (path.includes('/workspace')) return 'workspace';
     return 'home';
   };
 
@@ -43,7 +42,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               
               {/* Navigation Tabs */}
               <Tabs value={getActiveTab()} className="w-full md:w-auto">
-                <TabsList className="grid grid-cols-3 w-full md:w-auto">
+                <TabsList className="grid grid-cols-2 w-full md:w-auto">
                   <TabsTrigger 
                     value="home" 
                     onClick={() => navigate('/')}
@@ -53,20 +52,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     <span className="hidden sm:inline">主页</span>
                   </TabsTrigger>
                   <TabsTrigger 
-                    value="inference" 
-                    onClick={() => navigate('/inference')}
+                    value="workspace" 
+                    onClick={() => navigate('/workspace')}
                     className="flex items-center gap-2"
                   >
                     <BarChart2 className="h-4 w-4" />
-                    <span className="hidden sm:inline">碳足迹预测</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="data-request" 
-                    onClick={() => navigate('/data-request')}
-                    className="flex items-center gap-2"
-                  >
-                    <FileText className="h-4 w-4" />
-                    <span className="hidden sm:inline">数据请求</span>
+                    <span className="hidden sm:inline">工作台</span>
                   </TabsTrigger>
                 </TabsList>
               </Tabs>

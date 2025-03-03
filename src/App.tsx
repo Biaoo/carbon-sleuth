@@ -4,8 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { Toaster } from "@/components/ui/toaster";
 import Index from "@/pages/Index";
 import Search from "@/pages/Search";
-import Inference from "@/pages/Inference";
-import DataRequest from "@/pages/DataRequest";
+import Workspace from "@/pages/Workspace";
 import Recommendation from "@/pages/Recommendation";
 import PredictionResult from "@/pages/PredictionResult";
 import NotFound from "@/pages/NotFound";
@@ -22,12 +21,13 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/inference" element={<Inference />} />
+        <Route path="/workspace" element={<Workspace />} />
         <Route path="/prediction-result" element={<PredictionResult />} />
         <Route path="/prediction-result/:id" element={<PredictionResult />} />
-        <Route path="/data-request" element={<DataRequest />} />
         <Route path="/recommendation" element={<Recommendation />} />
-        <Route path="/dashboard" element={<Navigate to="/inference" replace />} />
+        <Route path="/dashboard" element={<Navigate to="/workspace" replace />} />
+        <Route path="/inference" element={<Navigate to="/workspace" replace />} />
+        <Route path="/data-request" element={<Navigate to="/workspace?tab=data-request" replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />
