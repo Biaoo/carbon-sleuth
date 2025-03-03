@@ -97,9 +97,9 @@ const methodMap = {
   dingtalk: { label: '钉钉', icon: Send },
 };
 
-const DataRequest = () => {
+const DataRequest: React.FC = () => {
   const [activeTab, setActiveTab] = useState('create');
-  const [selectedRequest, setSelectedRequest] = useState(null);
+  const [selectedRequest, setSelectedRequest] = useState<any>(null);
   const [selectedTemplate, setSelectedTemplate] = useState('template1');
   const { toast } = useToast();
 
@@ -113,7 +113,7 @@ const DataRequest = () => {
   };
 
   // 处理选择请求
-  const handleSelectRequest = (request) => {
+  const handleSelectRequest = (request: any) => {
     setSelectedRequest(request);
   };
 
@@ -379,7 +379,7 @@ const DataRequest = () => {
                             <h3 className="text-sm font-medium text-muted-foreground mb-1">联系方式</h3>
                             <div className="flex items-center">
                               {methodMap[selectedRequest.method].icon && (
-                                <methodMap[selectedRequest.method].icon className="h-4 w-4 mr-2" />
+                                React.createElement(methodMap[selectedRequest.method].icon, { className: "h-4 w-4 mr-2" })
                               )}
                               <p>{selectedRequest.contact}</p>
                             </div>

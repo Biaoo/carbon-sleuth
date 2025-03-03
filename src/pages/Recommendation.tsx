@@ -228,7 +228,7 @@ const mockPractices = [
 ];
 
 // 供应商卡片组件
-const SupplierCard = ({ supplier }) => {
+const SupplierCard = ({ supplier }: { supplier: any }) => {
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="pb-2">
@@ -260,7 +260,7 @@ const SupplierCard = ({ supplier }) => {
           <div className="mt-2">
             <p className="text-xs text-muted-foreground mb-1">低碳亮点</p>
             <div className="flex flex-wrap gap-1">
-              {supplier.highlights.map((highlight, index) => (
+              {supplier.highlights.map((highlight: string, index: number) => (
                 <Badge key={index} variant="secondary" className="font-normal">
                   {highlight}
                 </Badge>
@@ -289,7 +289,7 @@ const SupplierCard = ({ supplier }) => {
 };
 
 // 产品卡片组件
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product }: { product: any }) => {
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="pb-2">
@@ -325,7 +325,7 @@ const ProductCard = ({ product }) => {
           <div className="mt-2">
             <p className="text-xs text-muted-foreground mb-1">减碳亮点</p>
             <div className="space-y-1">
-              {product.highlights.map((highlight, index) => (
+              {product.highlights.map((highlight: string, index: number) => (
                 <div key={index} className="flex items-start">
                   <CheckCircle className="h-3.5 w-3.5 text-green-600 mr-1.5 mt-0.5" />
                   <p className="text-xs">{highlight}</p>
@@ -350,7 +350,7 @@ const ProductCard = ({ product }) => {
 };
 
 // 最佳实践卡片组件
-const PracticeCard = ({ practice }) => {
+const PracticeCard = ({ practice }: { practice: any }) => {
   return (
     <Card className="overflow-hidden h-full flex flex-col">
       <div className="h-40 bg-gray-100 relative">
@@ -373,7 +373,7 @@ const PracticeCard = ({ practice }) => {
         <div className="space-y-2">
           <p className="text-xs font-medium">实施成果</p>
           <div className="space-y-1">
-            {practice.results.map((result, index) => (
+            {practice.results.map((result: string, index: number) => (
               <div key={index} className="flex items-start">
                 <CheckCircle className="h-3.5 w-3.5 text-green-600 mr-1.5 mt-0.5" />
                 <p className="text-xs">{result}</p>
@@ -385,7 +385,7 @@ const PracticeCard = ({ practice }) => {
       <CardFooter className="pt-2 border-t">
         <div className="w-full flex justify-between items-center">
           <div className="flex flex-wrap gap-1">
-            {practice.industries.slice(0, 2).map((industry, index) => (
+            {practice.industries.slice(0, 2).map((industry: string, index: number) => (
               <Badge key={index} variant="secondary" className="text-xs font-normal">
                 {industry}
               </Badge>
@@ -405,7 +405,7 @@ const PracticeCard = ({ practice }) => {
   );
 };
 
-const Recommendation = () => {
+const Recommendation: React.FC = () => {
   const [activeTab, setActiveTab] = useState('suppliers');
   
   return (
@@ -530,9 +530,9 @@ const Recommendation = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">全部</SelectItem>
-                    <SelectItem value="high">显著降碳 (>40%)</SelectItem>
+                    <SelectItem value="high">显著降碳 ({'>'}40%)</SelectItem>
                     <SelectItem value="medium">中等降碳 (20-40%)</SelectItem>
-                    <SelectItem value="low">轻微降碳 (<20%)</SelectItem>
+                    <SelectItem value="low">轻微降碳 ({'<'}20%)</SelectItem>
                   </SelectContent>
                 </Select>
                 
@@ -583,9 +583,9 @@ const Recommendation = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">全部</SelectItem>
-                    <SelectItem value="short">短期 (<1年)</SelectItem>
+                    <SelectItem value="short">短期 ({'<'}1年)</SelectItem>
                     <SelectItem value="medium">中期 (1-3年)</SelectItem>
-                    <SelectItem value="long">长期 (>3年)</SelectItem>
+                    <SelectItem value="long">长期 ({'>'}3年)</SelectItem>
                   </SelectContent>
                 </Select>
                 
