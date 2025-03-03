@@ -2,7 +2,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { formSchema } from '@/components/data-request/SupplierProductSection';
+import { formSchema, FormData } from '@/components/data-request/SupplierProductSection';
 
 // Import refactored components
 import DataRequestForm from '@/components/workspace/dataRequest/DataRequestForm';
@@ -17,7 +17,7 @@ const WorkspaceDataRequestContent: React.FC<WorkspaceDataRequestContentProps> = 
   navigateToHome
 }) => {
   // Set up the form with validation
-  const form = useForm({
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       supplierName: "",
@@ -26,7 +26,7 @@ const WorkspaceDataRequestContent: React.FC<WorkspaceDataRequestContentProps> = 
       contactEmail: "",
       contactPhone: "",
       requestItems: [],
-      urgency: "medium" as "low" | "medium" | "high",
+      urgency: "medium" as const,
       additionalInfo: "",
       deadline: undefined
     },

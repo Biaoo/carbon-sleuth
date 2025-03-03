@@ -1,10 +1,8 @@
-
 import React from 'react';
-import { z } from 'zod';
 import { UseFormReturn } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
-import { formSchema } from '@/components/data-request/SupplierProductSection';
+import { FormData } from '@/components/data-request/SupplierProductSection';
 
 // Import refactored sections for data request
 import SupplierProductSection from '@/components/data-request/SupplierProductSection';
@@ -13,7 +11,7 @@ import RequestDetailsSection from '@/components/data-request/RequestDetailsSecti
 import AdditionalInfoSection from '@/components/data-request/AdditionalInfoSection';
 
 interface DataRequestFormProps {
-  form: UseFormReturn<z.infer<typeof formSchema>>;
+  form: UseFormReturn<FormData>;
   onSubmit: () => void;
   onPreview: () => void;
 }

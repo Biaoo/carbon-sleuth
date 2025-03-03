@@ -1,11 +1,9 @@
-
 import { useState } from 'react';
-import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { DataRequestPreviewData } from '@/components/prediction-result/types';
 import { UseFormReturn } from 'react-hook-form';
-import { formSchema } from '@/components/data-request/SupplierProductSection';
+import { FormData } from '@/components/data-request/SupplierProductSection';
 import { 
   mockCompetitorsData,
   mockIndustryBenchmarks,
@@ -27,11 +25,11 @@ const mockCurrentProductPrediction = {
 };
 
 interface UseDataRequestPreviewHandlerProps {
-  form: UseFormReturn<z.infer<typeof formSchema>>;
+  form: UseFormReturn<FormData>;
   navigateToHome: () => void;
 }
 
-// Changed to a custom hook with "use" prefix
+// Hook with updated types
 export const useDataRequestPreviewHandler = ({
   form,
   navigateToHome

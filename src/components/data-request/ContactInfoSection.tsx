@@ -1,12 +1,8 @@
-
 import React from 'react';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { UseFormReturn } from 'react-hook-form';
-import { z } from 'zod';
-import { formSchema } from './SupplierProductSection';
-
-type FormData = z.infer<typeof formSchema>;
+import { FormData } from './SupplierProductSection';
 
 interface ContactInfoSectionProps {
   form: UseFormReturn<FormData>;

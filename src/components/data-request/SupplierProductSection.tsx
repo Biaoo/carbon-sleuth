@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
-// Import form schema from the parent component
+// Updated schema with consistent types
 export const formSchema = z.object({
   supplierName: z.string().min(2, { message: "供应商名称至少2个字符" }),
   productName: z.string().min(2, { message: "产品名称至少2个字符" }),
@@ -13,12 +13,13 @@ export const formSchema = z.object({
   contactEmail: z.string().email({ message: "请输入有效的邮箱地址" }),
   contactPhone: z.string().optional(),
   requestItems: z.array(z.string()).min(1, { message: "至少选择一项请求数据" }),
-  deadline: z.date({ required_error: "请选择截止日期" }),
+  deadline: z.date().optional(),
   urgency: z.enum(["low", "medium", "high"]),
   additionalInfo: z.string().optional(),
 });
 
-type FormData = z.infer<typeof formSchema>;
+// Create type definition from the schema for reuse
+export type FormData = z.infer<typeof formSchema>;
 
 interface SupplierProductSectionProps {
   form: UseFormReturn<FormData>;

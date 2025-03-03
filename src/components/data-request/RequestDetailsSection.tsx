@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   FormField, 
@@ -28,8 +27,7 @@ import { format } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { UseFormReturn } from 'react-hook-form';
-import { z } from 'zod';
-import { formSchema } from './SupplierProductSection';
+import { FormData } from './SupplierProductSection';
 
 // Data items that can be requested
 const dataItems = [
@@ -44,8 +42,6 @@ const dataItems = [
   { id: "suppliers_info", label: "上游供应商信息" },
   { id: "waste_data", label: "废弃物处理数据" },
 ];
-
-type FormData = z.infer<typeof formSchema>;
 
 interface RequestDetailsSectionProps {
   form: UseFormReturn<FormData>;
