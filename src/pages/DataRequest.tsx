@@ -1,13 +1,11 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import DataRequestPreview from '@/components/data-request/DataRequestPreview';
 import { DataRequestPreviewData } from '@/components/prediction-result/types';
