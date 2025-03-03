@@ -1,9 +1,8 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { z } from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
-import DataRequestPreview from '@/components/data-request/DataRequestPreview';
 import { DataRequestPreviewData } from '@/components/prediction-result/types';
 import { UseFormReturn } from 'react-hook-form';
 import { formSchema } from '@/components/data-request/SupplierProductSection';
@@ -27,15 +26,16 @@ const mockCurrentProductPrediction = {
   ]
 };
 
-interface DataRequestPreviewHandlerProps {
+interface UseDataRequestPreviewHandlerProps {
   form: UseFormReturn<z.infer<typeof formSchema>>;
   navigateToHome: () => void;
 }
 
-const DataRequestPreviewHandler: React.FC<DataRequestPreviewHandlerProps> = ({
+// Changed to a custom hook with "use" prefix
+export const useDataRequestPreviewHandler = ({
   form,
   navigateToHome
-}) => {
+}: UseDataRequestPreviewHandlerProps) => {
   const { toast } = useToast();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewData, setPreviewData] = useState<DataRequestPreviewData | null>(null);
@@ -69,7 +69,7 @@ const DataRequestPreviewHandler: React.FC<DataRequestPreviewHandlerProps> = ({
       low: "低优先级",
       medium: "常规优先级",
       high: "高优先级"
-    }[values.urgency] : "常规优先级";
+    }[values.urgency as 'low' | 'medium' | 'high'] : "常规优先级";
     
     // Include industry benchmarking data in the email content
     const competitorsSection = `
@@ -189,5 +189,3 @@ ${values.contactPhone ? values.contactPhone : ""}
     handleConfirmSubmit
   };
 };
-
-export default DataRequestPreviewHandler;

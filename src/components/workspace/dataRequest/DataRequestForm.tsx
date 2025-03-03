@@ -14,7 +14,7 @@ import AdditionalInfoSection from '@/components/data-request/AdditionalInfoSecti
 
 interface DataRequestFormProps {
   form: UseFormReturn<z.infer<typeof formSchema>>;
-  onSubmit: (values: z.infer<typeof formSchema>) => void;
+  onSubmit: () => void;
   onPreview: () => void;
 }
 

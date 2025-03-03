@@ -6,7 +6,7 @@ import { formSchema } from '@/components/data-request/SupplierProductSection';
 
 // Import refactored components
 import DataRequestForm from '@/components/workspace/dataRequest/DataRequestForm';
-import DataRequestPreviewHandler from '@/components/workspace/dataRequest/DataRequestPreviewHandler';
+import { useDataRequestPreviewHandler } from '@/components/workspace/dataRequest/DataRequestPreviewHandler';
 import DataRequestPreview from '@/components/data-request/DataRequestPreview';
 
 interface WorkspaceDataRequestContentProps {
@@ -26,7 +26,7 @@ const WorkspaceDataRequestContent: React.FC<WorkspaceDataRequestContentProps> = 
       contactEmail: "",
       contactPhone: "",
       requestItems: [],
-      urgency: "medium",
+      urgency: "medium" as "low" | "medium" | "high",
       additionalInfo: "",
     },
   });
@@ -38,7 +38,7 @@ const WorkspaceDataRequestContent: React.FC<WorkspaceDataRequestContentProps> = 
     previewData,
     handlePreview,
     handleConfirmSubmit
-  } = DataRequestPreviewHandler({ form, navigateToHome });
+  } = useDataRequestPreviewHandler({ form, navigateToHome });
   
   // Handle form submission - only for valid form
   const onSubmit = () => {
