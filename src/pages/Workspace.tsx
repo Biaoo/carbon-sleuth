@@ -1,9 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import DashboardLayout from '@/components/layout/DashboardLayout';
+import ConsoleLayout from '@/components/layout/ConsoleLayout';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Leaf } from 'lucide-react';
 
 // Import workspace components
 import WorkspaceSidebar from '@/components/workspace/WorkspaceSidebar';
@@ -127,31 +127,38 @@ const Workspace = () => {
   };
   
   return (
-    <DashboardLayout
-      title="碳足迹工作台"
-      description="集成LCA模型推理与数据请求功能的一体化工作台"
-    >
-      <div className="flex h-[calc(100vh-12rem)]">
-        {/* Mobile sidebar toggle */}
-        <div className="md:hidden p-4 border-b border-border">
+    <ConsoleLayout>
+      <div className="flex h-screen bg-secondary/10">
+        {/* App branding header - only visible on desktop */}
+        <div className="hidden md:flex items-center h-14 px-6 bg-background border-b border-border w-64 fixed top-0 left-0">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-data-blue to-eco-green rounded-lg flex items-center justify-center">
+              <Leaf className="h-5 w-5 text-white" />
+            </div>
+            <span className="font-display text-lg font-semibold">CarbonSleuth</span>
+          </div>
+        </div>
+        
+        {/* Mobile toolbar */}
+        <div className="md:hidden flex items-center justify-between h-14 px-4 bg-background border-b border-border w-full fixed top-0 z-10">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-data-blue to-eco-green rounded-lg flex items-center justify-center">
+              <Leaf className="h-5 w-5 text-white" />
+            </div>
+            <span className="font-display text-lg font-semibold">CarbonSleuth</span>
+          </div>
           <Button 
-            variant="outline" 
+            variant="ghost" 
             size="sm" 
-            className="w-full flex items-center justify-between"
             onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="md:hidden"
           >
-            <span className="flex items-center">
-              <Menu className="h-4 w-4 mr-2" />
-              {activeModule === 'inference' ? '碳足迹预测' : '数据请求'}
-            </span>
-            <span className="text-xs text-muted-foreground">
-              切换模块
-            </span>
+            {sidebarOpen ? "关闭" : "菜单"}
           </Button>
         </div>
         
         {/* Desktop sidebar */}
-        <div className="hidden md:block">
+        <div className="hidden md:block fixed left-0 top-14 bottom-0 w-64">
           <WorkspaceSidebar 
             activeModule={activeModule}
             onChangeModule={handleChangeModule}
@@ -174,7 +181,7 @@ const Workspace = () => {
         )}
         
         {/* Main content area */}
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 md:ml-64 pt-14 h-full overflow-auto">
           {activeModule === 'inference' ? (
             <WorkspaceInferenceContent 
               onStartPrediction={handleStartPrediction}
@@ -190,7 +197,7 @@ const Workspace = () => {
           )}
         </div>
       </div>
-    </DashboardLayout>
+    </ConsoleLayout>
   );
 };
 
