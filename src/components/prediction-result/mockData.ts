@@ -288,9 +288,7 @@ Model-SE300太阳能电池板主要由以下几部分组成：
       title: "行业基准对比",
       description: "与光伏产品行业基准相比，本产品碳足迹表现优异",
       data: [
-        { category: "行业领先水平", value: 35.0, unit: "kg CO₂e/件", difference: -7.8, error: 3.5 },
-        { category: "行业平均水平", value: 65.2, unit: "kg CO₂e/件", difference: 22.4, error: 6.5 },
-        { category: "行业基准线", value: 80.0, unit: "kg CO₂e/件", difference: 37.2, error: 8.0 }
+        { category: "行业基准线", value: 65.2, unit: "kg CO₂e/件", difference: 22.4, error: 6.5 }
       ]
     },
     competitorsComparison: {
@@ -311,14 +309,12 @@ Model-SE300太阳能电池板主要由以下几部分组成：
       ]
     },
     chartData: [
-      { name: "本产品", value: 42.8, error: 6.4, highlight: true, fill: "#ef4444", itemType: 'current' },
+      { name: "本产品", value: 42.8, error: 6.4, highlight: true, fill: "#ea384c", itemType: 'current' },
       { name: "竞品A", value: 47.5, error: 7.1, itemType: 'competitor' },
       { name: "竞品B", value: 51.2, error: 7.7, itemType: 'competitor' },
       { name: "竞品C", value: 49.8, error: 7.5, itemType: 'competitor' },
       { name: "竞品D", value: 39.5, error: 5.9, itemType: 'competitor' },
-      { name: "行业领先", value: 35.0, error: 3.5, itemType: 'industry' },
-      { name: "行业平均", value: 65.2, error: 6.5, itemType: 'industry' },
-      { name: "行业基准", value: 80.0, error: 8.0, itemType: 'industry' }
+      { name: "行业基准", value: 65.2, error: 6.5, itemType: 'industry' }
     ]
   }
 };

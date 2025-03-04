@@ -13,7 +13,7 @@ import {
   Cell,
   ReferenceLine,
 } from 'recharts';
-import { Info, TrendingUp, TrendingDown } from 'lucide-react';
+import { Info } from 'lucide-react';
 
 interface ChartDataItem {
   name: string;
@@ -55,12 +55,12 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
       if (itemType === 'current' || item.highlight) {
         fill = "#ea384c"; // Current product: red
       } else if (itemType === 'industry') {
-        fill = "#1EAEDB"; // Industry benchmarks: distinct blue color
+        fill = "#94a3b8"; // Industry benchmarks: neutral slate color
       } else if (itemType === 'competitor') {
         if (item.value > currentProductValue) {
           fill = "#F1F0FB"; // Higher carbon footprint competitors: light gray
         } else if (item.value < currentProductValue) {
-          fill = "#F2FCE2"; // Lower carbon footprint competitors: light green
+          fill = "#22c55e"; // Lower carbon footprint competitors: more obvious green
         }
       } else {
         fill = "#8E9196"; // Other cases: neutral gray
@@ -163,12 +163,6 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
                     >
                       {payload.value}
                     </text>
-                    {isHighest && (
-                      <TrendingUp x={x + 25} y={y} className="h-4 w-4 text-gray-600" />
-                    )}
-                    {isLowest && (
-                      <TrendingDown x={x + 25} y={y} className="h-4 w-4 text-green-600" />
-                    )}
                   </g>
                 );
               }}
@@ -180,13 +174,13 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
             {industryBenchmark && (
               <ReferenceLine 
                 y={industryBenchmark.value} 
-                stroke="#A5C8E1" 
+                stroke="#94a3b8" 
                 strokeDasharray="3 3" 
                 strokeWidth={1.5}
                 label={{ 
                   value: `行业基准: ${industryBenchmark.value} ${yAxisLabel}`, 
                   position: 'insideBottomRight',
-                  fill: '#1EAEDB',
+                  fill: '#94a3b8',
                   fontSize: 10
                 }}
               />
@@ -195,7 +189,7 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
             {lowestCompetitor && (
               <ReferenceLine 
                 y={lowestCompetitor.value} 
-                stroke="#78D3A8" 
+                stroke="#22c55e" 
                 strokeDasharray="3 3" 
                 strokeWidth={1.5}
                 label={{ 
@@ -215,7 +209,7 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
                 <Cell 
                   key={`cell-${index}`} 
                   fill={entry.fill} 
-                  stroke={entry.highlight ? "#ea384c" : entry.itemType === 'industry' ? "#1EAEDB" : entry.value < currentProductValue ? "#22c55e" : "#8E9196"}
+                  stroke={entry.highlight ? "#ea384c" : entry.itemType === 'industry' ? "#94a3b8" : entry.value < currentProductValue ? "#22c55e" : "#8E9196"}
                   strokeWidth={entry.highlight ? 2 : 1}
                   cursor={entry.id && !entry.highlight ? "pointer" : "default"}
                 />
