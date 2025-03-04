@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -37,27 +36,20 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
 }) => {
   const navigate = useNavigate();
   
-  // Find the current product (highlighted one)
   const currentProduct = data.find(d => d.highlight);
   const currentProductValue = currentProduct?.value || 0;
   
-  // Process data with enhanced visual indicators and colors
   const processedData = data.map(item => {
-    // Define colors based on the requirements
     let fill;
     
     if (item.highlight) {
-      // Current product: red
       fill = "#ea384c"; 
     } else if (item.value > currentProductValue) {
-      // Higher carbon footprint than current product: light gray
       fill = "#F1F0FB"; 
     } else if (item.value < currentProductValue) {
-      // Lower carbon footprint than current product: green
       fill = "#F2FCE2"; 
     } else {
-      // Industry average/benchmark: neutral gray
-      fill = "#8E9196"; 
+      fill = "#CBD5E1"; 
     }
     
     return {
@@ -66,7 +58,6 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
     };
   });
 
-  // Handle bar click to navigate to the corresponding prediction result
   const handleBarClick = (data: any) => {
     const originalData = processedData[data.index];
     if (originalData && originalData.id && !originalData.highlight) {
@@ -74,7 +65,6 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
     }
   };
 
-  // Custom tooltip to show if item is clickable
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const originalData = processedData.find(item => item.name === label);
@@ -178,19 +168,9 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
           <Info className="h-4 w-4 mr-1" />
           误差棒表示碳足迹计算的不确定度范围
         </div>
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center">
-            <div className="w-3 h-3 mr-1 bg-[#ea384c]" style={{borderRadius: '50%'}}></div>
-            <span>当前产品</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-3 h-3 mr-1 bg-[#F2FCE2]" style={{borderRadius: '50%'}}></div>
-            <span>低碳产品</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-3 h-3 mr-1 bg-[#F1F0FB]" style={{borderRadius: '50%'}}></div>
-            <span>高碳产品</span>
-          </div>
+        <div className="flex items-center">
+          <div className="w-3 h-3 mr-1 bg-[#ea384c]" style={{borderRadius: '50%'}}></div>
+          <span>当前产品</span>
         </div>
       </div>
     </div>
