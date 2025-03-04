@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   BarChart,
@@ -8,10 +8,10 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
   ErrorBar,
   Cell,
+  ReferenceLine,
 } from 'recharts';
 import { Info, TrendingUp, TrendingDown } from 'lucide-react';
 
@@ -22,6 +22,7 @@ interface ChartDataItem {
   fill?: string;
   highlight?: boolean;
   id?: string;
+  itemType?: 'current' | 'competitor' | 'industry' | 'other';
 }
 
 interface ComparisonChartProps {
@@ -40,29 +41,59 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
   const currentProduct = data.find(d => d.highlight);
   const currentProductValue = currentProduct?.value || 0;
   
-  const processedData = data.map(item => {
-    let fill;
-    
-    // Check if the name contains "行业" to apply a distinct color for industry benchmarks
-    const isIndustryBenchmark = item.name.includes('行业');
-    
-    if (item.highlight) {
-      fill = "#ea384c"; // Current product: red
-    } else if (isIndustryBenchmark) {
-      fill = "#1EAEDB"; // Industry benchmarks: distinct blue color
-    } else if (item.value > currentProductValue) {
-      fill = "#F1F0FB"; // Higher carbon footprint than current product: light gray
-    } else if (item.value < currentProductValue) {
-      fill = "#F2FCE2"; // Lower carbon footprint than current product: green
-    } else {
-      fill = "#8E9196"; // Other cases: neutral gray
-    }
-    
-    return {
-      ...item,
-      fill: item.fill || fill
-    };
-  });
+  const processedData = useMemo(() => {
+    return data.map(item => {
+      let fill;
+      
+      // Determine color based on itemType or fallback to previous logic
+      const itemType = item.itemType || (
+        item.highlight ? 'current' : 
+        item.name.includes('行业') ? 'industry' : 
+        'competitor'
+      );
+      
+      if (itemType === 'current' || item.highlight) {
+        fill = "#ea384c"; // Current product: red
+      } else if (itemType === 'industry') {
+        fill = "#1EAEDB"; // Industry benchmarks: distinct blue color
+      } else if (itemType === 'competitor') {
+        if (item.value > currentProductValue) {
+          fill = "#F1F0FB"; // Higher carbon footprint competitors: light gray
+        } else if (item.value < currentProductValue) {
+          fill = "#F2FCE2"; // Lower carbon footprint competitors: light green
+        }
+      } else {
+        fill = "#8E9196"; // Other cases: neutral gray
+      }
+      
+      return {
+        ...item,
+        itemType: itemType || (item.highlight ? 'current' : item.name.includes('行业') ? 'industry' : 'competitor'),
+        fill: item.fill || fill
+      };
+    });
+  }, [data, currentProductValue]);
+
+  // Find industry benchmark and lowest competitor values for reference lines
+  const industryBenchmark = useMemo(() => {
+    const industryItems = processedData.filter(item => 
+      item.itemType === 'industry' || item.name.includes('行业')
+    );
+    return industryItems.length > 0 ? 
+      industryItems.reduce((min, item) => item.value < min.value ? item : min, industryItems[0]) : 
+      null;
+  }, [processedData]);
+  
+  const lowestCompetitor = useMemo(() => {
+    const competitorItems = processedData.filter(item => 
+      item.itemType === 'competitor' && 
+      !item.highlight && 
+      !item.name.includes('行业')
+    );
+    return competitorItems.length > 0 ? 
+      competitorItems.reduce((min, item) => item.value < min.value ? item : min, competitorItems[0]) : 
+      null;
+  }, [processedData]);
 
   const handleBarClick = (data: any) => {
     const originalData = processedData[data.index];
@@ -144,6 +175,38 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
             />
             <YAxis label={{ value: yAxisLabel, angle: -90, position: 'insideLeft', offset: -15 }} />
             <Tooltip content={<CustomTooltip />} />
+            
+            {/* Reference lines for industry benchmark and lowest competitor */}
+            {industryBenchmark && (
+              <ReferenceLine 
+                y={industryBenchmark.value} 
+                stroke="#A5C8E1" 
+                strokeDasharray="3 3" 
+                strokeWidth={1.5}
+                label={{ 
+                  value: `行业基准: ${industryBenchmark.value} ${yAxisLabel}`, 
+                  position: 'insideBottomRight',
+                  fill: '#1EAEDB',
+                  fontSize: 10
+                }}
+              />
+            )}
+            
+            {lowestCompetitor && (
+              <ReferenceLine 
+                y={lowestCompetitor.value} 
+                stroke="#78D3A8" 
+                strokeDasharray="3 3" 
+                strokeWidth={1.5}
+                label={{ 
+                  value: `最低竞品: ${lowestCompetitor.value} ${yAxisLabel}`, 
+                  position: 'insideTopRight',
+                  fill: '#22c55e',
+                  fontSize: 10
+                }}
+              />
+            )}
+            
             <Bar
               dataKey="value"
               name="碳足迹值"
@@ -152,7 +215,7 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
                 <Cell 
                   key={`cell-${index}`} 
                   fill={entry.fill} 
-                  stroke={entry.highlight ? "#ea384c" : entry.value < currentProductValue ? "#22c55e" : "#8E9196"}
+                  stroke={entry.highlight ? "#ea384c" : entry.itemType === 'industry' ? "#1EAEDB" : entry.value < currentProductValue ? "#22c55e" : "#8E9196"}
                   strokeWidth={entry.highlight ? 2 : 1}
                   cursor={entry.id && !entry.highlight ? "pointer" : "default"}
                 />

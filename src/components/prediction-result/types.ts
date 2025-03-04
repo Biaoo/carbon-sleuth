@@ -16,6 +16,8 @@ export interface ChartDataItem {
   error?: number;
   fill?: string;
   highlight?: boolean;
+  id?: string;
+  itemType?: 'current' | 'competitor' | 'industry' | 'other';
 }
 
 export interface PhaseData {
