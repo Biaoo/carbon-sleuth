@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
@@ -27,7 +26,7 @@ import {
   Users,
   Library,
   Info,
-  Link,
+  Link as LinkIcon,
   AlertCircle
 } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -43,6 +42,7 @@ import ImprovementSuggestionCard from '@/components/prediction-result/Improvemen
 import SimilarProductCard from '@/components/prediction-result/SimilarProductCard';
 import { PredictionResultData } from '@/components/prediction-result/types';
 import ProductInfoSection from '@/components/prediction-result/ProductInfoSection';
+import RequestDataButton from '@/components/prediction-result/RequestDataButton';
 
 const mockResultData: PredictionResultData = {
   id: 'pred-123456',
@@ -210,7 +210,7 @@ Model-SE300太阳能电池板主要由以下几部分组成：
 - **选择性发射极**: 优化电池正面金属化区域掺杂，降低接触电阻
 
 ### 组件封装技术
-- **全自动层压**: 采用精确控��的全自动层压工艺，确保无气泡
+- **全自动层压**: 采用精确控制的全自动层压工艺，确保无气泡
 - **智能EL检测**: 100%EL检测，排除微裂纹和隐裂隐患
 - **自动化串焊**: 高精度串焊技术，焊带对准精度<±0.2mm
 
@@ -396,7 +396,7 @@ const PredictionResult: React.FC = () => {
                     </button>
                   </PopoverTrigger>
                   <PopoverContent className="w-80 text-sm">
-                    <p>本结果由企业已披露信息及相关统计数据推理得到，仅为预测结果，不能完全反映供应商实际生产水平。对于碳核算、认证场景，应使用企业实际数据，实际数据缺失时，将采用已有行业均值数据作为缺省值。</p>
+                    <p>本结果由企业已披露信息及相关统计数据推理得到，仅为预测结果，不能完全反映供应商实际生产水平。对于碳核算、认证场景，应使用企业实际数据，实际数据缺失时，将采用企业实际数据，实际数据缺失时，将采用已有行业均值数据作为缺省值。</p>
                   </PopoverContent>
                 </Popover>
               </div>
@@ -421,6 +421,17 @@ const PredictionResult: React.FC = () => {
           </div>
         </div>
         
+        {/* Add the prominent data request call-to-action */}
+        <div className="bg-amber-50 border border-amber-100 rounded-lg p-6 mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex-1">
+            <h3 className="text-lg font-medium text-amber-900 mb-2">预测数据存在不确定性？</h3>
+            <p className="text-amber-800">
+              本页面显示的数据仅为预测结果，可能与实际情况存在差异。向供应商请求实际数据，获取更精准的碳足迹分析与减排建议。
+            </p>
+          </div>
+          <RequestDataButton supplierName={resultData.supplierName} productName={resultData.productName} />
+        </div>
+
         <div className="lg:col-span-12">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
             <Card className="col-span-1 lg:col-span-2">
@@ -520,34 +531,49 @@ const PredictionResult: React.FC = () => {
             title={resultData.explanatoryInfo.technicalBasis.title}
             methods={resultData.explanatoryInfo.technicalBasis.methods}
           />
-          
-          <Card className="mb-8 mt-8">
-            <CardHeader>
-              <CardTitle className="text-xl">减排优化建议</CardTitle>
-              <CardDescription>基于产品特性和行业最佳实践的碳减排建议</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {resultData.improvementSuggestions.map((suggestion, index) => (
-                  <ImprovementSuggestionCard key={index} suggestion={suggestion} />
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">相似产品对比</CardTitle>
-              <CardDescription>与市场上同类产品的碳足迹对比</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {resultData.similarProducts.map((product, index) => (
-                  <SimilarProductCard key={index} product={product} />
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+        </div>
+        
+        {/* Add another data request section before improvement suggestions */}
+        <div className="mt-10 mb-8 flex flex-col items-center text-center p-8 border border-dashed border-amber-200 rounded-lg bg-amber-50/50">
+          <Database className="h-10 w-10 text-amber-500 mb-4" />
+          <h3 className="text-xl font-medium mb-2">需要更准确的数据分析？</h3>
+          <p className="text-muted-foreground max-w-2xl mb-6">
+            通过获取供应商的实际生产数据，我们可以为您提供更精确的碳足迹分析和减排方案。向供应商发送数据请求，只需几分钟即可完成。
+          </p>
+          <RequestDataButton supplierName={resultData.supplierName} productName={resultData.productName} />
+        </div>
+        
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="text-xl">减排优化建议</CardTitle>
+            <CardDescription>基于产品特性和行业最佳实践的碳减排建议</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {resultData.improvementSuggestions.map((suggestion, index) => (
+                <ImprovementSuggestionCard key={index} suggestion={suggestion} />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl">相似产品对比</CardTitle>
+            <CardDescription>与市场上同类产品的碳足迹对比</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {resultData.similarProducts.map((product, index) => (
+                <SimilarProductCard key={index} product={product} />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* Add a final call-to-action at the bottom of the page */}
+        <div className="flex justify-center mt-12 mb-8">
+          <RequestDataButton supplierName={resultData.supplierName} productName={resultData.productName} />
         </div>
       </div>
     </Layout>
