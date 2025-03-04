@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
@@ -26,8 +27,10 @@ import {
   Users,
   Library,
   Info,
-  Link
+  Link,
+  AlertCircle
 } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 import ProgressItem from '@/components/prediction-result/ProgressItem';
 import ComparisonChart from '@/components/prediction-result/ComparisonChart';
@@ -386,6 +389,16 @@ const PredictionResult: React.FC = () => {
                 <Badge className="ml-3 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
                   预测结果
                 </Badge>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button className="ml-2 inline-flex items-center justify-center text-amber-600 hover:text-amber-700">
+                      <AlertCircle className="h-4 w-4" />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80 text-sm">
+                    <p>本结果由企业已披露信息及相关统计数据推理得到，仅为预测结果，不能完全反映供应商实际生产水平。对于碳核算、认证场景，应使用企业实际数据，实际数据缺失时，将采用已有行业均值数据作为缺省值。</p>
+                  </PopoverContent>
+                </Popover>
               </div>
               <p className="text-muted-foreground">{resultData.supplierName}</p>
               <p className="text-sm text-muted-foreground mt-1">预测日期：{resultData.date} · ID: {resultData.id}</p>
