@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -42,14 +43,19 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
   const processedData = data.map(item => {
     let fill;
     
+    // Check if the name contains "行业" to apply a distinct color for industry benchmarks
+    const isIndustryBenchmark = item.name.includes('行业');
+    
     if (item.highlight) {
-      fill = "#ea384c"; 
+      fill = "#ea384c"; // Current product: red
+    } else if (isIndustryBenchmark) {
+      fill = "#1EAEDB"; // Industry benchmarks: distinct blue color
     } else if (item.value > currentProductValue) {
-      fill = "#F1F0FB"; 
+      fill = "#F1F0FB"; // Higher carbon footprint than current product: light gray
     } else if (item.value < currentProductValue) {
-      fill = "#F2FCE2"; 
+      fill = "#F2FCE2"; // Lower carbon footprint than current product: green
     } else {
-      fill = "#CBD5E1"; 
+      fill = "#8E9196"; // Other cases: neutral gray
     }
     
     return {
@@ -138,13 +144,6 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
             />
             <YAxis label={{ value: yAxisLabel, angle: -90, position: 'insideLeft', offset: -15 }} />
             <Tooltip content={<CustomTooltip />} />
-            <Legend 
-              verticalAlign="top" 
-              height={36} 
-              formatter={(value, entry) => (
-                <span style={{ color: '#666' }}>{value}</span>
-              )}
-            />
             <Bar
               dataKey="value"
               name="碳足迹值"
@@ -167,10 +166,6 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
         <div className="flex items-center">
           <Info className="h-4 w-4 mr-1" />
           误差棒表示碳足迹计算的不确定度范围
-        </div>
-        <div className="flex items-center">
-          <div className="w-3 h-3 mr-1 bg-[#ea384c]" style={{borderRadius: '50%'}}></div>
-          <span>当前产品</span>
         </div>
       </div>
     </div>
