@@ -1,9 +1,6 @@
 
 import React from 'react';
 import { 
-  Card, 
-  CardContent,
-  CardHeader, 
   CardTitle 
 } from '@/components/ui/card';
 import { BookOpen } from 'lucide-react';
@@ -19,7 +16,7 @@ interface ProductInfoSectionProps {
   referencesTitle?: string;
 }
 
-export const ProductInfoSection: React.FC<ProductInfoSectionProps> = ({
+const ProductInfoSection: React.FC<ProductInfoSectionProps> = ({
   inferenceData,
   references,
   referencesTitle = "参考来源"

@@ -18,6 +18,8 @@ import PredictionResultPhaseAnalysis from './PredictionResultPhaseAnalysis';
 import PredictionResultTechnicalInfo from './PredictionResultTechnicalInfo';
 import PredictionResultOptimizations from './PredictionResultOptimizations';
 import PredictionResultSimilarProducts from './PredictionResultSimilarProducts';
+import ProductInfoSection from './ProductInfoSection';
+import RequestDataButton from './RequestDataButton';
 
 // Import mock data (this should be replaced with API call in production)
 import { mockResultData } from './mockData';
