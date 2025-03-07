@@ -21,7 +21,13 @@ const ProductInfoSection: React.FC<ProductInfoSectionProps> = ({
   references,
   referencesTitle
 }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  
+  // Helper function to get localized text
+  const getLocalizedText = (text: string | BilingualText): string => {
+    if (typeof text === 'string') return text;
+    return language === 'zh' ? text.zh : text.en;
+  };
   
   return (
     <div className="mb-8">

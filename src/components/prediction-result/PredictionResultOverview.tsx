@@ -35,7 +35,7 @@ const PredictionResultOverview: React.FC<PredictionResultOverviewProps> = ({
     error: item.error,
     highlight: item.highlight,
     fill: item.fill,
-    itemType: item.itemType as 'current' | 'competitor' | 'industry' | 'other'
+    itemType: item.itemType
   }));
   
   return (

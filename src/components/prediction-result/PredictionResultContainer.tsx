@@ -19,7 +19,7 @@ import { ArrowLeft } from 'lucide-react';
 
 // Import mock data (this should be replaced with API call in production)
 import { mockResultData } from './mockData';
-import { BilingualText, Reference } from './types';
+import { BilingualText, ReferenceSource } from './types';
 
 const PredictionResultContainer: React.FC = () => {
   const { id } = useParams();
@@ -53,8 +53,8 @@ const PredictionResultContainer: React.FC = () => {
     id: resultData.id
   };
   
-  // Convert references to the expected format
-  const referencesAsExpectedType: Reference[] = resultData.explanatoryInfo.references.sources.map(source => ({
+  // Convert references to the expected format for ReferenceSource[]
+  const referencesAsExpectedType: ReferenceSource[] = resultData.explanatoryInfo.references.sources.map(source => ({
     id: source.id,
     name: source.name,
     type: source.type,

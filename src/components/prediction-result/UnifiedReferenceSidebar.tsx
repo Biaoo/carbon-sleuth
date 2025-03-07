@@ -7,11 +7,11 @@ import {
   CardHeader, 
   CardTitle 
 } from '@/components/ui/card';
-import { Reference, BilingualText, ReferenceSource } from './types';
+import { ReferenceSource, BilingualText } from './types';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface UnifiedReferenceSidebarProps {
-  references: Reference[] | ReferenceSource[];
+  references: ReferenceSource[];
   title?: string | BilingualText;
 }
 
@@ -45,16 +45,16 @@ export const UnifiedReferenceSidebar: React.FC<UnifiedReferenceSidebarProps> = (
               <div className="flex justify-between items-start">
                 <div>
                   <div className="font-medium text-sm">
-                    {getLocalizedText((source as ReferenceSource).name || (source as Reference).text)}
+                    {getLocalizedText(source.name)}
                   </div>
-                  {(source as ReferenceSource).type && (
+                  {source.type && (
                     <div className="text-xs text-muted-foreground mt-1">
-                      {getLocalizedText((source as ReferenceSource).type)}
+                      {getLocalizedText(source.type)}
                     </div>
                   )}
                 </div>
-                {(source as ReferenceSource).url && (
-                  <a href={(source as ReferenceSource).url} className="text-primary hover:text-primary/80">
+                {source.url && (
+                  <a href={source.url} className="text-primary hover:text-primary/80">
                     <Link className="h-4 w-4" />
                   </a>
                 )}

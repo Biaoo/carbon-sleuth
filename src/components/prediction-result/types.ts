@@ -1,3 +1,4 @@
+
 export interface PredictionResultData {
   id: string;
   productName: string | BilingualText;
@@ -30,7 +31,7 @@ export interface InferenceData {
 export interface ProductInfo {
   title: string | BilingualText;
   icon: any;
-  markdownContent: string | { zh: string; en: string };
+  markdownContent: string | BilingualText;
   citations?: Citation[];
 }
 
@@ -158,15 +159,15 @@ export interface ChartData {
 
 export interface Reference {
   id: string;
+  text?: string | BilingualText;
   name?: string | BilingualText;
-  text?: string;
   type?: string | BilingualText;
   url?: string;
 }
 
 export interface Citation {
   id: number;
-  text: string;
+  text: string | BilingualText;
 }
 
 export interface BilingualText {
@@ -204,13 +205,6 @@ export interface LifecyclePhase {
   percentage: number;
   unit: string;
 }
-
-export type PhaseData = {
-  name: string;
-  value: number;
-  percentage: number;
-  unit?: string;
-};
 
 export interface Competitor {
   name: string | BilingualText;
