@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 // Available languages
@@ -69,8 +70,16 @@ export const translations = {
     
     // Footer
     'company_description': '专注于提供产品碳足迹分析和环保供应链优化的先进解决方案。让可持续发展成为每个企业的竞争优势。',
+    'company_address': '上海市浦东新区张江高科技园区',
     'quick_links': '快速链接',
+    'lca_inference': 'LCA模型推理',
+    'data_request': '数据请求',
     'resource_center': '资源中心',
+    'carbon_footprint_wiki': '碳足迹百科',
+    'industry_reports': '行业报告',
+    'best_practices': '最佳实践',
+    'policy_updates': '政策动态',
+    'faq': '常见问题',
     'subscribe': '订阅动态',
     'subscribe_desc': '订阅我们的新闻邮件，及时了解最新的可持续发展趋势和产品更新。',
     'email_placeholder': '您的邮箱地址',
@@ -203,8 +212,16 @@ export const translations = {
     
     // Footer
     'company_description': 'Focused on providing advanced solutions for product carbon footprint analysis and environmentally friendly supply chain optimization. Making sustainable development a competitive advantage for every business.',
+    'company_address': 'Zhangjiang Hi-Tech Park, Pudong New Area, Shanghai',
     'quick_links': 'Quick Links',
+    'lca_inference': 'LCA Model Inference',
+    'data_request': 'Data Request',
     'resource_center': 'Resource Center',
+    'carbon_footprint_wiki': 'Carbon Footprint Wiki',
+    'industry_reports': 'Industry Reports',
+    'best_practices': 'Best Practices',
+    'policy_updates': 'Policy Updates',
+    'faq': 'FAQ',
     'subscribe': 'Subscribe',
     'subscribe_desc': 'Subscribe to our newsletter to stay updated on the latest sustainable development trends and product updates.',
     'email_placeholder': 'Your email address',

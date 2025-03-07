@@ -33,7 +33,7 @@ const Footer = () => {
               </div>
               <div className="flex items-start text-white/70 hover:text-white transition-colors">
                 <MapPin className="h-4 w-4 mr-2 mt-1" />
-                <span className="text-sm">上海市浦东新区张江高科技园区</span>
+                <span className="text-sm">{t('company_address')}</span>
               </div>
             </div>
           </div>
@@ -45,8 +45,8 @@ const Footer = () => {
               {[
                 { name: t('home'), path: '/' },
                 { name: t('product_search'), path: '/search' },
-                { name: 'LCA模型推理', path: '/inference' },
-                { name: '数据请求', path: '/data-request' },
+                { name: t('lca_inference'), path: '/inference' },
+                { name: t('data_request'), path: '/data-request' },
                 { name: t('low_carbon_recommendations'), path: '/recommendation' },
               ].map((link) => (
                 <li key={link.path}>
@@ -67,11 +67,11 @@ const Footer = () => {
             <h4 className="text-lg font-medium mb-4">{t('resource_center')}</h4>
             <ul className="space-y-2">
               {[
-                { name: '碳足迹百科', path: '#' },
-                { name: '行业报告', path: '#' },
-                { name: '最佳实践', path: '#' },
-                { name: '政策动态', path: '#' },
-                { name: '常见问题', path: '#' },
+                { name: t('carbon_footprint_wiki'), path: '#' },
+                { name: t('industry_reports'), path: '#' },
+                { name: t('best_practices'), path: '#' },
+                { name: t('policy_updates'), path: '#' },
+                { name: t('faq'), path: '#' },
               ].map((link, index) => (
                 <li key={index}>
                   <Link 
