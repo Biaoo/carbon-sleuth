@@ -2,7 +2,7 @@
 import { 
   PredictionResultData, BilingualText
 } from '@/components/prediction-result/types';
-import { FileText, Activity, BarChart2 } from 'lucide-react';
+import { FileText, Activity, BarChart2, FlaskConical } from 'lucide-react';
 
 // Helper function to create bilingual text objects
 const bilingual = (zh: string, en: string): BilingualText => ({ zh, en });
@@ -75,6 +75,8 @@ export const mockResultData: PredictionResultData = {
     },
     lcaModel: {
       title: bilingual("生命周期评价模型", "Life Cycle Assessment Model"),
+      icon: FlaskConical,
+      modelName: bilingual("ISO 14040 LCA模型", "ISO 14040 LCA Model"),
       description: bilingual("本模型基于ISO 14040标准，综合考虑了太阳能电池板生产的各个阶段，包括原材料获取、生产制造、运输分销和最终的回收处理。", "This model is based on the ISO 14040 standard and comprehensively considers all stages of solar panel production, including raw material acquisition, manufacturing, transportation, distribution, and final recycling."),
       parameters: [
         { name: bilingual("硅片纯度", "Silicon Wafer Purity"), value: "99.9999%" },
@@ -188,9 +190,7 @@ export const mockResultData: PredictionResultData = {
   ]
 };
 
-// Helper function to create bilingual text objects
-export const bilingual = (zh: string, en: string) => ({ zh, en });
-
+// Export these mock data arrays using the bilingual function already defined above
 export const mockCompetitorsData = [
   { name: bilingual("竞品A - NS-310", "Competitor A - NS-310").zh, carbonValue: 47.5, unit: "kg CO₂e/件", difference: "+11.0%" },
   { name: bilingual("竞品B - HE-305", "Competitor B - HE-305").zh, carbonValue: 51.2, unit: "kg CO₂e/件", difference: "+19.6%" },
