@@ -3,10 +3,12 @@ import React from 'react';
 import { Search, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Hero = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = React.useState('');
+  const { t, language } = useLanguage();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,16 +29,16 @@ const Hero = () => {
       <div className="container mx-auto px-4 pt-24 pb-16 md:pt-36 md:pb-24">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-block px-3 py-1 mb-6 bg-primary/10 text-primary rounded-full text-sm font-medium animate-fade-in">
-            可持续未来的智能选择
+            {t('hero_badge')}
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fade-in [animation-delay:150ms]">
-            <span className="block">智能分析产品碳足迹</span>
-            <span className="block mt-2 text-gradient-blue-green">引领绿色供应链革新</span>
+            <span className="block">{t('hero_title_1')}</span>
+            <span className="block mt-2 text-gradient-blue-green">{t('hero_title_2')}</span>
           </h1>
           
           <p className="text-lg text-foreground/80 mb-8 max-w-2xl mx-auto leading-relaxed animate-fade-in [animation-delay:250ms]">
-            通过AI驱动的精准碳足迹分析，帮助企业优化供应链，实现可持续发展目标，提升市场竞争力。
+            {t('hero_description')}
           </p>
           
           {/* Search bar */}
@@ -49,14 +51,14 @@ const Hero = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="搜索产品或供应商..."
+                placeholder={t('search_placeholder')}
                 className="flex-1 h-full px-4 bg-transparent focus:outline-none text-foreground"
               />
               <button
                 type="submit"
                 className="h-full px-6 bg-primary text-white font-medium hover:bg-primary/90 transition-colors flex items-center"
               >
-                <span>搜索</span>
+                <span>{t('search_button')}</span>
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </div>
@@ -64,7 +66,7 @@ const Hero = () => {
           
           {/* Tags */}
           <div className="flex flex-wrap justify-center gap-2 mb-10 animate-fade-in [animation-delay:450ms]">
-            {['电子产品', '纺织品', '食品饮料', '建筑材料', '包装材料'].map((tag, index) => (
+            {t('tags').map((tag, index) => (
               <button
                 key={index}
                 className="px-3 py-1.5 text-sm bg-white border border-border rounded-full hover:bg-secondary/80 transition-colors"
@@ -81,16 +83,16 @@ const Hero = () => {
               className="bg-primary hover:bg-primary/90 text-white rounded-full px-7 h-12" 
               onClick={() => navigate('/inference')}
             >
-              开始预测产品碳足迹
+              {t('start_prediction')}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button 
-              size="lg"
+              size="sm"
               variant="outline"
               className="rounded-full px-7 h-12"
               onClick={() => navigate('/recommendation')}
             >
-              查看低碳供应商推荐
+              {t('view_recommendations')}
             </Button>
           </div>
         </div>

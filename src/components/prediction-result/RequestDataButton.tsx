@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { Database, ArrowRight } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface RequestDataButtonProps {
   supplierName: string;
@@ -15,6 +16,7 @@ const RequestDataButton: React.FC<RequestDataButtonProps> = ({
   productName
 }) => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   
   const handleClick = () => {
     // Navigate to data request page with supplier and product info
@@ -37,12 +39,12 @@ const RequestDataButton: React.FC<RequestDataButtonProps> = ({
             className="gap-2 bg-amber-500 hover:bg-amber-600 text-white"
           >
             <Database className="h-4 w-4" />
-            <span>请求供应商实际数据</span>
+            <span>{t('request_supplier_data')}</span>
             <ArrowRight className="h-4 w-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent className="max-w-xs">
-          <p>预测数据只是基于现有信息的估算。请求供应商提供实际数据，以获得更准确的碳足迹分析。</p>
+          <p>{t('request_data_tooltip')}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

@@ -14,6 +14,7 @@ import {
   ReferenceLine,
 } from 'recharts';
 import { Info } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ChartDataItem {
   name: string;
@@ -37,6 +38,7 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
   yAxisLabel = 'kg CO₂e/件',
 }) => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   
   const currentProduct = data.find(d => d.highlight);
   const currentProductValue = currentProduct?.value || 0;
@@ -178,7 +180,7 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
                 strokeDasharray="3 3" 
                 strokeWidth={1.5}
                 label={{ 
-                  value: `行业基准: ${industryBenchmark.value} ${yAxisLabel}`, 
+                  value: `${t('industry_benchmark')}: ${industryBenchmark.value} ${yAxisLabel}`, 
                   position: 'insideBottomRight',
                   fill: '#94a3b8',
                   fontSize: 10
@@ -193,7 +195,7 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
                 strokeDasharray="3 3" 
                 strokeWidth={1.5}
                 label={{ 
-                  value: `最低竞品: ${lowestCompetitor.value} ${yAxisLabel}`, 
+                  value: `${t('lowest_competitor')}: ${lowestCompetitor.value} ${yAxisLabel}`, 
                   position: 'insideTopRight',
                   fill: '#22c55e',
                   fontSize: 10
@@ -222,7 +224,7 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
       <div className="flex items-center mt-6 text-sm text-muted-foreground gap-4">
         <div className="flex items-center">
           <Info className="h-4 w-4 mr-1" />
-          误差棒表示碳足迹计算的不确定度范围
+          {t('uncertainty_range')}
         </div>
       </div>
     </div>

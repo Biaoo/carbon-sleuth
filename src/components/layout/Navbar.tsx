@@ -12,11 +12,19 @@ import {
   User,
   Briefcase
 } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,10 +40,10 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
-    { name: '首页', path: '/', icon: <Leaf className="h-4 w-4" /> },
-    { name: '产品搜索', path: '/search', icon: <Search className="h-4 w-4" /> },
-    { name: '工作台', path: '/workspace', icon: <Briefcase className="h-4 w-4" /> },
-    { name: '低碳推荐', path: '/recommendation', icon: <Leaf className="h-4 w-4" /> },
+    { name: t('home'), path: '/', icon: <Leaf className="h-4 w-4" /> },
+    { name: t('product_search'), path: '/search', icon: <Search className="h-4 w-4" /> },
+    { name: t('workspace'), path: '/workspace', icon: <Briefcase className="h-4 w-4" /> },
+    { name: t('low_carbon_recommendations'), path: '/recommendation', icon: <Leaf className="h-4 w-4" /> },
   ];
 
   return (
@@ -76,13 +84,25 @@ const Navbar = () => {
 
           {/* Right Side - User & Lang Switch */}
           <div className="hidden md:flex items-center space-x-2">
-            <Button variant="outline" size="sm" className="text-sm">
-              <Globe className="h-4 w-4 mr-1" />
-              中文
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="text-sm">
+                  <Globe className="h-4 w-4 mr-1" />
+                  {language === 'zh' ? '中文' : 'English'}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setLanguage('zh')}>
+                  中文
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLanguage('en')}>
+                  English
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Button variant="ghost" size="sm" className="text-sm">
               <User className="h-4 w-4 mr-1" />
-              登录
+              {t('login')}
             </Button>
           </div>
 
@@ -120,13 +140,25 @@ const Navbar = () => {
               </Link>
             ))}
             <div className="pt-2 flex space-x-2 px-3">
-              <Button variant="outline" size="sm" className="text-sm flex-1">
-                <Globe className="h-4 w-4 mr-1" />
-                中文
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="text-sm flex-1">
+                    <Globe className="h-4 w-4 mr-1" />
+                    {language === 'zh' ? '中文' : 'English'}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => setLanguage('zh')}>
+                    中文
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setLanguage('en')}>
+                    English
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <Button variant="ghost" size="sm" className="text-sm flex-1">
                 <User className="h-4 w-4 mr-1" />
-                登录
+                {t('login')}
               </Button>
             </div>
           </div>
