@@ -17,6 +17,22 @@ const Hero = () => {
     }
   };
 
+  // Parse the tags from string to array if needed
+  const getTags = () => {
+    const tagsValue = t('tags');
+    // Check if tags is already an array
+    if (Array.isArray(tagsValue)) {
+      return tagsValue;
+    }
+    // If it's a string, try to parse it as JSON
+    try {
+      return JSON.parse(tagsValue);
+    } catch (e) {
+      // If parsing fails, return an empty array or split by comma if it's a comma-separated string
+      return tagsValue.includes(',') ? tagsValue.split(',') : [];
+    }
+  };
+
   return (
     <section className="relative overflow-hidden">
       {/* Background gradient */}
@@ -66,7 +82,7 @@ const Hero = () => {
           
           {/* Tags */}
           <div className="flex flex-wrap justify-center gap-2 mb-10 animate-fade-in [animation-delay:450ms]">
-            {t('tags').map((tag, index) => (
+            {getTags().map((tag, index) => (
               <button
                 key={index}
                 className="px-3 py-1.5 text-sm bg-white border border-border rounded-full hover:bg-secondary/80 transition-colors"
