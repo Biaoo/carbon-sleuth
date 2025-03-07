@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 // Available languages
@@ -133,6 +134,8 @@ export const translations = {
     'production_process_data': '生产工艺数据',
     'last_updated': '最后更新',
     'view': '查看',
+    'product_carbon_data_desc': '包含50个不同产品的碳足迹数据',
+    'production_process_data_desc': '包含30种不同生产工艺的能耗数据',
     
     // Search Page
     'product_carbon_footprint_search': '产品碳足迹搜索',
@@ -174,23 +177,17 @@ export const translations = {
     'no_active_predictions': '当前没有进行中的预测任务',
     'prediction_history': '预测历史记录',
     'history_prediction_list': '历史预测列表',
-    'prediction_date': '预测日期',
     'view_details': '查看详情',
     
     // Workspace Data Request
     'data_request': '数据请求',
     'new_request': '新建请求',
-    'data_collections': '数据集合',
     'historical_requests': '历史请求',
     'redirect_from_prediction': '从预测结果页面跳转',
     'creating_data_request': '您正在为',
     'of_supplier': '的产品',
     'creating_data_request_2': '创建数据请求。',
     'prefilled_info': '我们已为您预填了部分信息，请补充完整其余内容。',
-    
-    // Data Collections
-    'product_carbon_data_desc': '包含50个不同产品的碳足迹数据',
-    'production_process_data_desc': '包含30种不同生产工艺的能耗数据',
   },
   en: {
     // Navbar
@@ -312,6 +309,8 @@ export const translations = {
     'production_process_data': 'Production Process Data',
     'last_updated': 'Last Updated',
     'view': 'View',
+    'product_carbon_data_desc': 'Contains carbon footprint data for 50 different products',
+    'production_process_data_desc': 'Contains energy consumption data for 30 different production processes',
     
     // Search Page
     'product_carbon_footprint_search': 'Product Carbon Footprint Search',
@@ -353,23 +352,17 @@ export const translations = {
     'no_active_predictions': 'No active prediction tasks currently',
     'prediction_history': 'Prediction History',
     'history_prediction_list': 'History Prediction List',
-    'prediction_date': 'Prediction Date',
     'view_details': 'View Details',
     
     // Workspace Data Request
     'data_request': 'Data Request',
     'new_request': 'New Request',
-    'data_collections': 'Data Collections',
     'historical_requests': 'Historical Requests',
     'redirect_from_prediction': 'Redirected from Prediction Result',
     'creating_data_request': 'You are creating a data request for',
     'of_supplier': 'of',
     'creating_data_request_2': '.',
     'prefilled_info': 'We have pre-filled some information for you, please complete the remaining content.',
-    
-    // Data Collections
-    'product_carbon_data_desc': 'Contains carbon footprint data for 50 different products',
-    'production_process_data_desc': 'Contains energy consumption data for 30 different production processes',
   }
 };
 
