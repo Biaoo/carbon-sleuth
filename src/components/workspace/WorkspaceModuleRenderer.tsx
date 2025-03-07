@@ -6,6 +6,7 @@ import WorkspaceDataRequestContent from '@/components/workspace/WorkspaceDataReq
 import WorkspaceInferenceHistory from '@/components/workspace/WorkspaceInferenceHistory';
 import WorkspaceDataCollections from '@/components/workspace/WorkspaceDataCollections';
 import WorkspaceRequestManagementContent from '@/components/workspace/WorkspaceRequestManagementContent';
+import { useLocation } from 'react-router-dom';
 
 interface WorkspaceModuleRendererProps {
   activeModule: string;
@@ -26,6 +27,11 @@ const WorkspaceModuleRenderer: React.FC<WorkspaceModuleRendererProps> = ({
   navigateToHome,
   historyItems
 }) => {
+  const location = useLocation();
+  
+  // Get any state passed by navigation
+  const locationState = location.state || {};
+  
   switch (activeModule) {
     case 'inference':
       return (
@@ -45,6 +51,8 @@ const WorkspaceModuleRenderer: React.FC<WorkspaceModuleRendererProps> = ({
       return (
         <WorkspaceDataRequestContent
           navigateToHome={navigateToHome}
+          supplierName={locationState.supplierName}
+          productName={locationState.productName}
         />
       );
     case 'data-collections':
