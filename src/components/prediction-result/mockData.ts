@@ -1,4 +1,3 @@
-
 import { 
   PredictionResultData, BilingualText
 } from '@/components/prediction-result/types';
@@ -46,7 +45,12 @@ export const mockResultData: PredictionResultData = {
       title: bilingual("竞争对手对比", "Competitors Comparison"),
       description: bilingual("与竞争产品的碳足迹比较", "Carbon footprint comparison with competing products"),
       competitorData: [],
-      keyDifferentiators: []
+      keyDifferentiators: [
+        bilingual("采用先进PERC技术，提高能源转换效率", "Adopts advanced PERC technology to improve energy conversion efficiency"),
+        bilingual("优化铝合金框架设计，减少材料使用", "Optimizes aluminum alloy frame design to reduce material usage"),
+        bilingual("制造过程采用部分可再生能源电力", "Uses partially renewable energy electricity in the manufacturing process"),
+        bilingual("供应链本地化程度高，减少运输碳排放", "High degree of supply chain localization to reduce transportation carbon emissions")
+      ]
     }
   },
   inferenceData: {
@@ -181,12 +185,6 @@ export const mockResultData: PredictionResultData = {
       unit: "kgCO2e/件",
       differencePercentage: 12.3
     }
-  ],
-  keyDifferentiators: [
-    bilingual("采用先进PERC技术，提高能源转换效率", "Adopts advanced PERC technology to improve energy conversion efficiency"),
-    bilingual("优化铝合金框架设计，减少材料使用", "Optimizes aluminum alloy frame design to reduce material usage"),
-    bilingual("制造过程采用部分可再生能源电力", "Uses partially renewable energy electricity in the manufacturing process"),
-    bilingual("供应链本地化程度高，减少运输碳排放", "High degree of supply chain localization to reduce transportation carbon emissions")
   ]
 };
 
