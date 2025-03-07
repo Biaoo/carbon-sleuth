@@ -16,6 +16,7 @@ import {
   Info
 } from 'lucide-react';
 import { Form, FormField, FormItem, FormControl, FormDescription } from '@/components/ui/form';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface InferenceFormProps {
   onStartPrediction: (productName: string, supplierName: string) => void;
@@ -27,6 +28,7 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
   const [productCategory, setProductCategory] = useState('');
   const [supplierName, setSupplierName] = useState('');
   const [productDescription, setProductDescription] = useState('');
+  const { t } = useLanguage();
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +57,7 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
         <div className="p-2 bg-primary/10 rounded-lg mr-3">
           <Sparkles className="h-5 w-5 text-primary" />
         </div>
-        产品碳足迹预测
+        {t('carbon_footprint_prediction')}
       </h2>
       
       <form onSubmit={handleSubmit}>
@@ -65,7 +67,7 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
             <div className="group">
               <Label className="flex items-center text-sm font-medium mb-2">
                 <Box className="h-4 w-4 mr-2 text-primary/70" />
-                产品信息
+                {t('product_info')}
                 <span className="text-destructive ml-1">*</span>
               </Label>
               
@@ -74,7 +76,7 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
                   type="text"
                   value={productName}
                   onChange={(e) => setProductName(e.target.value)}
-                  placeholder="产品名称（如：有机棉T恤）"
+                  placeholder={t('product_name_placeholder')}
                   className="h-12 border-secondary/80 bg-white/80 backdrop-blur-sm focus:border-primary/40 transition-all pl-4"
                   disabled={isLoading}
                   required
@@ -86,7 +88,7 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
                   type="text"
                   value={productCategory}
                   onChange={(e) => setProductCategory(e.target.value)}
-                  placeholder="产品类别（如：纺织品、电子产品）"
+                  placeholder={t('product_category_placeholder')}
                   className="h-12 border-secondary/80 bg-white/80 backdrop-blur-sm focus:border-primary/40 transition-all pl-4"
                   disabled={isLoading}
                 />
@@ -96,7 +98,7 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
             <div className="group">
               <Label className="flex items-center text-sm font-medium mb-2">
                 <Factory className="h-4 w-4 mr-2 text-primary/70" />
-                供应商信息
+                {t('supplier_info')}
                 <span className="text-destructive ml-1">*</span>
               </Label>
               
@@ -105,7 +107,7 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
                   type="text"
                   value={supplierName}
                   onChange={(e) => setSupplierName(e.target.value)}
-                  placeholder="供应商名称（如：绿能科技有限公司）"
+                  placeholder={t('supplier_name_placeholder')}
                   className="h-12 border-secondary/80 bg-white/80 backdrop-blur-sm focus:border-primary/40 transition-all pl-4"
                   disabled={isLoading}
                   required
@@ -119,14 +121,14 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
             <div className="group">
               <Label className="flex items-center text-sm font-medium mb-2">
                 <Info className="h-4 w-4 mr-2 text-primary/70" />
-                产品描述（可选）
+                {t('product_description')}
               </Label>
               
               <div className="relative transition-all duration-300 focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-md rounded-lg">
                 <textarea
                   value={productDescription}
                   onChange={(e) => setProductDescription(e.target.value)}
-                  placeholder="简要描述产品特性、材料、制造工艺等信息，将有助于提高预测准确性"
+                  placeholder={t('product_description_placeholder')}
                   className="h-[164px] w-full rounded-md border border-secondary/80 bg-white/80 backdrop-blur-sm focus:border-primary/40 transition-all p-4 text-base resize-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:text-sm"
                   disabled={isLoading}
                 />
@@ -140,9 +142,9 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
           <div className="flex items-start">
             <Leaf className="h-5 w-5 text-accent mr-3 mt-0.5 flex-shrink-0" />
             <div>
-              <h4 className="text-sm font-medium mb-1">环保小贴士</h4>
+              <h4 className="text-sm font-medium mb-1">{t('environmental_tips')}</h4>
               <p className="text-sm text-muted-foreground">
-                提供详细的产品信息可以帮助我们更准确地预测碳足迹。如有产品技术文档，可在预测后上传以提高准确性。
+                {t('environmental_tips_desc')}
               </p>
             </div>
           </div>
@@ -156,7 +158,7 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
               className="bg-white/50 backdrop-blur-sm hover:bg-white/80"
             >
               <RotateCcw className="h-4 w-4 mr-2" />
-              取消预测
+              {t('cancel_prediction')}
             </Button>
           ) : (
             <>
@@ -167,14 +169,14 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
                 className="bg-white/50 backdrop-blur-sm hover:bg-white/80"
               >
                 <Save className="h-4 w-4 mr-2" />
-                保存草稿
+                {t('save_draft')}
               </Button>
               <Button 
                 type="submit" 
                 className="bg-primary hover:bg-primary/90 transition-colors shadow-lg hover:shadow-primary/20"
               >
                 <BarChart2 className="h-4 w-4 mr-2" />
-                开始预测
+                {t('start_prediction')}
                 <ArrowRight className="h-4 w-4 ml-1" />
               </Button>
             </>

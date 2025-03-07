@@ -187,6 +187,18 @@ export const translations = {
     'of_supplier': '的产品',
     'creating_data_request_2': '创建数据请求。',
     'prefilled_info': '我们已为您预填了部分信息，请补充完整其余内容。',
+
+    // InferenceForm
+    'product_name_placeholder': '产品名称（如：有机棉T恤）',
+    'product_category_placeholder': '产品类别（如：纺织品、电子产品）',
+    'supplier_info': '供应商信息',
+    'supplier_name_placeholder': '供应商名称（如：绿能科技有限公司）',
+    'product_description': '产品描述（可选）',
+    'product_description_placeholder': '简要描述产品特性、材料、制造工艺等信息，将有助于提高预测准确性',
+    'environmental_tips': '环保小贴士',
+    'environmental_tips_desc': '提供详细的产品信息可以帮助我们更准确地预测碳足迹。如有产品技术文档，可在预测后上传以提高准确性。',
+    'cancel_prediction': '取消预测',
+    'save_draft': '保存草稿',
   },
   en: {
     // Navbar
@@ -361,6 +373,18 @@ export const translations = {
     'of_supplier': 'of',
     'creating_data_request_2': '.',
     'prefilled_info': 'We have pre-filled some information for you, please complete the remaining content.',
+
+    // InferenceForm
+    'product_name_placeholder': 'Product name (e.g., Organic Cotton T-shirt)',
+    'product_category_placeholder': 'Product category (e.g., Textiles, Electronics)',
+    'supplier_info': 'Supplier Information',
+    'supplier_name_placeholder': 'Supplier name (e.g., Green Tech Co., Ltd.)',
+    'product_description': 'Product Description (Optional)',
+    'product_description_placeholder': 'Briefly describe product features, materials, manufacturing processes, etc., which will help improve prediction accuracy',
+    'environmental_tips': 'Environmental Tips',
+    'environmental_tips_desc': 'Providing detailed product information can help us predict carbon footprints more accurately. If you have product technical documentation, you can upload it after prediction to improve accuracy.',
+    'cancel_prediction': 'Cancel Prediction',
+    'save_draft': 'Save Draft',
   }
 };
 
