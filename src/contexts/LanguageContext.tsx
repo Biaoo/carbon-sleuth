@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 // Available languages
@@ -155,6 +154,43 @@ export const translations = {
     'start_new_prediction': '开始新的预测',
     'related_supplier_recommendations': '相关供应商推荐',
     'product_count': '产品数量',
+    
+    // Workspace General
+    'return_to_home': '返回主页',
+    'return': '返回',
+    'menu': '菜单',
+    'workspace_modules': '工作台模块',
+    'function_modules': '功能模块',
+    'pro_features': '专业版功能',
+    'pro_features_desc': '使用专业版解锁更多高级功能与数据分析',
+    'upgrade_to_pro': '升级专业版',
+    'close': '关闭',
+    
+    // Workspace Inference
+    'carbon_footprint_prediction': '碳足迹预测',
+    'new_prediction': '新建预测',
+    'history_records': '历史记录',
+    'in_progress': '进行中',
+    'no_active_predictions': '当前没有进行中的预测任务',
+    'prediction_history': '预测历史记录',
+    'history_prediction_list': '历史预测列表',
+    'prediction_date': '预测日期',
+    'view_details': '查看详情',
+    
+    // Workspace Data Request
+    'data_request': '数据请求',
+    'new_request': '新建请求',
+    'data_collections': '数据集合',
+    'historical_requests': '历史请求',
+    'redirect_from_prediction': '从预测结果页面跳转',
+    'creating_data_request': '您正在为',
+    'of_supplier': '的产品',
+    'creating_data_request_2': '创建数据请求。',
+    'prefilled_info': '我们已为您预填了部分信息，请补充完整其余内容。',
+    
+    // Data Collections
+    'product_carbon_data_desc': '包含50个不同产品的碳足迹数据',
+    'production_process_data_desc': '包含30种不同生产工艺的能耗数据',
   },
   en: {
     // Navbar
@@ -297,6 +333,43 @@ export const translations = {
     'start_new_prediction': 'Start New Prediction',
     'related_supplier_recommendations': 'Related Supplier Recommendations',
     'product_count': 'Product Count',
+    
+    // Workspace General
+    'return_to_home': 'Return to Home',
+    'return': 'Return',
+    'menu': 'Menu',
+    'workspace_modules': 'Workspace Modules',
+    'function_modules': 'Function Modules',
+    'pro_features': 'Pro Features',
+    'pro_features_desc': 'Upgrade to Pro to unlock more advanced features and data analysis',
+    'upgrade_to_pro': 'Upgrade to Pro',
+    'close': 'Close',
+    
+    // Workspace Inference
+    'carbon_footprint_prediction': 'Carbon Footprint Prediction',
+    'new_prediction': 'New Prediction',
+    'history_records': 'History Records',
+    'in_progress': 'In Progress',
+    'no_active_predictions': 'No active prediction tasks currently',
+    'prediction_history': 'Prediction History',
+    'history_prediction_list': 'History Prediction List',
+    'prediction_date': 'Prediction Date',
+    'view_details': 'View Details',
+    
+    // Workspace Data Request
+    'data_request': 'Data Request',
+    'new_request': 'New Request',
+    'data_collections': 'Data Collections',
+    'historical_requests': 'Historical Requests',
+    'redirect_from_prediction': 'Redirected from Prediction Result',
+    'creating_data_request': 'You are creating a data request for',
+    'of_supplier': 'of',
+    'creating_data_request_2': '.',
+    'prefilled_info': 'We have pre-filled some information for you, please complete the remaining content.',
+    
+    // Data Collections
+    'product_carbon_data_desc': 'Contains carbon footprint data for 50 different products',
+    'production_process_data_desc': 'Contains energy consumption data for 30 different production processes',
   }
 };
 

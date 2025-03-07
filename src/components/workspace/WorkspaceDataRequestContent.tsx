@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { formSchema, FormData } from '@/components/data-request/SupplierProductSection';
 import { useLocation } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // Import refactored components
 import DataRequestForm from '@/components/workspace/dataRequest/DataRequestForm';
@@ -25,6 +26,7 @@ const WorkspaceDataRequestContent: React.FC<WorkspaceDataRequestContentProps> = 
 }) => {
   const location = useLocation();
   const state = location.state as LocationState | null;
+  const { t, language } = useLanguage();
   
   // Set up the form with validation
   const form = useForm<FormData>({
@@ -60,13 +62,20 @@ const WorkspaceDataRequestContent: React.FC<WorkspaceDataRequestContentProps> = 
         'transport'
       ]);
       
-      // Set a default message
-      form.setValue('additionalInfo', 
-        `我们平台已经对${state.productName || "该产品"}的碳足迹进行了初步预测，` + 
-        `现在需要更精确的数据来完善分析。提供实际生产数据将帮助您获得更准确的碳足迹评估和更有针对性的减排建议。`
-      );
+      // Set a default message based on language
+      if (language === 'zh') {
+        form.setValue('additionalInfo', 
+          `我们平台已经对${state.productName || "该产品"}的碳足迹进行了初步预测，` + 
+          `现在需要更精确的数据来完善分析。提供实际生产数据将帮助您获得更准确的碳足迹评估和更有针对性的减排建议。`
+        );
+      } else {
+        form.setValue('additionalInfo', 
+          `Our platform has made a preliminary prediction of the carbon footprint of ${state.productName || "this product"}, ` +
+          `and now we need more accurate data to refine the analysis. Providing actual production data will help you get a more accurate carbon footprint assessment and more targeted emission reduction suggestions.`
+        );
+      }
     }
-  }, [state, form]);
+  }, [state, form, language]);
   
   // Get preview handling logic from our custom hook
   const {
@@ -87,11 +96,11 @@ const WorkspaceDataRequestContent: React.FC<WorkspaceDataRequestContentProps> = 
     <div className="p-6">
       {state?.fromPrediction && (
         <div className="mb-8 p-4 bg-amber-50 border-l-4 border-amber-500 rounded">
-          <h2 className="text-lg font-medium mb-2">从预测结果页面跳转</h2>
+          <h2 className="text-lg font-medium mb-2">{t('redirect_from_prediction')}</h2>
           <p className="text-muted-foreground">
-            您正在为 <span className="font-medium">{state.supplierName}</span> 的产品 
-            <span className="font-medium"> {state.productName}</span> 创建数据请求。
-            我们已为您预填了部分信息，请补充完整其余内容。
+            {t('creating_data_request')} <span className="font-medium">{state.supplierName}</span> {t('of_supplier')} 
+            <span className="font-medium"> {state.productName}</span>{t('creating_data_request_2')}
+            {t('prefilled_info')}
           </p>
         </div>
       )}

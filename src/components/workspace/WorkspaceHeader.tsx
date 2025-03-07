@@ -2,12 +2,15 @@
 import React from 'react';
 import { Leaf, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface WorkspaceHeaderProps {
   navigateToHome: () => void;
 }
 
 export const WorkspaceDesktopHeader: React.FC<WorkspaceHeaderProps> = ({ navigateToHome }) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="hidden md:flex items-center h-14 px-6 bg-background border-b border-border w-full fixed top-0 left-0 z-10">
       <div className="flex items-center space-x-2">
@@ -24,7 +27,7 @@ export const WorkspaceDesktopHeader: React.FC<WorkspaceHeaderProps> = ({ navigat
           className="flex items-center gap-1"
         >
           <Home className="h-4 w-4" />
-          返回主页
+          {t('return_to_home')}
         </Button>
       </div>
     </div>
@@ -35,6 +38,8 @@ export const WorkspaceMobileHeader: React.FC<WorkspaceHeaderProps & {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
 }> = ({ navigateToHome, sidebarOpen, setSidebarOpen }) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="md:hidden flex items-center justify-between h-14 px-4 bg-background border-b border-border w-full fixed top-0 z-10">
       <div className="flex items-center space-x-2">
@@ -51,7 +56,7 @@ export const WorkspaceMobileHeader: React.FC<WorkspaceHeaderProps & {
           className="flex items-center gap-1"
         >
           <Home className="h-4 w-4" />
-          返回
+          {t('return')}
         </Button>
         <Button 
           variant="ghost" 
@@ -59,7 +64,7 @@ export const WorkspaceMobileHeader: React.FC<WorkspaceHeaderProps & {
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="md:hidden"
         >
-          {sidebarOpen ? "关闭" : "菜单"}
+          {sidebarOpen ? t('close') : t('menu')}
         </Button>
       </div>
     </div>

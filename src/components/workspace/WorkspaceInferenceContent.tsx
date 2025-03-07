@@ -5,6 +5,7 @@ import { BarChart2, FileText, Activity } from 'lucide-react';
 import InferenceForm from '@/components/inference/InferenceForm';
 import ProgressTracker from '@/components/inference/ProgressTracker';
 import HistoryList, { HistoryItem } from '@/components/inference/HistoryList';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface WorkspaceInferenceContentProps {
   onStartPrediction: (productName: string, supplierName: string) => void;
@@ -22,6 +23,7 @@ const WorkspaceInferenceContent: React.FC<WorkspaceInferenceContentProps> = ({
   historyItems
 }) => {
   const [inferenceTab, setInferenceTab] = useState('new-prediction');
+  const { t } = useLanguage();
   
   return (
     <Tabs value={inferenceTab} onValueChange={setInferenceTab} className="w-full">
@@ -29,15 +31,15 @@ const WorkspaceInferenceContent: React.FC<WorkspaceInferenceContentProps> = ({
         <TabsList>
           <TabsTrigger value="new-prediction" className="flex items-center gap-2">
             <BarChart2 className="h-4 w-4" />
-            新建预测
+            {t('new_prediction')}
           </TabsTrigger>
           <TabsTrigger value="history" className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
-            历史记录
+            {t('history_records')}
           </TabsTrigger>
           <TabsTrigger value="active" className="flex items-center gap-2">
             <Activity className="h-4 w-4" />
-            进行中
+            {t('in_progress')}
           </TabsTrigger>
         </TabsList>
       </div>
@@ -62,7 +64,7 @@ const WorkspaceInferenceContent: React.FC<WorkspaceInferenceContentProps> = ({
         
         <TabsContent value="active" className="m-0">
           <div className="py-12 text-center">
-            <p className="text-muted-foreground">当前没有进行中的预测任务</p>
+            <p className="text-muted-foreground">{t('no_active_predictions')}</p>
           </div>
         </TabsContent>
       </div>
