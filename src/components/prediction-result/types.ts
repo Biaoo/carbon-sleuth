@@ -1,181 +1,7 @@
-import { LucideIcon } from 'lucide-react';
-
-// Base types
-
-export interface Reference {
-  id: string | number;
-  name?: string;
-  text?: string;
-  type?: string;
-  url?: string;
-}
-
-export interface ChartDataItem {
-  name: string;
-  value: number;
-  error?: number;
-  fill?: string;
-  highlight?: boolean;
-  id?: string;
-  itemType?: 'current' | 'competitor' | 'industry' | 'other';
-}
-
-export interface PhaseData {
-  name: string;
-  value: number;
-  percentage: number;
-  unit?: string;
-}
-
-export interface Component {
-  name: string;
-  value: number;
-  percentage: number;
-  unit: string;
-}
-
-export interface ImprovementSuggestion {
-  title: string;
-  description: string;
-  reduction: number;
-  difficulty: 'easy' | 'medium' | 'hard';
-  timeline: string;
-}
-
-export interface SimilarProduct {
-  id: string;
-  name: string;
-  supplier: string;
-  carbonValue: number;
-  unit: string;
-  differencePercentage: number;
-}
-
-export interface Method {
-  name: string;
-  description: string;
-}
-
-export interface LcaParameter {
-  name: string;
-  value: string;
-}
-
-export interface FlowchartNode {
-  id: string;
-  text: string;
-  type: string;
-  next: string[];
-}
-
-export interface Competitor {
-  name: string;
-  product: string;
-}
-
-export interface BreakdownItem {
-  name: string;
-  value: number;
-  percentage: number;
-}
-
-// Inference data types
-export interface ProductBasicInfo {
-  title: string;
-  icon: LucideIcon;
-  markdownContent: string;
-  citations: Reference[];
-}
-
-export interface ProductComposition {
-  title: string;
-  icon: LucideIcon;
-  markdownContent: string;
-  citations: Reference[];
-}
-
-export interface ProductionTechnology {
-  title: string;
-  icon: LucideIcon;
-  markdownContent: string;
-  citations: Reference[];
-}
-
-export interface CompetitorsInfo {
-  title: string;
-  icon: LucideIcon;
-  data: Competitor[];
-}
-
-export interface LcaModel {
-  title: string;
-  icon: LucideIcon;
-  modelName: string;
-  description: string;
-  parameters: LcaParameter[];
-  flowchart: FlowchartNode[];
-}
-
-export interface CarbonFootprintResult {
-  title: string;
-  icon: LucideIcon;
-  totalValue: number;
-  unit: string;
-  breakdown: BreakdownItem[];
-  uncertaintyRange: string;
-  confidenceLevel: string;
-}
-
-export interface InferenceData {
-  productBasicInfo: ProductBasicInfo;
-  productComposition: ProductComposition;
-  productionTechnology: ProductionTechnology;
-  competitorsInfo: CompetitorsInfo;
-  lcaModel: LcaModel;
-  carbonFootprintResult: CarbonFootprintResult;
-}
-
-export interface ExplanatoryInfo {
-  references: {
-    title: string;
-    icon: LucideIcon;
-    sources: Reference[];
-  };
-  technicalBasis: {
-    title: string;
-    icon: LucideIcon;
-    methods: Method[];
-  };
-}
-
-export interface ComparativeAnalysis {
-  industryBenchmark: {
-    title: string;
-    description: string;
-    data: Array<{
-      category: string;
-      value: number;
-      unit: string;
-      difference: number;
-      error: number;
-    }>;
-  };
-  competitorsComparison: {
-    title: string;
-    description: string;
-    competitorData: Array<ChartDataItem & {
-      unit: string;
-      difference?: string;
-    }>;
-    keyDifferentiators: string[];
-  };
-  chartData: ChartDataItem[];
-}
-
 export interface PredictionResultData {
   id: string;
-  productName: string;
-  supplierName: string;
+  productName: string | BilingualText;
+  supplierName: string | BilingualText;
   date: string;
   carbonValue: number;
   unit: string;
@@ -183,8 +9,8 @@ export interface PredictionResultData {
   industryAvg: number;
   reductionPotential: number;
   dataQuality: number;
-  components: Component[];
-  phases: PhaseData[];
+  components: ProductComponent[];
+  phases: LifecyclePhase[];
   improvementSuggestions: ImprovementSuggestion[];
   similarProducts: SimilarProduct[];
   inferenceData: InferenceData;
@@ -192,37 +18,223 @@ export interface PredictionResultData {
   comparativeAnalysis: ComparativeAnalysis;
 }
 
-// Data Request types
+export interface InferenceData {
+  productBasicInfo: ProductInfo;
+  productComposition: ProductInfo;
+  productionTechnology: ProductInfo;
+  competitorsInfo: CompetitorsInfo;
+  lcaModel: LcaModel;
+  carbonFootprintResult: CarbonFootprintResult;
+}
+
+export interface ProductInfo {
+  title: string | BilingualText;
+  icon: any;
+  markdownContent: string | { zh: string; en: string };
+  citations?: Citation[];
+}
+
+export interface CompetitorsInfo {
+  title: string | BilingualText;
+  icon: any;
+  data: CompetitorData[];
+}
+
+export interface CompetitorData {
+  name: string | BilingualText;
+  product: string | BilingualText;
+}
+
+export interface LcaModel {
+  title: string | BilingualText;
+  icon: any;
+  modelName: string | BilingualText;
+  description: string | BilingualText;
+  parameters: LcaParameter[];
+  flowchart: FlowchartNode[];
+}
+
+export interface LcaParameter {
+  name: string | BilingualText;
+  value: string | BilingualText;
+}
+
+export interface FlowchartNode {
+  id: string;
+  text: string | BilingualText;
+  type: string;
+  next: string[];
+}
+
+export interface CarbonFootprintResult {
+  title: string | BilingualText;
+  icon: any;
+  totalValue: number;
+  unit: string;
+  breakdown: BreakdownItem[];
+  uncertaintyRange: string;
+  confidenceLevel: string | BilingualText;
+}
+
+export interface BreakdownItem {
+  name: string | BilingualText;
+  value: number;
+  percentage: number;
+}
+
+export interface ExplanatoryInfo {
+  references: References;
+  technicalBasis: TechnicalBasis;
+}
+
+export interface References {
+  title: string | BilingualText;
+  icon: any;
+  sources: ReferenceSource[];
+}
+
+export interface ReferenceSource {
+  id: string;
+  name: string | BilingualText;
+  type: string | BilingualText;
+  url: string;
+}
+
+export interface TechnicalBasis {
+  title: string | BilingualText;
+  icon: any;
+  methods: TechnicalMethod[];
+}
+
+export interface TechnicalMethod {
+  name: string | BilingualText;
+  description: string | BilingualText;
+}
+
+export interface ComparativeAnalysis {
+  industryBenchmark: IndustryBenchmark;
+  competitorsComparison: CompetitorsComparison;
+  chartData: ChartData[];
+}
+
+export interface IndustryBenchmark {
+  title: string | BilingualText;
+  description: string | BilingualText;
+  data: IndustryBenchmarkData[];
+}
+
+export interface IndustryBenchmarkData {
+  category: string | BilingualText;
+  value: number;
+  unit: string;
+  difference: number;
+  error: number;
+}
+
+export interface CompetitorsComparison {
+  title: string | BilingualText;
+  description: string | BilingualText;
+  competitorData: CompetitorDataPoint[];
+  keyDifferentiators: string[];
+}
+
+export interface CompetitorDataPoint {
+  name: string | BilingualText;
+  value: number;
+  unit: string;
+  highlight?: boolean;
+  difference?: string;
+  error: number;
+}
+
+export interface ChartData {
+  name: string | BilingualText;
+  value: number;
+  error: number;
+  highlight?: boolean;
+  fill?: string;
+  itemType: string;
+}
+
+export interface Reference {
+  id: string;
+  text: string;
+}
+
+export interface Citation {
+  id: number;
+  text: string;
+}
+
+// Define bilingual text types
+export interface BilingualText {
+  zh: string;
+  en: string;
+}
+
+// Update SimilarProduct interface to support bilingual text
+export interface SimilarProduct {
+  id: string;
+  name: string | BilingualText;
+  supplier: string | BilingualText;
+  carbonValue: number;
+  unit: string;
+  differencePercentage: number;
+}
+
+// Update existing interfaces that need bilingual support
+export interface ImprovementSuggestion {
+  title: string | BilingualText;
+  description: string | BilingualText;
+  reduction: number;
+  difficulty: 'easy' | 'medium' | 'hard';
+  timeline: string | BilingualText;
+}
+
+export interface ProductComponent {
+  name: string | BilingualText;
+  value: number;
+  percentage: number;
+  unit: string;
+}
+
+export interface LifecyclePhase {
+  name: string | BilingualText;
+  value: number;
+  percentage: number;
+  unit: string;
+}
+
 export interface DataRequestPreviewData {
   supplier: string;
   product: string;
   dataItems: string[];
-  competitorsData: Array<{
+  competitorsData: {
     name: string;
     carbonValue: number;
     unit: string;
     difference: string;
-  }>;
-  industryBenchmarks: Array<{
+  }[];
+  industryBenchmarks: {
     name: string;
     value: number;
     unit: string;
-  }>;
-  reportLinks: Array<{
+  }[];
+  reportLinks: {
     name: string;
     url: string;
-    type: 'prediction' | 'ilcd' | 'other';
-  }>;
+    type: "prediction" | "ilcd" | "other";
+  }[];
   contact: {
     name: string;
     email: string;
-    phone?: string;
+    phone: string;
   };
   deadline: string;
   subject: string;
   content: string;
-  dataSubmissionLink?: string;
-  currentProductPrediction?: {
+  dataSubmissionLink: string;
+  currentProductPrediction: {
     carbonValue: number;
     unit: string;
     confidenceLevel: string;
