@@ -70,6 +70,17 @@ const Workspace = () => {
       search: newSearchParams.toString()
     }, { replace: true });
   }, [activeModule, navigate, location.pathname, location.search]);
+
+  // Handle state from location
+  useEffect(() => {
+    // Check for data in location state that might have been passed from other components
+    if (location.state) {
+      // If coming from prediction result with a request to open data-request tab
+      if (location.state.fromPrediction && moduleParam !== 'data-request') {
+        setActiveModule('data-request');
+      }
+    }
+  }, [location.state, moduleParam]);
   
   // Handle changing the active module
   const handleChangeModule = (module: string) => {

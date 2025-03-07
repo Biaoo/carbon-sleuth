@@ -20,7 +20,8 @@ const RequestDataButton: React.FC<RequestDataButtonProps> = ({
   
   const handleClick = () => {
     // Navigate to data request page with supplier and product info
-    navigate('/workspace?module=data-request', { 
+    // Changed from 'module=data-request' to 'tab=data-request' to match the expected URL parameter
+    navigate('/workspace?tab=data-request', { 
       state: { 
         supplierName,
         productName,
