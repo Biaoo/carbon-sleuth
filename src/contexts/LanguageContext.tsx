@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 // Available languages
@@ -47,6 +46,11 @@ export const translations = {
     'feature_recommendation_title': '低碳供应商推荐',
     'feature_recommendation_desc': '智能推荐碳足迹表现优异的供应商，展示减碳亮点和最佳实践案例。',
     
+    // Call to Action section
+    'cta_title': '开始您的低碳供应链之旅',
+    'cta_description': '立即使用我们的AI驱动碳足迹分析工具，挖掘减碳潜力，发现商业机遇，引领可持续发展。',
+    'search_products': '搜索产品碳足迹',
+    
     // Recent Products section
     'recent_products_title': '最新产品碳足迹',
     'recent_products_desc': '浏览最新添加的产品碳足迹数据，掌握行业绿色发展动态',
@@ -90,6 +94,37 @@ export const translations = {
     'request_data_tooltip': '预测数据只是基于现有信息的估算。请求供应商提供实际数据，以获得更精确的碳足迹分析。',
     'product_info': '产品详细信息',
     'reference_sources': '参考来源',
+    
+    // Workspace Request Management
+    'request_management': '请求管理',
+    'request_records': '请求记录',
+    'search_requests': '搜索请求...',
+    'filter_status': '状态筛选',
+    'all_statuses': '全部状态',
+    'request_details': '请求详情',
+    'request_id': '请求 ID',
+    'supplier': '供应商',
+    'product': '产品',
+    'contact_method': '联系方式',
+    'send_date': '发送日期',
+    'response_deadline': '响应截止日期',
+    'response_progress': '响应进度',
+    'request_content': '请求内容',
+    'request_attachments': '请求附件',
+    'download': '下载',
+    'supplier_response': '供应商响应',
+    'send_reminder': '发送提醒',
+    'export_details': '导出详情',
+    'cancel_request': '取消请求',
+    'select_request_view_details': '选择请求查看详情',
+    'select_request_description': '从左侧列表中选择一个请求记录，查看详细信息和供应商响应',
+    
+    // Workspace Data Collections
+    'data_collections': '数据集合',
+    'product_carbon_data': '产品碳足迹数据',
+    'production_process_data': '生产工艺数据',
+    'last_updated': '最后更新',
+    'view': '查看',
   },
   en: {
     // Navbar
@@ -123,6 +158,11 @@ export const translations = {
     'feature_data_request_desc': 'Generate professional data requests with one click, communicate efficiently with suppliers through multiple channels, and obtain real carbon footprint data.',
     'feature_recommendation_title': 'Low Carbon Supplier Recommendations',
     'feature_recommendation_desc': 'Intelligently recommend suppliers with excellent carbon footprint performance, showcasing carbon reduction highlights and best practice cases.',
+    
+    // Call to Action section
+    'cta_title': 'Start Your Low-Carbon Supply Chain Journey',
+    'cta_description': 'Use our AI-driven carbon footprint analysis tools now to uncover carbon reduction potential, discover business opportunities, and lead sustainable development.',
+    'search_products': 'Search Product Carbon Footprints',
     
     // Recent Products section
     'recent_products_title': 'Latest Carbon Footprints',
@@ -167,6 +207,37 @@ export const translations = {
     'request_data_tooltip': 'The prediction data is only an estimate based on existing information. Request actual data from suppliers for more accurate carbon footprint analysis.',
     'product_info': 'Product Information',
     'reference_sources': 'Reference Sources',
+    
+    // Workspace Request Management
+    'request_management': 'Request Management',
+    'request_records': 'Request Records',
+    'search_requests': 'Search requests...',
+    'filter_status': 'Filter by Status',
+    'all_statuses': 'All Statuses',
+    'request_details': 'Request Details',
+    'request_id': 'Request ID',
+    'supplier': 'Supplier',
+    'product': 'Product',
+    'contact_method': 'Contact Method',
+    'send_date': 'Send Date',
+    'response_deadline': 'Response Deadline',
+    'response_progress': 'Response Progress',
+    'request_content': 'Request Content',
+    'request_attachments': 'Request Attachments',
+    'download': 'Download',
+    'supplier_response': 'Supplier Response',
+    'send_reminder': 'Send Reminder',
+    'export_details': 'Export Details',
+    'cancel_request': 'Cancel Request',
+    'select_request_view_details': 'Select a Request to View Details',
+    'select_request_description': 'Select a request record from the list on the left to view detailed information and supplier responses',
+    
+    // Workspace Data Collections
+    'data_collections': 'Data Collections',
+    'product_carbon_data': 'Product Carbon Footprint Data',
+    'production_process_data': 'Production Process Data',
+    'last_updated': 'Last Updated',
+    'view': 'View',
   }
 };
 
