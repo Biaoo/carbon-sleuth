@@ -180,7 +180,6 @@ export const translations = {
     'view_details': '查看详情',
     
     // Workspace Data Request
-    'data_request': '数据请求',
     'new_request': '新建请求',
     'historical_requests': '历史请求',
     'redirect_from_prediction': '从预测结果页面跳转',
@@ -355,7 +354,6 @@ export const translations = {
     'view_details': 'View Details',
     
     // Workspace Data Request
-    'data_request': 'Data Request',
     'new_request': 'New Request',
     'historical_requests': 'Historical Requests',
     'redirect_from_prediction': 'Redirected from Prediction Result',
