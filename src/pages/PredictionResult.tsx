@@ -4,7 +4,6 @@ import PredictionResultContainer from '@/components/prediction-result/Prediction
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const PredictionResult: React.FC = () => {
-  // Add the language context
   const { t } = useLanguage();
   
   return <PredictionResultContainer />;

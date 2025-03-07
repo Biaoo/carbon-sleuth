@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 // Available languages
@@ -72,7 +73,7 @@ export const translations = {
     'company_address': '上海市浦东新区张江高科技园区',
     'quick_links': '快速链接',
     'lca_inference': 'LCA模型推理',
-    'data_request': '数据请求',
+    'data_request_link': '数据请求',
     'resource_center': '资源中心',
     'carbon_footprint_wiki': '碳足迹百科',
     'industry_reports': '行业报告',
@@ -88,7 +89,7 @@ export const translations = {
     'about_us': '关于我们',
     
     // Comparison Chart
-    'uncertainty_range': '误差棒表示碳足迹计算的不确定度范围',
+    'uncertainty_range_info': '误差棒表示碳足迹计算的不确定度范围',
     'industry_benchmark': '行业基准',
     'lowest_competitor': '最低竞品',
     
@@ -180,7 +181,7 @@ export const translations = {
     'history_records': '历史记录',
     'in_progress': '进行中',
     'no_active_predictions': '当前没有进行中的预测任务',
-    'prediction_history': '预测历史记录',
+    'prediction_history_title': '预测历史记录',
     'history_prediction_list': '历史预测列表',
     'view_details': '查看详情',
     
@@ -204,6 +205,23 @@ export const translations = {
     'environmental_tips_desc': '提供详细的产品信息可以帮助我们更准确地预测碳足迹。如有产品技术文档，可在预测后上传以提高准确性。',
     'cancel_prediction': '取消预测',
     'save_draft': '保存草稿',
+    
+    // PredictionResult
+    'return_button': '返回',
+    'link_copied': '链接已复制',
+    'link_copied_desc': '预测结果链接已复制到剪贴板',
+    'prediction_needs_accuracy': '预测数据存在不确定性？',
+    'prediction_accuracy_desc': '本页面显示的数据仅为预测结果，可能与实际情况存在差异。向供应商请求实际数据，获取更精准的碳足迹分析与减排建议。',
+    'need_more_accurate_data': '需要更准确的数据分析？',
+    'accurate_data_desc': '通过获取供应商的实际生产数据，我们可以为您提供更精确的碳足迹分析和减排方案。向供应商发送数据请求，只需几分钟即可完成。',
+    'prediction_disclaimer': '本结果由企业已披露信息及相关统计数据推理得到，仅为预测结果，不能完全反映供应商实际生产水平。对于碳核算、认证场景，应使用企业实际数据，实际数据缺失时，将采用企业实际数据，实际数据缺失时，将采用已有行业均值数据作为缺省值。',
+    'improvement_difficulty_easy': '容易',
+    'improvement_difficulty_medium': '中等',
+    'improvement_difficulty_hard': '困难',
+    'potential_reduction': '潜在减排',
+    'compared_to_current': '低于当前产品',
+    'higher_than_current': '高于当前产品',
+    'click_for_details': '点击查看详情',
   },
   en: {
     // Navbar
@@ -264,7 +282,7 @@ export const translations = {
     'company_address': 'Zhangjiang Hi-Tech Park, Pudong New Area, Shanghai',
     'quick_links': 'Quick Links',
     'lca_inference': 'LCA Model Inference',
-    'data_request': 'Data Request',
+    'data_request_link': 'Data Request',
     'resource_center': 'Resource Center',
     'carbon_footprint_wiki': 'Carbon Footprint Wiki',
     'industry_reports': 'Industry Reports',
@@ -280,7 +298,7 @@ export const translations = {
     'about_us': 'About Us',
     
     // Comparison Chart
-    'uncertainty_range': 'Error bars represent the uncertainty range of carbon footprint calculation',
+    'uncertainty_range_info': 'Error bars represent the uncertainty range of carbon footprint calculation',
     'industry_benchmark': 'Industry Benchmark',
     'lowest_competitor': 'Lowest Competitor',
     
@@ -372,7 +390,7 @@ export const translations = {
     'history_records': 'History Records',
     'in_progress': 'In Progress',
     'no_active_predictions': 'No active prediction tasks currently',
-    'prediction_history': 'Prediction History',
+    'prediction_history_title': 'Prediction History',
     'history_prediction_list': 'History Prediction List',
     'view_details': 'View Details',
     
@@ -396,6 +414,23 @@ export const translations = {
     'environmental_tips_desc': 'Providing detailed product information can help us predict carbon footprints more accurately. If you have product technical documentation, you can upload it after prediction to improve accuracy.',
     'cancel_prediction': 'Cancel Prediction',
     'save_draft': 'Save Draft',
+    
+    // PredictionResult
+    'return_button': 'Return',
+    'link_copied': 'Link Copied',
+    'link_copied_desc': 'Prediction result link has been copied to clipboard',
+    'prediction_needs_accuracy': 'Prediction data has uncertainty?',
+    'prediction_accuracy_desc': 'The data shown on this page is only a prediction result and may differ from the actual situation. Request actual data from suppliers for more accurate carbon footprint analysis and emission reduction recommendations.',
+    'need_more_accurate_data': 'Need more accurate data analysis?',
+    'accurate_data_desc': 'By obtaining actual production data from suppliers, we can provide you with more precise carbon footprint analysis and emission reduction solutions. Send a data request to suppliers, which only takes a few minutes to complete.',
+    'prediction_disclaimer': 'This result is derived from information disclosed by the company and related statistical data. It is only a prediction result and cannot fully reflect the actual production level of the supplier. For carbon accounting and certification scenarios, actual data should be used. When actual data is missing, industry average data will be used as default values.',
+    'improvement_difficulty_easy': 'Easy',
+    'improvement_difficulty_medium': 'Medium',
+    'improvement_difficulty_hard': 'Hard',
+    'potential_reduction': 'Potential Reduction',
+    'compared_to_current': 'Lower than current product',
+    'higher_than_current': 'Higher than current product',
+    'click_for_details': 'Click for details',
   }
 };
 
@@ -448,3 +483,4 @@ export const useLanguage = () => {
   }
   return context;
 };
+

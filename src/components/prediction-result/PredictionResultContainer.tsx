@@ -2,15 +2,10 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
-import { Button } from '@/components/ui/button';
-import { Copy, Share2, Download, ArrowLeft } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { PredictionResultData } from '@/components/prediction-result/types';
+import { useLanguage } from '@/contexts/LanguageContext';
 
-// Import new components
+// Import components
 import PredictionResultHeader from './PredictionResultHeader';
 import PredictionResultDataCta from './PredictionResultDataCta';
 import PredictionResultOverview from './PredictionResultOverview';
@@ -20,6 +15,7 @@ import PredictionResultOptimizations from './PredictionResultOptimizations';
 import PredictionResultSimilarProducts from './PredictionResultSimilarProducts';
 import ProductInfoSection from './ProductInfoSection';
 import RequestDataButton from './RequestDataButton';
+import { ArrowLeft } from 'lucide-react';
 
 // Import mock data (this should be replaced with API call in production)
 import { mockResultData } from './mockData';
@@ -28,6 +24,7 @@ const PredictionResultContainer: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
   
   // In a real app, you would fetch data based on the ID
   // For now, we'll use mock data
@@ -36,8 +33,8 @@ const PredictionResultContainer: React.FC = () => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     toast({
-      title: "链接已复制",
-      description: "预测结果链接已复制到剪贴板",
+      title: t('link_copied'),
+      description: t('link_copied_desc'),
     });
   };
   
@@ -50,7 +47,7 @@ const PredictionResultContainer: React.FC = () => {
             className="flex items-center text-muted-foreground mb-6 hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
-            返回
+            {t('return_button')}
           </button>
           
           <PredictionResultHeader 
