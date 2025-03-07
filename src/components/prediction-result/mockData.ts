@@ -1,3 +1,4 @@
+
 import { 
   PredictionResultData, BilingualText
 } from '@/components/prediction-result/types';
@@ -380,10 +381,10 @@ According to research [5], the energy consumption of this product's manufacturin
         { name: bilingual("竞品D - SP-320", "Competitor D - SP-320"), value: 39.5, unit: "kg CO₂e/件", difference: "-7.7%", error: 5.9 }
       ],
       keyDifferentiators: [
-        bilingual("采用先进PERC技术，提高能源转换效率", "Adopts advanced PERC technology to improve energy conversion efficiency"),
-        bilingual("优化铝合金框架设计，减少材料使用", "Optimizes aluminum alloy frame design to reduce material usage"),
-        bilingual("制造过程采用部分可再生能源电力", "Uses partially renewable energy electricity in the manufacturing process"),
-        bilingual("供应链本地化程度高，减少运输碳排放", "High degree of supply chain localization to reduce transportation carbon emissions")
+        bilingual("采用先进PERC技术，提高能源转换效率", "Adopts advanced PERC technology to improve energy conversion efficiency").zh,
+        bilingual("优化铝合金框架设计，减少材料使用", "Optimizes aluminum alloy frame design to reduce material usage").zh,
+        bilingual("制造过程采用部分可再生能源电力", "Uses partially renewable energy electricity in the manufacturing process").zh,
+        bilingual("供应链本地化程度高，减少运输碳排放", "High degree of supply chain localization to reduce transportation carbon emissions").zh
       ]
     },
     chartData: [

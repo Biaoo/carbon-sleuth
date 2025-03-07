@@ -22,7 +22,8 @@ const ReferenceSidebar: React.FC<ReferenceSidebarProps> = ({ references, open, o
   const { t, language } = useLanguage();
   
   // Helper function to get localized text
-  const getLocalizedText = (text: string | BilingualText): string => {
+  const getLocalizedText = (text: string | BilingualText | undefined): string => {
+    if (!text) return '';
     if (typeof text === 'string') return text;
     return language === 'zh' ? text.zh : text.en;
   };
@@ -43,13 +44,11 @@ const ReferenceSidebar: React.FC<ReferenceSidebarProps> = ({ references, open, o
           {references.map((reference, index) => (
             <div key={index} className="border-b pb-3">
               <div className="font-medium">
-                {reference.name && typeof reference.name === 'object' 
-                  ? getLocalizedText(reference.name) 
-                  : reference.text || (reference.name as string || `Reference ${index + 1}`)}
+                {getLocalizedText(reference.name || reference.text || `Reference ${index + 1}`)}
               </div>
               {reference.type && (
                 <Badge variant="outline" className="mt-1">
-                  {typeof reference.type === 'object' ? getLocalizedText(reference.type) : reference.type}
+                  {getLocalizedText(reference.type)}
                 </Badge>
               )}
               {reference.url && (
