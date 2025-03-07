@@ -3,14 +3,7 @@ import React, { useState } from 'react';
 import { Leaf, TrendingDown, AlertTriangle, ChevronDown, ChevronUp } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/contexts/LanguageContext';
-
-interface ImprovementSuggestion {
-  title: string;
-  description: string;
-  reduction: number;
-  difficulty: 'easy' | 'medium' | 'hard';
-  timeline: string;
-}
+import { ImprovementSuggestion, BilingualText } from './types';
 
 interface ImprovementSuggestionCardProps {
   suggestion: ImprovementSuggestion;
@@ -20,7 +13,13 @@ export const ImprovementSuggestionCard: React.FC<ImprovementSuggestionCardProps>
   suggestion
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  
+  // Helper function to get the correct language text
+  const getLocalizedText = (text: string | BilingualText): string => {
+    if (typeof text === 'string') return text;
+    return language === 'zh' ? text.zh : text.en;
+  };
   
   // Difficulty icon mapping with translated labels
   const difficultyIcons = {
@@ -37,7 +36,7 @@ export const ImprovementSuggestionCard: React.FC<ImprovementSuggestionCardProps>
       >
         <div className="flex items-center">
           {difficultyIcons[suggestion.difficulty].icon}
-          <span className="font-medium ml-2">{suggestion.title}</span>
+          <span className="font-medium ml-2">{getLocalizedText(suggestion.title)}</span>
           <Badge className="ml-3 bg-green-100 text-green-800 hover:bg-green-200 border-green-200">
             {t('potential_reduction')} {suggestion.reduction} kg CO₂e
           </Badge>
@@ -47,7 +46,7 @@ export const ImprovementSuggestionCard: React.FC<ImprovementSuggestionCardProps>
             {difficultyIcons[suggestion.difficulty].label}
           </Badge>
           <Badge variant="outline">
-            {suggestion.timeline}
+            {getLocalizedText(suggestion.timeline)}
           </Badge>
           {expanded ? (
             <ChevronUp className="h-5 w-5 ml-2 text-muted-foreground" />
@@ -59,7 +58,7 @@ export const ImprovementSuggestionCard: React.FC<ImprovementSuggestionCardProps>
       
       {expanded && (
         <div className="p-4 border-t">
-          <p>{suggestion.description}</p>
+          <p>{getLocalizedText(suggestion.description)}</p>
         </div>
       )}
     </div>

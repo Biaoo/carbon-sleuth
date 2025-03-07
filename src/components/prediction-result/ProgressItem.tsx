@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Progress } from '@/components/ui/progress';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { BilingualText } from './types';
 
 interface ProgressItemProps {
   name: string;
@@ -9,7 +10,7 @@ interface ProgressItemProps {
   unit?: string;
 }
 
-export const ProgressItem: React.FC<ProgressItemProps> = ({
+const ProgressItem: React.FC<ProgressItemProps> = ({
   name,
   value,
   percentage,
@@ -18,12 +19,17 @@ export const ProgressItem: React.FC<ProgressItemProps> = ({
   return (
     <div>
       <div className="flex justify-between mb-1">
-        <div className="font-medium text-sm">{name}</div>
+        <div className="text-sm font-medium">{name}</div>
         <div className="text-sm text-muted-foreground">
-          {value} {unit} ({percentage}%)
+          {value} {unit} <span className="text-xs">({percentage}%)</span>
         </div>
       </div>
-      <Progress value={percentage} className="h-2" />
+      <div className="h-2 bg-secondary/50 rounded-full overflow-hidden">
+        <div 
+          className="h-full bg-primary/80 transition-all duration-300"
+          style={{ width: `${percentage}%` }}
+        ></div>
+      </div>
     </div>
   );
 };

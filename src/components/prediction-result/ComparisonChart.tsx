@@ -1,3 +1,4 @@
+
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -14,16 +15,7 @@ import {
 } from 'recharts';
 import { Info } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-
-interface ChartDataItem {
-  name: string;
-  value: number;
-  error?: number;
-  fill?: string;
-  highlight?: boolean;
-  id?: string;
-  itemType?: 'current' | 'competitor' | 'industry' | 'other';
-}
+import { BilingualText, ChartDataItem } from './types';
 
 interface ComparisonChartProps {
   data: ChartDataItem[];
@@ -37,19 +29,33 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
   yAxisLabel = 'kg CO₂e/件',
 }) => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   
-  const currentProduct = data.find(d => d.highlight);
+  // Helper function to get the correct language text
+  const getLocalizedText = (text: string | BilingualText): string => {
+    if (typeof text === 'string') return text;
+    return language === 'zh' ? text.zh : text.en;
+  };
+  
+  // Process the data to ensure name is a string for recharts
+  const formattedData = useMemo(() => {
+    return data.map(item => ({
+      ...item,
+      displayName: getLocalizedText(item.name)
+    }));
+  }, [data, language]);
+  
+  const currentProduct = formattedData.find(d => d.highlight);
   const currentProductValue = currentProduct?.value || 0;
   
   const processedData = useMemo(() => {
-    return data.map(item => {
+    return formattedData.map(item => {
       let fill;
       
       // Determine color based on itemType or fallback to previous logic
       const itemType = item.itemType || (
         item.highlight ? 'current' : 
-        item.name.includes('行业') ? 'industry' : 
+        item.displayName.includes(language === 'zh' ? '行业' : 'Industry') ? 'industry' : 
         'competitor'
       );
       
@@ -69,32 +75,34 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
       
       return {
         ...item,
-        itemType: itemType || (item.highlight ? 'current' : item.name.includes('行业') ? 'industry' : 'competitor'),
+        itemType: itemType || (item.highlight ? 'current' : 
+          item.displayName.includes(language === 'zh' ? '行业' : 'Industry') ? 'industry' : 'competitor'),
         fill: item.fill || fill
       };
     });
-  }, [data, currentProductValue]);
+  }, [formattedData, currentProductValue, language]);
 
   // Find industry benchmark and lowest competitor values for reference lines
   const industryBenchmark = useMemo(() => {
     const industryItems = processedData.filter(item => 
-      item.itemType === 'industry' || item.name.includes('行业')
+      item.itemType === 'industry' || 
+      item.displayName.includes(language === 'zh' ? '行业' : 'Industry')
     );
     return industryItems.length > 0 ? 
       industryItems.reduce((min, item) => item.value < min.value ? item : min, industryItems[0]) : 
       null;
-  }, [processedData]);
+  }, [processedData, language]);
   
   const lowestCompetitor = useMemo(() => {
     const competitorItems = processedData.filter(item => 
       item.itemType === 'competitor' && 
       !item.highlight && 
-      !item.name.includes('行业')
+      !(item.displayName.includes(language === 'zh' ? '行业' : 'Industry'))
     );
     return competitorItems.length > 0 ? 
       competitorItems.reduce((min, item) => item.value < min.value ? item : min, competitorItems[0]) : 
       null;
-  }, [processedData]);
+  }, [processedData, language]);
 
   const handleBarClick = (data: any) => {
     const originalData = processedData[data.index];
@@ -105,7 +113,8 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
-      const originalData = processedData.find(item => item.name === label);
+      const displayName = label;
+      const originalData = processedData.find(item => item.displayName === displayName);
       const isClickable = originalData && originalData.id && !originalData.highlight;
       const isCurrent = originalData && originalData.highlight;
       const isLower = originalData && !originalData.highlight && originalData.value < currentProductValue;
@@ -113,7 +122,7 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
       
       return (
         <div className="bg-white p-3 border rounded-lg shadow-md">
-          <p className="text-sm font-semibold mb-1">{label}</p>
+          <p className="text-sm font-semibold mb-1">{displayName}</p>
           <p className="text-sm">{`${payload[0].value} ${yAxisLabel}`}</p>
           {!isCurrent && (
             <p className={`text-xs mt-1 ${isLower ? 'text-green-600' : isHigher ? 'text-gray-500' : 'text-gray-600'}`}>
@@ -142,10 +151,10 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
-              dataKey="name"
+              dataKey="displayName"
               tick={(props) => {
                 const { x, y, payload } = props;
-                const item = processedData.find(d => d.name === payload.value);
+                const item = processedData.find(d => d.displayName === payload.value);
                 const isHighest = item && item.value === Math.max(...processedData.map(d => d.value));
                 const isLowest = item && item.value === Math.min(...processedData.map(d => d.value));
                 const isClickable = item && item.id && !item.highlight;

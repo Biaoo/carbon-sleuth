@@ -9,17 +9,23 @@ import {
 } from '@/components/ui/card';
 import ProgressItem from './ProgressItem';
 import PhaseAnalysisChart from './PhaseAnalysisChart';
-import { PhaseData } from './types';
+import { LifecyclePhase, BilingualText } from './types';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PredictionResultPhaseAnalysisProps {
-  phases: PhaseData[];
+  phases: LifecyclePhase[];
 }
 
 const PredictionResultPhaseAnalysis: React.FC<PredictionResultPhaseAnalysisProps> = ({
   phases
 }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  
+  // Helper function to get localized text
+  const getLocalizedText = (text: string | BilingualText): string => {
+    if (typeof text === 'string') return text;
+    return language === 'zh' ? text.zh : text.en;
+  };
   
   return (
     <Card className="mb-8">
@@ -33,7 +39,7 @@ const PredictionResultPhaseAnalysis: React.FC<PredictionResultPhaseAnalysisProps
             {phases.map((phase, index) => (
               <ProgressItem 
                 key={index} 
-                name={phase.name} 
+                name={getLocalizedText(phase.name)} 
                 value={phase.value} 
                 percentage={phase.percentage} 
                 unit={phase.unit || 'kg CO₂e'} 

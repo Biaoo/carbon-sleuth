@@ -7,14 +7,13 @@ import { BookOpen } from 'lucide-react';
 import ProductInfoCard from './ProductInfoCard';
 import UnifiedReferenceSidebar from './UnifiedReferenceSidebar';
 import CompetitorsList from './CompetitorsList';
-import { Reference } from './types';
-import { InferenceData } from './types';
+import { InferenceData, ReferenceSource, BilingualText } from './types';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ProductInfoSectionProps {
   inferenceData: InferenceData;
-  references: Reference[];
-  referencesTitle?: string;
+  references: ReferenceSource[];
+  referencesTitle?: string | BilingualText;
 }
 
 const ProductInfoSection: React.FC<ProductInfoSectionProps> = ({

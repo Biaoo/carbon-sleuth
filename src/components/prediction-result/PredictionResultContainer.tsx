@@ -19,16 +19,23 @@ import { ArrowLeft } from 'lucide-react';
 
 // Import mock data (this should be replaced with API call in production)
 import { mockResultData } from './mockData';
+import { BilingualText } from './types';
 
 const PredictionResultContainer: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   
   // In a real app, you would fetch data based on the ID
   // For now, we'll use mock data
   const resultData = mockResultData;
+  
+  // Helper function to get localized text
+  const getLocalizedText = (text: string | BilingualText): string => {
+    if (typeof text === 'string') return text;
+    return language === 'zh' ? text.zh : text.en;
+  };
   
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -36,6 +43,14 @@ const PredictionResultContainer: React.FC = () => {
       title: t('link_copied'),
       description: t('link_copied_desc'),
     });
+  };
+  
+  // Convert to the format expected by the header component
+  const headerData = {
+    productName: getLocalizedText(resultData.productName),
+    supplierName: getLocalizedText(resultData.supplierName),
+    date: resultData.date,
+    id: resultData.id
   };
   
   return (
@@ -51,15 +66,15 @@ const PredictionResultContainer: React.FC = () => {
           </button>
           
           <PredictionResultHeader 
-            resultData={resultData} 
+            resultData={headerData} 
             onCopyLink={handleCopyLink} 
           />
         </div>
         
         {/* Main data request call-to-action */}
         <PredictionResultDataCta 
-          supplierName={resultData.supplierName} 
-          productName={resultData.productName} 
+          supplierName={getLocalizedText(resultData.supplierName)} 
+          productName={getLocalizedText(resultData.productName)} 
         />
 
         {/* Overview section with carbon footprint and components */}
@@ -72,20 +87,49 @@ const PredictionResultContainer: React.FC = () => {
         <ProductInfoSection 
           inferenceData={resultData.inferenceData}
           references={resultData.explanatoryInfo.references.sources}
-          referencesTitle={resultData.explanatoryInfo.references.title}
+          referencesTitle={getLocalizedText(resultData.explanatoryInfo.references.title)}
         />
         
         {/* Technical information section */}
         <PredictionResultTechnicalInfo 
-          lcaModel={resultData.inferenceData.lcaModel}
-          carbonFootprintResult={resultData.inferenceData.carbonFootprintResult}
-          technicalBasis={resultData.explanatoryInfo.technicalBasis}
+          lcaModel={{
+            title: getLocalizedText(resultData.inferenceData.lcaModel.title),
+            description: getLocalizedText(resultData.inferenceData.lcaModel.description),
+            parameters: resultData.inferenceData.lcaModel.parameters.map(p => ({
+              name: getLocalizedText(p.name),
+              value: getLocalizedText(p.value)
+            })),
+            flowchart: resultData.inferenceData.lcaModel.flowchart.map(f => ({
+              id: f.id,
+              text: getLocalizedText(f.text),
+              type: f.type,
+              next: f.next
+            }))
+          }}
+          carbonFootprintResult={{
+            title: getLocalizedText(resultData.inferenceData.carbonFootprintResult.title),
+            totalValue: resultData.inferenceData.carbonFootprintResult.totalValue,
+            unit: resultData.inferenceData.carbonFootprintResult.unit,
+            uncertaintyRange: resultData.inferenceData.carbonFootprintResult.uncertaintyRange,
+            breakdown: resultData.inferenceData.carbonFootprintResult.breakdown.map(b => ({
+              name: getLocalizedText(b.name),
+              value: b.value,
+              percentage: b.percentage
+            }))
+          }}
+          technicalBasis={{
+            title: getLocalizedText(resultData.explanatoryInfo.technicalBasis.title),
+            methods: resultData.explanatoryInfo.technicalBasis.methods.map(m => ({
+              name: getLocalizedText(m.name),
+              description: getLocalizedText(m.description)
+            }))
+          }}
         />
         
         {/* Mid-page data request call-to-action */}
         <PredictionResultDataCta 
-          supplierName={resultData.supplierName} 
-          productName={resultData.productName} 
+          supplierName={getLocalizedText(resultData.supplierName)} 
+          productName={getLocalizedText(resultData.productName)} 
           variant="detailed"
         />
         
@@ -101,7 +145,10 @@ const PredictionResultContainer: React.FC = () => {
         
         {/* Final call-to-action at the bottom */}
         <div className="flex justify-center mt-12 mb-8">
-          <RequestDataButton supplierName={resultData.supplierName} productName={resultData.productName} />
+          <RequestDataButton 
+            supplierName={getLocalizedText(resultData.supplierName)} 
+            productName={getLocalizedText(resultData.productName)} 
+          />
         </div>
       </div>
     </Layout>

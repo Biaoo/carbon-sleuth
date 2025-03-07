@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import ComparisonChart from './ComparisonChart';
 import ProgressItem from './ProgressItem';
-import { PredictionResultData } from './types';
+import { PredictionResultData, BilingualText } from './types';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PredictionResultOverviewProps {
@@ -20,7 +20,13 @@ interface PredictionResultOverviewProps {
 const PredictionResultOverview: React.FC<PredictionResultOverviewProps> = ({
   resultData
 }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  
+  // Helper function to get localized text
+  const getLocalizedText = (text: string | BilingualText): string => {
+    if (typeof text === 'string') return text;
+    return language === 'zh' ? text.zh : text.en;
+  };
   
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
@@ -57,7 +63,7 @@ const PredictionResultOverview: React.FC<PredictionResultOverviewProps> = ({
             {resultData.components.map((component, index) => (
               <ProgressItem 
                 key={index} 
-                name={component.name} 
+                name={getLocalizedText(component.name)} 
                 value={component.value} 
                 percentage={component.percentage} 
                 unit={component.unit} 

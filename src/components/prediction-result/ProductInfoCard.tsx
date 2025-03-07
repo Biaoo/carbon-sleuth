@@ -9,9 +9,10 @@ import {
 } from '@/components/ui/card';
 import MarkdownContent from './MarkdownContent';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { BilingualText } from './types';
 
 interface ProductInfoCardProps {
-  title: string | { zh: string; en: string };
+  title: string | BilingualText;
   icon: LucideIcon;
   markdownContent: string | { zh: string; en: string };
 }

@@ -1,3 +1,4 @@
+
 export interface PredictionResultData {
   id: string;
   productName: string | BilingualText;
@@ -156,9 +157,13 @@ export interface ChartData {
   itemType: string;
 }
 
+// Define Reference interface that combines both formats
 export interface Reference {
   id: string;
-  text: string;
+  name?: string | BilingualText;
+  text?: string;
+  type?: string | BilingualText;
+  url?: string;
 }
 
 export interface Citation {
@@ -203,6 +208,26 @@ export interface LifecyclePhase {
   value: number;
   percentage: number;
   unit: string;
+}
+
+// Define PhaseData to fix missing type
+export type PhaseData = LifecyclePhase;
+
+// Define Competitor interface for CompetitorsList
+export interface Competitor {
+  name: string | BilingualText;
+  product: string | BilingualText;
+}
+
+// Define ChartDataItem for ComparisonChart
+export interface ChartDataItem {
+  name: string | BilingualText;
+  value: number;
+  error?: number;
+  fill?: string;
+  highlight?: boolean;
+  id?: string;
+  itemType?: 'current' | 'competitor' | 'industry' | 'other';
 }
 
 export interface DataRequestPreviewData {
