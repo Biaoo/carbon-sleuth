@@ -1,11 +1,13 @@
 
 import React from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface MarkdownContentProps {
   content: string;
 }
 
 export const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => {
+  const { t } = useLanguage();
   // Simple Markdown rendering, in a real project you might use react-markdown
   const lines = content.split('\n');
   

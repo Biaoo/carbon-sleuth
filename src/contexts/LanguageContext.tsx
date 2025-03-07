@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 // Available languages
@@ -78,7 +77,7 @@ export const translations = {
     'carbon_footprint_wiki': '碳足迹百科',
     'industry_reports': '行业报告',
     'best_practices': '最佳实践',
-    'policy_updates': '政策动态',
+    'policy_updates': '��策动态',
     'faq': '常见问题',
     'subscribe': '订阅动态',
     'subscribe_desc': '订阅我们的新闻邮件，及时了解最新的可持续发展趋势和产品更新。',
@@ -103,6 +102,12 @@ export const translations = {
     'request_data_tooltip': '预测数据只是基于现有信息的估算。请求供应商提供实际数据，以获得更精确的碳足迹分析。',
     'product_info': '产品详细信息',
     'reference_sources': '参考来源',
+    
+    // Prediction Result additional translations
+    'view_report': '查看报告',
+    'carbon_footprint_breakdown': '碳足迹组成明细',
+    'uncertainty_range': '不确定度范围',
+    'prediction_history': '历史预测记录',
     
     // Workspace Request Management
     'request_management': '请求管理',
@@ -289,6 +294,12 @@ export const translations = {
     'request_data_tooltip': 'The prediction data is only an estimate based on existing information. Request actual data from suppliers for more accurate carbon footprint analysis.',
     'product_info': 'Product Information',
     'reference_sources': 'Reference Sources',
+    
+    // Prediction Result additional translations
+    'view_report': 'View Report',
+    'carbon_footprint_breakdown': 'Carbon Footprint Breakdown',
+    'uncertainty_range': 'Uncertainty Range',
+    'prediction_history': 'Prediction History',
     
     // Workspace Request Management
     'request_management': 'Request Management',

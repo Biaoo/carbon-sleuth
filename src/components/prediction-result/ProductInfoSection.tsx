@@ -9,6 +9,7 @@ import UnifiedReferenceSidebar from './UnifiedReferenceSidebar';
 import CompetitorsList from './CompetitorsList';
 import { Reference } from './types';
 import { InferenceData } from './types';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ProductInfoSectionProps {
   inferenceData: InferenceData;
@@ -19,13 +20,15 @@ interface ProductInfoSectionProps {
 const ProductInfoSection: React.FC<ProductInfoSectionProps> = ({
   inferenceData,
   references,
-  referencesTitle = "参考来源"
+  referencesTitle
 }) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="mb-8">
       <CardTitle className="text-2xl mb-6 flex items-center">
         <BookOpen className="h-6 w-6 mr-2 text-muted-foreground" />
-        产品详细信息
+        {t('product_info')}
       </CardTitle>
       
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -66,7 +69,7 @@ const ProductInfoSection: React.FC<ProductInfoSectionProps> = ({
         <div className="lg:col-span-3">
           <UnifiedReferenceSidebar 
             references={references}
-            title={referencesTitle}
+            title={referencesTitle || t('reference_sources')}
           />
         </div>
       </div>

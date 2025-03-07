@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Clock, Search, History } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // History item type
 export interface HistoryItem {
@@ -22,17 +23,18 @@ interface HistoryListProps {
 
 const HistoryList = ({ historyItems }: HistoryListProps) => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   
   return (
     <div className="bg-white rounded-xl border border-border shadow-subtle">
       <div className="p-6 flex justify-between items-center">
         <h2 className="text-xl font-semibold flex items-center">
           <History className="h-5 w-5 mr-2 text-primary" />
-          历史预测记录
+          {t('prediction_history')}
         </h2>
         <div className="flex items-center">
           <Button variant="ghost" size="sm" className="text-primary">
-            查看全部
+            {t('view_all')}
           </Button>
         </div>
       </div>
@@ -65,7 +67,7 @@ const HistoryList = ({ historyItems }: HistoryListProps) => {
                   onClick={() => navigate(`/prediction-result/${item.id}`)}
                 >
                   <Search className="h-3 w-3 mr-1" />
-                  查看报告
+                  {t('view_report')}
                 </Button>
               </div>
             </div>

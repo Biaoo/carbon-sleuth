@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import ProgressItem from './ProgressItem';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface BreakdownItem {
   name: string;
@@ -31,6 +32,8 @@ export const CarbonFootprintResultCard: React.FC<CarbonFootprintResultCardProps>
   uncertaintyRange,
   breakdown
 }) => {
+  const { t } = useLanguage();
+  
   return (
     <Card>
       <CardHeader className="flex flex-row items-start space-y-0 pb-2">
@@ -46,12 +49,12 @@ export const CarbonFootprintResultCard: React.FC<CarbonFootprintResultCardProps>
           <span className="text-3xl font-bold">{totalValue}</span>
           <span className="ml-2 text-muted-foreground">{unit}</span>
           <Badge className="ml-3 bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">
-            不确定度：{uncertaintyRange}
+            {t('uncertainty_range')}: {uncertaintyRange}
           </Badge>
         </div>
         
         <div className="space-y-3 mt-4">
-          <h4 className="text-sm font-medium">碳足迹组成明细</h4>
+          <h4 className="text-sm font-medium">{t('carbon_footprint_breakdown')}</h4>
           <div className="space-y-3">
             {breakdown.map((item, index) => (
               <ProgressItem 
