@@ -2,8 +2,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Leaf, Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Footer = () => {
+  const { t } = useLanguage();
+  
   return (
     <footer className="bg-tech-blue text-white pt-16 pb-8">
       <div className="container mx-auto px-4">
@@ -17,7 +20,7 @@ const Footer = () => {
               <span className="font-display text-xl font-semibold">CarbonSleuth</span>
             </div>
             <p className="text-white/70 text-sm leading-relaxed">
-              专注于提供产品碳足迹分析和环保供应链优化的先进解决方案。让可持续发展成为每个企业的竞争优势。
+              {t('company_description')}
             </p>
             <div className="pt-2 space-y-2">
               <div className="flex items-center text-white/70 hover:text-white transition-colors">
@@ -37,14 +40,14 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-medium mb-4">快速链接</h4>
+            <h4 className="text-lg font-medium mb-4">{t('quick_links')}</h4>
             <ul className="space-y-2">
               {[
-                { name: '首页', path: '/' },
-                { name: '产品搜索', path: '/search' },
+                { name: t('home'), path: '/' },
+                { name: t('product_search'), path: '/search' },
                 { name: 'LCA模型推理', path: '/inference' },
                 { name: '数据请求', path: '/data-request' },
-                { name: '低碳推荐', path: '/recommendation' },
+                { name: t('low_carbon_recommendations'), path: '/recommendation' },
               ].map((link) => (
                 <li key={link.path}>
                   <Link 
@@ -61,7 +64,7 @@ const Footer = () => {
 
           {/* Resources */}
           <div>
-            <h4 className="text-lg font-medium mb-4">资源中心</h4>
+            <h4 className="text-lg font-medium mb-4">{t('resource_center')}</h4>
             <ul className="space-y-2">
               {[
                 { name: '碳足迹百科', path: '#' },
@@ -85,18 +88,18 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div>
-            <h4 className="text-lg font-medium mb-4">订阅动态</h4>
+            <h4 className="text-lg font-medium mb-4">{t('subscribe')}</h4>
             <p className="text-white/70 text-sm mb-4">
-              订阅我们的新闻邮件，及时了解最新的可持续发展趋势和产品更新。
+              {t('subscribe_desc')}
             </p>
             <div className="flex">
               <input 
                 type="email" 
-                placeholder="您的邮箱地址" 
+                placeholder={t('email_placeholder')} 
                 className="bg-white/10 border border-white/20 rounded-l-md px-3 py-2 text-sm flex-1 focus:outline-none focus:ring-1 focus:ring-accent"
               />
               <button className="bg-accent text-white px-3 py-2 rounded-r-md text-sm font-medium hover:bg-accent/90 transition-colors">
-                订阅
+                {t('subscribe_button')}
               </button>
             </div>
           </div>
@@ -109,9 +112,9 @@ const Footer = () => {
               &copy; {new Date().getFullYear()} CarbonSleuth. All rights reserved.
             </p>
             <div className="flex space-x-4 mt-4 md:mt-0">
-              <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">隐私政策</a>
-              <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">使用条款</a>
-              <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">关于我们</a>
+              <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">{t('privacy_policy')}</a>
+              <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">{t('terms_of_use')}</a>
+              <a href="#" className="text-white/60 hover:text-white transition-colors text-sm">{t('about_us')}</a>
             </div>
           </div>
         </div>
