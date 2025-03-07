@@ -1,6 +1,5 @@
-
 import { 
-  PredictionResultData 
+  PredictionResultData, BilingualText
 } from '@/components/prediction-result/types';
 import {
   BookOpen,
@@ -12,10 +11,9 @@ import {
   Library,
   Info
 } from 'lucide-react';
-import { useLanguage } from '@/contexts/LanguageContext';
 
 // Helper function to create bilingual text objects
-const bilingual = (zh: string, en: string) => ({ zh, en });
+const bilingual = (zh: string, en: string): BilingualText => ({ zh, en });
 
 export const mockResultData: PredictionResultData = {
   id: 'pred-123456',
@@ -109,8 +107,8 @@ export const mockResultData: PredictionResultData = {
     productBasicInfo: {
       title: bilingual("产品基础信息", "Product Basic Information"),
       icon: BookOpen,
-      markdownContent: {
-        zh: `
+      markdownContent: bilingual(
+        `
 ## 产品基本特性
 
 太阳能电池板 Model-SE300 是一款高效单晶硅光伏板，采用PERC技术，具有较高的能源转换效率和较长的使用寿命。
@@ -126,8 +124,8 @@ export const mockResultData: PredictionResultData = {
 ## 产品应用场景
 
 适用于家庭屋顶系统、商业建筑、地面电站等多种应用场景。根据[2]的市场分析，此类产品在分布式光伏系统中应用广泛，平均每千瓦装机可年发电量约1200-1500度（因地区而异）。
-      `,
-        en: `
+        `,
+        `
 ## Product Basic Features
 
 Solar Panel Model-SE300 is a high-efficiency monocrystalline silicon photovoltaic panel using PERC technology, with high energy conversion efficiency and long service life.
@@ -143,8 +141,8 @@ This product complies with IEC 61215 and IEC 61730 standard certifications, with
 ## Product Application Scenarios
 
 Suitable for various application scenarios such as residential rooftop systems, commercial buildings, and ground-mounted power stations. According to market analysis [2], such products are widely used in distributed photovoltaic systems, with an average annual power generation of approximately 1200-1500 kWh per kilowatt installed (varying by region).
-      `
-      },
+        `
+      ),
       citations: [
         { id: 1, text: bilingual("张明等, 《光伏产品生命周期碳足迹评价研究》, 可再生能源学报, 2022.", "Zhang Ming et al., 'Research on Carbon Footprint Evaluation of Photovoltaic Products Life Cycle', Journal of Renewable Energy, 2022.") },
         { id: 2, text: bilingual("中国光伏行业协会, 《2023年光伏产品市场分析报告》, 2023.", "China Photovoltaic Industry Association, 'Market Analysis Report of Photovoltaic Products 2023', 2023.") }
@@ -153,8 +151,8 @@ Suitable for various application scenarios such as residential rooftop systems, 
     productComposition: {
       title: bilingual("产品组成信息", "Product Composition Information"),
       icon: Layers,
-      markdownContent: {
-        zh: `
+      markdownContent: bilingual(
+        `
 ## 材料组成
 
 Model-SE300太阳能电池板主要由以下几部分组成：
@@ -183,8 +181,8 @@ Model-SE300太阳能电池板主要由以下几部分组成：
    - 防水耐候性能优良
 
 材料占比分析显示，单晶硅电池在整个组件中占约48%的重量，钢化玻璃占约25%，铝合金边框占约15%，这与[3]中的行业标准组成比例基本一致。根据[4]的材料分析，这种组成结构在严苛气候条件下具有良好的耐久性。
-      `,
-        en: `
+        `,
+        `
 ## Material Composition
 
 The Model-SE300 solar panel consists mainly of the following parts:
@@ -213,8 +211,8 @@ The Model-SE300 solar panel consists mainly of the following parts:
    - Excellent waterproof and weather resistance
 
 Material proportion analysis shows that monocrystalline silicon cells account for about 48% of the weight in the entire module, tempered glass accounts for about 25%, and aluminum alloy frame accounts for about 15%, which is basically consistent with the industry standard composition ratio in [3]. According to the material analysis in [4], this composition structure has good durability under harsh climate conditions.
-      `
-      },
+        `
+      ),
       citations: [
         { id: 3, text: bilingual("刘强, 《光伏组件结构设计与优化》, 太阳能技术, 2021.", "Liu Qiang, 'Structural Design and Optimization of Photovoltaic Modules', Solar Energy Technology, 2021.") },
         { id: 4, text: bilingual("国际太阳能技术委员会, 《光伏组件材料耐久性研究报告》, 2023.", "International Solar Technology Committee, 'Research Report on Durability of Photovoltaic Module Materials', 2023.") }
@@ -223,8 +221,8 @@ Material proportion analysis shows that monocrystalline silicon cells account fo
     productionTechnology: {
       title: bilingual("生产技术信息", "Production Technology Information"),
       icon: Cog,
-      markdownContent: {
-        zh: `
+      markdownContent: bilingual(
+        `
 ## 制造工艺与技术特点
 
 太阳能电池板 Model-SE300 采用先进的制造工艺，主要包括以下关键技术环节：
@@ -245,8 +243,8 @@ Material proportion analysis shows that monocrystalline silicon cells account fo
 - **热斑测试**: 组件通过红外成像热斑检测
 
 根据[5]的研究，该产品的制造能耗比行业平均水平低约15%，主要得益于生产线自动化水平高和工艺优化。[6]的调研表明，PERC技术结合多主栅技术可使电池效率提升1.5-2.0%。
-      `,
-        en: `
+        `,
+        `
 ## Manufacturing Process and Technical Features
 
 Solar Panel Model-SE300 uses advanced manufacturing processes, including the following key technical aspects:
@@ -267,8 +265,8 @@ Solar Panel Model-SE300 uses advanced manufacturing processes, including the fol
 - **Hot Spot Test**: Modules undergo infrared imaging hot spot detection
 
 According to research [5], the energy consumption of this product's manufacturing is about 15% lower than the industry average, mainly due to high automation level and process optimization. Research [6] shows that PERC technology combined with multi-busbar technology can improve cell efficiency by 1.5-2.0%.
-      `
-      },
+        `
+      ),
       citations: [
         { id: 5, text: bilingual("王刚等, 《光伏制造业能源消耗分析与节能潜力》, 能源研究与利用, 2022.", "Wang Gang et al., 'Energy Consumption Analysis and Energy Saving Potential in Photovoltaic Manufacturing Industry', Energy Research and Utilization, 2022.") },
         { id: 6, text: bilingual("Global PV Tech, 《Advanced Cell Technologies Efficiency Report》, 2023.", "Global PV Tech, 'Advanced Cell Technologies Efficiency Report', 2023.") }

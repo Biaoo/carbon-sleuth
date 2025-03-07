@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import ComparisonChart from './ComparisonChart';
 import ProgressItem from './ProgressItem';
-import { PredictionResultData, BilingualText } from './types';
+import { PredictionResultData, BilingualText, ChartDataItem } from './types';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PredictionResultOverviewProps {
@@ -27,6 +27,16 @@ const PredictionResultOverview: React.FC<PredictionResultOverviewProps> = ({
     if (typeof text === 'string') return text;
     return language === 'zh' ? text.zh : text.en;
   };
+  
+  // Convert the chart data to properly typed ChartDataItem[]
+  const chartData: ChartDataItem[] = resultData.comparativeAnalysis.chartData.map(item => ({
+    name: item.name,
+    value: item.value,
+    error: item.error,
+    highlight: item.highlight,
+    fill: item.fill,
+    itemType: item.itemType as 'current' | 'competitor' | 'industry' | 'other'
+  }));
   
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
@@ -47,7 +57,7 @@ const PredictionResultOverview: React.FC<PredictionResultOverviewProps> = ({
           <div className="mt-6">
             <p className="mb-2 font-medium text-sm">{t('industry_comparison_analysis')}</p>
             <div className="h-72">
-              <ComparisonChart data={resultData.comparativeAnalysis.chartData} />
+              <ComparisonChart data={chartData} />
             </div>
           </div>
         </CardContent>

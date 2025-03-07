@@ -1,37 +1,72 @@
 
 import React from 'react';
 import { Library } from 'lucide-react';
-import { Reference } from './types';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
+import { Badge } from '@/components/ui/badge';
+import { Reference, BilingualText } from './types';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ReferenceSidebarProps {
   references: Reference[];
-  title?: string;
+  open: boolean;
+  onClose: () => void;
 }
 
-export const ReferenceSidebar: React.FC<ReferenceSidebarProps> = ({ 
-  references, 
-  title = "引用依据" 
-}) => {
+const ReferenceSidebar: React.FC<ReferenceSidebarProps> = ({ references, open, onClose }) => {
+  const { t, language } = useLanguage();
+  
+  // Helper function to get localized text
+  const getLocalizedText = (text: string | BilingualText): string => {
+    if (typeof text === 'string') return text;
+    return language === 'zh' ? text.zh : text.en;
+  };
+  
   return (
-    <div className="bg-muted/30 p-4 rounded-lg">
-      <h3 className="text-sm font-medium mb-3 flex items-center">
-        <Library className="h-4 w-4 mr-1.5" />
-        {title}
-      </h3>
-      <div className="space-y-2">
-        {references.map(ref => (
-          <div key={ref.id} className="text-xs flex">
-            <span className="font-medium mr-1.5">[{ref.id}]</span>
-            <span className="text-muted-foreground">{ref.text || ref.name}</span>
-            {ref.url && (
-              <a href={ref.url} className="ml-1 text-primary hover:underline">
-                链接
-              </a>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
+    <Sheet open={open} onOpenChange={onClose}>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle className="flex items-center">
+            <Library className="h-5 w-5 mr-2" />
+            {t('reference_sources')}
+          </SheetTitle>
+          <SheetDescription>
+            {t('reference_sources_desc')}
+          </SheetDescription>
+        </SheetHeader>
+        <div className="mt-6 space-y-4">
+          {references.map((reference, index) => (
+            <div key={index} className="border-b pb-3">
+              <div className="font-medium">
+                {reference.name && typeof reference.name === 'object' 
+                  ? getLocalizedText(reference.name) 
+                  : reference.text || (reference.name as string || `Reference ${index + 1}`)}
+              </div>
+              {reference.type && (
+                <Badge variant="outline" className="mt-1">
+                  {typeof reference.type === 'object' ? getLocalizedText(reference.type) : reference.type}
+                </Badge>
+              )}
+              {reference.url && (
+                <a
+                  href={reference.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-blue-600 hover:underline block mt-1"
+                >
+                  {t('visit_source')}
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 };
 

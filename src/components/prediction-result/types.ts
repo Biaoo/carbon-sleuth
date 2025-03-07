@@ -1,4 +1,3 @@
-
 export interface PredictionResultData {
   id: string;
   productName: string | BilingualText;
@@ -154,10 +153,9 @@ export interface ChartData {
   error: number;
   highlight?: boolean;
   fill?: string;
-  itemType: string;
+  itemType: 'current' | 'competitor' | 'industry' | 'other';
 }
 
-// Define Reference interface that combines both formats
 export interface Reference {
   id: string;
   name?: string | BilingualText;
@@ -171,13 +169,11 @@ export interface Citation {
   text: string;
 }
 
-// Define bilingual text types
 export interface BilingualText {
   zh: string;
   en: string;
 }
 
-// Update SimilarProduct interface to support bilingual text
 export interface SimilarProduct {
   id: string;
   name: string | BilingualText;
@@ -187,7 +183,6 @@ export interface SimilarProduct {
   differencePercentage: number;
 }
 
-// Update existing interfaces that need bilingual support
 export interface ImprovementSuggestion {
   title: string | BilingualText;
   description: string | BilingualText;
@@ -210,16 +205,18 @@ export interface LifecyclePhase {
   unit: string;
 }
 
-// Define PhaseData to fix missing type
-export type PhaseData = LifecyclePhase;
+export type PhaseData = {
+  name: string;
+  value: number;
+  percentage: number;
+  unit?: string;
+};
 
-// Define Competitor interface for CompetitorsList
 export interface Competitor {
   name: string | BilingualText;
   product: string | BilingualText;
 }
 
-// Define ChartDataItem for ComparisonChart
 export interface ChartDataItem {
   name: string | BilingualText;
   value: number;

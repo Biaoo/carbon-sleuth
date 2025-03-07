@@ -19,7 +19,7 @@ import { ArrowLeft } from 'lucide-react';
 
 // Import mock data (this should be replaced with API call in production)
 import { mockResultData } from './mockData';
-import { BilingualText } from './types';
+import { BilingualText, Reference } from './types';
 
 const PredictionResultContainer: React.FC = () => {
   const { id } = useParams();
@@ -52,6 +52,14 @@ const PredictionResultContainer: React.FC = () => {
     date: resultData.date,
     id: resultData.id
   };
+  
+  // Convert references to the expected format
+  const referencesAsExpectedType: Reference[] = resultData.explanatoryInfo.references.sources.map(source => ({
+    id: source.id,
+    name: source.name,
+    type: source.type,
+    url: source.url
+  }));
   
   return (
     <Layout>
@@ -86,7 +94,7 @@ const PredictionResultContainer: React.FC = () => {
         {/* Product information section */}
         <ProductInfoSection 
           inferenceData={resultData.inferenceData}
-          references={resultData.explanatoryInfo.references.sources}
+          references={referencesAsExpectedType}
           referencesTitle={getLocalizedText(resultData.explanatoryInfo.references.title)}
         />
         
