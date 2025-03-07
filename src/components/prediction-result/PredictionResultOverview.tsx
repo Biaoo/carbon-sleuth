@@ -11,6 +11,7 @@ import {
 import ComparisonChart from './ComparisonChart';
 import ProgressItem from './ProgressItem';
 import { PredictionResultData } from './types';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PredictionResultOverviewProps {
   resultData: PredictionResultData;
@@ -19,15 +20,17 @@ interface PredictionResultOverviewProps {
 const PredictionResultOverview: React.FC<PredictionResultOverviewProps> = ({
   resultData
 }) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
       <Card className="col-span-1 lg:col-span-2">
         <CardHeader>
           <CardTitle className="flex items-center text-xl">
             <BarChart2 className="h-5 w-5 mr-2 text-muted-foreground" />
-            碳足迹预测结果
+            {t('carbon_footprint_prediction_result')}
           </CardTitle>
-          <CardDescription>产品碳足迹值与行业对比分析</CardDescription>
+          <CardDescription>{t('product_carbon_industry_comparison')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center mb-2">
@@ -36,7 +39,7 @@ const PredictionResultOverview: React.FC<PredictionResultOverviewProps> = ({
           </div>
           
           <div className="mt-6">
-            <p className="mb-2 font-medium text-sm">行业对比分析</p>
+            <p className="mb-2 font-medium text-sm">{t('industry_comparison_analysis')}</p>
             <div className="h-72">
               <ComparisonChart data={resultData.comparativeAnalysis.chartData} />
             </div>
@@ -46,8 +49,8 @@ const PredictionResultOverview: React.FC<PredictionResultOverviewProps> = ({
       
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl">主要组成分析</CardTitle>
-          <CardDescription>碳足迹主要来源组成</CardDescription>
+          <CardTitle className="text-xl">{t('main_component_analysis')}</CardTitle>
+          <CardDescription>{t('carbon_footprint_composition')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-5">

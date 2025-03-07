@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/card';
 import SimilarProductCard from './SimilarProductCard';
 import { SimilarProduct } from './types';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PredictionResultSimilarProductsProps {
   similarProducts: SimilarProduct[];
@@ -17,11 +18,13 @@ interface PredictionResultSimilarProductsProps {
 const PredictionResultSimilarProducts: React.FC<PredictionResultSimilarProductsProps> = ({
   similarProducts
 }) => {
+  const { t } = useLanguage();
+  
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">相似产品对比</CardTitle>
-        <CardDescription>与市场上同类产品的碳足迹对比</CardDescription>
+        <CardTitle className="text-xl">{t('similar_products_comparison')}</CardTitle>
+        <CardDescription>{t('similar_products_comparison_desc')}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

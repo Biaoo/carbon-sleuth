@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/card';
 import ImprovementSuggestionCard from './ImprovementSuggestionCard';
 import { ImprovementSuggestion } from './types';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PredictionResultOptimizationsProps {
   improvementSuggestions: ImprovementSuggestion[];
@@ -17,11 +18,13 @@ interface PredictionResultOptimizationsProps {
 const PredictionResultOptimizations: React.FC<PredictionResultOptimizationsProps> = ({
   improvementSuggestions
 }) => {
+  const { t } = useLanguage();
+  
   return (
     <Card className="mb-8">
       <CardHeader>
-        <CardTitle className="text-xl">减排优化建议</CardTitle>
-        <CardDescription>基于产品特性和行业最佳实践的碳减排建议</CardDescription>
+        <CardTitle className="text-xl">{t('emission_reduction_suggestions')}</CardTitle>
+        <CardDescription>{t('carbon_reduction_suggestions_desc')}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

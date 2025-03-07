@@ -78,7 +78,7 @@ export const translations = {
     'carbon_footprint_wiki': '碳足迹百科',
     'industry_reports': '行业报告',
     'best_practices': '最佳实践',
-    'policy_updates': '��策动态',
+    'policy_updates': '政策动态',
     'faq': '常见问题',
     'subscribe': '订阅动态',
     'subscribe_desc': '订阅我们的新闻邮件，及时了解最新的可持续发展趋势和产品更新。',
@@ -92,6 +92,7 @@ export const translations = {
     'uncertainty_range_info': '误差棒表示碳足迹计算的不确定度范围',
     'industry_benchmark': '行业基准',
     'lowest_competitor': '最低竞品',
+    'carbon_footprint_value': '碳足迹值',
     
     // Prediction Result
     'prediction_result_badge': '预测结果',
@@ -109,6 +110,22 @@ export const translations = {
     'carbon_footprint_breakdown': '碳足迹组成明细',
     'uncertainty_range': '不确定度范围',
     'prediction_history': '历史预测记录',
+    
+    // PredictionResult component translations
+    'carbon_footprint_prediction_result': '碳足迹预测结果',
+    'product_carbon_industry_comparison': '产品碳足迹值与行业对比分析',
+    'industry_comparison_analysis': '行业对比分析',
+    'main_component_analysis': '主要组成分析',
+    'carbon_footprint_composition': '碳足迹主要来源组成',
+    'lifecycle_phase_analysis': '生命周期阶段分析',
+    'carbon_footprint_distribution': '产品全生命周期各阶段碳足迹分布',
+    'emission_reduction_suggestions': '减排优化建议',
+    'carbon_reduction_suggestions_desc': '基于产品特性和行业最佳实践的碳减排建议',
+    'similar_products_comparison': '相似产品对比',
+    'similar_products_comparison_desc': '与市场上同类产品的碳足迹对比',
+    'compared_to_current': '低于当前产品',
+    'higher_than_current': '高于当前产品',
+    'click_for_details': '点击查看详情',
     
     // Workspace Request Management
     'request_management': '请求管理',
@@ -214,14 +231,11 @@ export const translations = {
     'prediction_accuracy_desc': '本页面显示的数据仅为预测结果，可能与实际情况存在差异。向供应商请求实际数据，获取更精准的碳足迹分析与减排建议。',
     'need_more_accurate_data': '需要更准确的数据分析？',
     'accurate_data_desc': '通过获取供应商的实际生产数据，我们可以为您提供更精确的碳足迹分析和减排方案。向供应商发送数据请求，只需几分钟即可完成。',
-    'prediction_disclaimer': '本结果由企业已披露信息及相关统计数据推理得到，仅为预测结果，不能完全反映供应商实际生产水平。对于碳核算、认证场景，应使用企业实际数据，实际数据缺失时，将采用企业实际数据，实际数据缺失时，将采用已有行业均值数据作为缺省值。',
+    'prediction_disclaimer': '本结果由企业已披露信息及相关统计数据推理得到，仅为预测结果，不能完全反映供应商实际生产水平。对于碳核算、认证场景，应使用企业实际数据，实际数据缺失时，将采用已有行业均值数据作为缺省值。',
     'improvement_difficulty_easy': '容易',
     'improvement_difficulty_medium': '中等',
     'improvement_difficulty_hard': '困难',
     'potential_reduction': '潜在减排',
-    'compared_to_current': '低于当前产品',
-    'higher_than_current': '高于当前产品',
-    'click_for_details': '点击查看详情',
   },
   en: {
     // Navbar
@@ -301,6 +315,7 @@ export const translations = {
     'uncertainty_range_info': 'Error bars represent the uncertainty range of carbon footprint calculation',
     'industry_benchmark': 'Industry Benchmark',
     'lowest_competitor': 'Lowest Competitor',
+    'carbon_footprint_value': 'Carbon Footprint Value',
     
     // Prediction Result
     'prediction_result_badge': 'Prediction Result',
@@ -318,6 +333,22 @@ export const translations = {
     'carbon_footprint_breakdown': 'Carbon Footprint Breakdown',
     'uncertainty_range': 'Uncertainty Range',
     'prediction_history': 'Prediction History',
+    
+    // PredictionResult component translations
+    'carbon_footprint_prediction_result': 'Carbon Footprint Prediction Result',
+    'product_carbon_industry_comparison': 'Product Carbon Footprint and Industry Comparison',
+    'industry_comparison_analysis': 'Industry Comparison Analysis',
+    'main_component_analysis': 'Main Component Analysis',
+    'carbon_footprint_composition': 'Carbon Footprint Composition',
+    'lifecycle_phase_analysis': 'Lifecycle Phase Analysis',
+    'carbon_footprint_distribution': 'Carbon Footprint Distribution Across Product Lifecycle Phases',
+    'emission_reduction_suggestions': 'Emission Reduction Suggestions',
+    'carbon_reduction_suggestions_desc': 'Carbon reduction suggestions based on product characteristics and industry best practices',
+    'similar_products_comparison': 'Similar Products Comparison',
+    'similar_products_comparison_desc': 'Carbon footprint comparison with similar products in the market',
+    'compared_to_current': 'Lower than current product',
+    'higher_than_current': 'Higher than current product',
+    'click_for_details': 'Click for details',
     
     // Workspace Request Management
     'request_management': 'Request Management',
@@ -428,9 +459,6 @@ export const translations = {
     'improvement_difficulty_medium': 'Medium',
     'improvement_difficulty_hard': 'Hard',
     'potential_reduction': 'Potential Reduction',
-    'compared_to_current': 'Lower than current product',
-    'higher_than_current': 'Higher than current product',
-    'click_for_details': 'Click for details',
   }
 };
 
@@ -483,4 +511,3 @@ export const useLanguage = () => {
   }
   return context;
 };
-

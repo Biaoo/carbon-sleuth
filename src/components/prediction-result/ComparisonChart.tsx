@@ -1,4 +1,3 @@
-
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -118,12 +117,12 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
           <p className="text-sm">{`${payload[0].value} ${yAxisLabel}`}</p>
           {!isCurrent && (
             <p className={`text-xs mt-1 ${isLower ? 'text-green-600' : isHigher ? 'text-gray-500' : 'text-gray-600'}`}>
-              {isLower ? '低于当前产品 ' : isHigher ? '高于当前产品 ' : ''}
+              {isLower ? t('compared_to_current') + ' ' : isHigher ? t('higher_than_current') + ' ' : ''}
               {Math.abs(((originalData?.value || 0) - currentProductValue) / currentProductValue * 100).toFixed(1)}%
             </p>
           )}
           {isClickable && (
-            <p className="text-xs text-blue-600 mt-1 font-medium">点击查看详情</p>
+            <p className="text-xs text-blue-600 mt-1 font-medium">{t('click_for_details')}</p>
           )}
         </div>
       );
@@ -205,7 +204,7 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
             
             <Bar
               dataKey="value"
-              name="碳足迹值"
+              name={t('carbon_footprint_value')}
             >
               {processedData.map((entry, index) => (
                 <Cell 
@@ -224,7 +223,7 @@ export const ComparisonChart: React.FC<ComparisonChartProps> = ({
       <div className="flex items-center mt-6 text-sm text-muted-foreground gap-4">
         <div className="flex items-center">
           <Info className="h-4 w-4 mr-1" />
-          {t('uncertainty_range')}
+          {t('uncertainty_range_info')}
         </div>
       </div>
     </div>

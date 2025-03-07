@@ -10,6 +10,7 @@ import {
 import ProgressItem from './ProgressItem';
 import PhaseAnalysisChart from './PhaseAnalysisChart';
 import { PhaseData } from './types';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PredictionResultPhaseAnalysisProps {
   phases: PhaseData[];
@@ -18,11 +19,13 @@ interface PredictionResultPhaseAnalysisProps {
 const PredictionResultPhaseAnalysis: React.FC<PredictionResultPhaseAnalysisProps> = ({
   phases
 }) => {
+  const { t } = useLanguage();
+  
   return (
     <Card className="mb-8">
       <CardHeader>
-        <CardTitle className="text-xl">生命周期阶段分析</CardTitle>
-        <CardDescription>产品全生命周期各阶段碳足迹分布</CardDescription>
+        <CardTitle className="text-xl">{t('lifecycle_phase_analysis')}</CardTitle>
+        <CardDescription>{t('carbon_footprint_distribution')}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
