@@ -125,6 +125,27 @@ export const translations = {
     'production_process_data': '生产工艺数据',
     'last_updated': '最后更新',
     'view': '查看',
+    
+    // Search Page
+    'product_carbon_footprint_search': '产品碳足迹搜索',
+    'search_product_supplier_category': '搜索产品名称、供应商或类别...',
+    'filter': '筛选',
+    'filter_and_sort': '筛选与排序',
+    'industry': '行业',
+    'data_type': '数据类型',
+    'sort_by': '排序方式',
+    'clear_filters': '清除筛选',
+    'applied_filters': '已应用筛选',
+    'search': '搜索',
+    'sort': '排序',
+    'clear_all': '清除全部',
+    'found': '找到',
+    'results': '个结果',
+    'no_results_found': '未找到相关结果',
+    'try_adjusting_search': '尝试调整搜索条件或筛选选项，也可以使用我们的预测功能生成新的碳足迹数据。',
+    'start_new_prediction': '开始新的预测',
+    'related_supplier_recommendations': '相关供应商推荐',
+    'product_count': '产品数量',
   },
   en: {
     // Navbar
@@ -238,6 +259,27 @@ export const translations = {
     'production_process_data': 'Production Process Data',
     'last_updated': 'Last Updated',
     'view': 'View',
+    
+    // Search Page
+    'product_carbon_footprint_search': 'Product Carbon Footprint Search',
+    'search_product_supplier_category': 'Search product name, supplier or category...',
+    'filter': 'Filter',
+    'filter_and_sort': 'Filter & Sort',
+    'industry': 'Industry',
+    'data_type': 'Data Type',
+    'sort_by': 'Sort By',
+    'clear_filters': 'Clear Filters',
+    'applied_filters': 'Applied Filters',
+    'search': 'Search',
+    'sort': 'Sort',
+    'clear_all': 'Clear All',
+    'found': 'Found',
+    'results': 'results',
+    'no_results_found': 'No Results Found',
+    'try_adjusting_search': 'Try adjusting your search criteria or filter options, or use our prediction feature to generate new carbon footprint data.',
+    'start_new_prediction': 'Start New Prediction',
+    'related_supplier_recommendations': 'Related Supplier Recommendations',
+    'product_count': 'Product Count',
   }
 };
 
