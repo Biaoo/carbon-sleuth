@@ -44,6 +44,12 @@ const WorkspaceDataRequestContent: React.FC<WorkspaceDataRequestContentProps> = 
     },
   });
   
+  // Set the language to Chinese
+  useEffect(() => {
+    const { setLanguage } = useLanguage();
+    setLanguage('zh');
+  }, []);
+  
   // Pre-fill form with data from PredictionResult if available
   useEffect(() => {
     if (state?.fromPrediction) {
@@ -62,18 +68,11 @@ const WorkspaceDataRequestContent: React.FC<WorkspaceDataRequestContentProps> = 
         'transport'
       ]);
       
-      // Set a default message based on language
-      if (language === 'zh') {
-        form.setValue('additionalInfo', 
-          `我们平台已经对${state.productName || "该产品"}的碳足迹进行了初步预测，` + 
-          `现在需要更精确的数据来完善分析。提供实际生产数据将帮助您获得更准确的碳足迹评估和更有针对性的减排建议。`
-        );
-      } else {
-        form.setValue('additionalInfo', 
-          `Our platform has made a preliminary prediction of the carbon footprint of ${state.productName || "this product"}, ` +
-          `and now we need more accurate data to refine the analysis. Providing actual production data will help you get a more accurate carbon footprint assessment and more targeted emission reduction suggestions.`
-        );
-      }
+      // Set a default message in Chinese
+      form.setValue('additionalInfo', 
+        `我们平台已经对${state.productName || "该产品"}的碳足迹进行了初步预测，` + 
+        `现在需要更精确的数据来完善分析。提供实际生产数据将帮助您获得更准确的碳足迹评估和更有针对性的减排建议。`
+      );
     }
   }, [state, form, language]);
   
