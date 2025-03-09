@@ -17,7 +17,7 @@ interface ProductInfoCardProps {
   markdownContent: string | { zh: string; en: string };
 }
 
-export const ProductInfoCard: React.FC<ProductInfoCardProps> = ({
+const ProductInfoCard: React.FC<ProductInfoCardProps> = ({
   title,
   icon: Icon,
   markdownContent,
