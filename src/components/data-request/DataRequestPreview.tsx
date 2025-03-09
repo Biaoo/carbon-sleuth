@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Dialog,
@@ -14,6 +13,9 @@ import { Badge } from '@/components/ui/badge';
 import { FileText, FileDown, BarChart2, Link as LinkIcon, CalendarIcon, User, Mail, Phone, Activity } from 'lucide-react';
 import { DataRequestPreviewData } from '@/components/prediction-result/types';
 import ComparisonChartPreview from './ComparisonChartPreview';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { format } from 'date-fns';
+import { zhCN } from 'date-fns/locale';
 
 interface DataRequestPreviewProps {
   open: boolean;
@@ -28,13 +30,15 @@ const DataRequestPreview: React.FC<DataRequestPreviewProps> = ({
   data,
   onConfirm
 }) => {
+  const { t, language } = useLanguage();
+  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl">数据请求预览</DialogTitle>
+          <DialogTitle className="text-xl">{t('data_request_preview')}</DialogTitle>
           <DialogDescription>
-            请确认以下内容是否准确，准确无误后点击发送
+            {t('confirm_content_accuracy')}
           </DialogDescription>
         </DialogHeader>
         
@@ -42,17 +46,13 @@ const DataRequestPreview: React.FC<DataRequestPreviewProps> = ({
           {/* 基本信息 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h3 className="text-sm font-medium text-muted-foreground mb-2">供应商信息</h3>
+              <h3 className="text-sm font-medium text-muted-foreground mb-2">{t('supplier_info')}</h3>
               <Card>
                 <CardContent className="p-4">
                   <div className="space-y-3">
                     <div>
-                      <p className="text-sm font-medium">供应商名称</p>
-                      <p>{data.supplier}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium">产品名称</p>
-                      <p>{data.product}</p>
+                      <p className="text-sm font-medium">{t('supplier_name_label')}</p>
+                      <p className="p-2 bg-muted/40 rounded mt-1">{data.supplier}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -60,215 +60,128 @@ const DataRequestPreview: React.FC<DataRequestPreviewProps> = ({
             </div>
             
             <div>
-              <h3 className="text-sm font-medium text-muted-foreground mb-2">联系方式</h3>
+              <h3 className="text-sm font-medium text-muted-foreground mb-2">{t('product_info')}</h3>
               <Card>
                 <CardContent className="p-4">
                   <div className="space-y-3">
-                    <div className="flex items-center">
-                      <User className="h-4 w-4 mr-2 text-muted-foreground" />
-                      <div>
-                        <p className="text-sm font-medium">联系人</p>
-                        <p>{data.contact.name}</p>
+                    <div>
+                      <p className="text-sm font-medium">{t('product_name_label')}</p>
+                      <p className="p-2 bg-muted/40 rounded mt-1">{data.product}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+          
+          {/* 联系信息 */}
+          <div>
+            <h3 className="text-sm font-medium text-muted-foreground mb-2">{t('contact_info_label')}</h3>
+            <Card>
+              <CardContent className="p-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <div className="flex items-center space-x-2">
+                      <User className="h-4 w-4 text-muted-foreground" />
+                      <p className="text-sm font-medium">{t('contact_name_label')}</p>
+                    </div>
+                    <p className="p-2 bg-muted/40 rounded mt-1">{data.contact.name}</p>
+                  </div>
+                  
+                  <div>
+                    <div className="flex items-center space-x-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <p className="text-sm font-medium">{t('contact_email_label')}</p>
+                    </div>
+                    <p className="p-2 bg-muted/40 rounded mt-1">{data.contact.email}</p>
+                  </div>
+                  
+                  {data.contact.phone && (
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <Phone className="h-4 w-4 text-muted-foreground" />
+                        <p className="text-sm font-medium">{t('contact_phone_label')}</p>
+                      </div>
+                      <p className="p-2 bg-muted/40 rounded mt-1">{data.contact.phone}</p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          
+          {/* 请求详情 */}
+          <div>
+            <h3 className="text-sm font-medium text-muted-foreground mb-2">{t('request_details_label')}</h3>
+            <Card>
+              <CardContent className="p-4">
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-sm font-medium">{t('requested_data')}</p>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {data.dataItems.map((item, index) => (
+                        <Badge key={index} variant="outline" className="px-2 py-1">
+                          <FileText className="h-3 w-3 mr-1" />
+                          {item}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* 紧急程度 - 从邮件内容中提取 */}
+                    <div>
+                      <p className="text-sm font-medium">{t('urgency_level_label')}</p>
+                      <div className="flex items-center mt-2">
+                        <Activity className="h-4 w-4 mr-2 text-muted-foreground" />
+                        <Badge 
+                          variant="outline" 
+                          className={`
+                            ${data.content.includes('高优先级') ? 'bg-red-50 text-red-700 border-red-200' : ''}
+                            ${data.content.includes('常规优先级') ? 'bg-amber-50 text-amber-700 border-amber-200' : ''}
+                            ${data.content.includes('低优先级') ? 'bg-green-50 text-green-700 border-green-200' : ''}
+                          `}
+                        >
+                          {data.content.includes('高优先级') && t('urgency_high')}
+                          {data.content.includes('常规优先级') && t('urgency_medium')}
+                          {data.content.includes('低优先级') && t('urgency_low')}
+                        </Badge>
                       </div>
                     </div>
-                    <div className="flex items-center">
-                      <Mail className="h-4 w-4 mr-2 text-muted-foreground" />
+                    
+                    {data.deadline && (
                       <div>
-                        <p className="text-sm font-medium">邮箱</p>
-                        <p>{data.contact.email}</p>
-                      </div>
-                    </div>
-                    {data.contact.phone && (
-                      <div className="flex items-center">
-                        <Phone className="h-4 w-4 mr-2 text-muted-foreground" />
-                        <div>
-                          <p className="text-sm font-medium">电话</p>
-                          <p>{data.contact.phone}</p>
+                        <p className="text-sm font-medium">{t('response_deadline_label')}</p>
+                        <div className="flex items-center mt-2">
+                          <CalendarIcon className="h-4 w-4 mr-2 text-muted-foreground" />
+                          <span>{data.deadline}</span>
                         </div>
                       </div>
                     )}
                   </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-          
-          {/* 当前产品预测结果 */}
-          {data.currentProductPrediction && (
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground mb-2">当前产品预测结果</h3>
-              <Card>
-                <CardContent className="p-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="flex flex-col">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-medium">预计碳足迹值</span>
-                        <div className="flex items-center">
-                          <Activity className="h-4 w-4 mr-1 text-blue-500" />
-                          <span className="font-medium text-blue-500">
-                            {data.currentProductPrediction.carbonValue} {data.currentProductPrediction.unit}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">置信水平</span>
-                        <span>{data.currentProductPrediction.confidenceLevel}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">不确定性范围</span>
-                        <span>{data.currentProductPrediction.uncertaintyRange}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium mb-2">主要贡献因素</p>
-                      <div className="space-y-1">
-                        {data.currentProductPrediction.mainContributors.map((contributor, i) => (
-                          <div key={i} className="text-sm py-1 px-2 bg-muted/40 rounded-sm">
-                            {contributor}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-          
-          {/* 请求数据项 */}
-          <div>
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">请求数据项</h3>
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex flex-wrap gap-2">
-                  {data.dataItems.map((item, index) => (
-                    <Badge key={index} variant="outline" className="bg-primary/10 border-primary/20">
-                      {item}
-                    </Badge>
-                  ))}
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-          
-          {/* 竞品对比数据图表 */}
-          <div>
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">竞品对比数据</h3>
-            <Card>
-              <CardContent className="p-4">
-                <ComparisonChartPreview 
-                  competitorsData={data.competitorsData}
-                  industryBenchmarks={data.industryBenchmarks}
-                  height={300}
-                />
-              </CardContent>
-            </Card>
-          </div>
-          
-          {/* 竞品对比数据详情 - 保留原有的列表视图作为补充 */}
-          <div>
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">竞品对比详细数据</h3>
-            <Card>
-              <CardContent className="p-4">
-                <div className="space-y-3">
-                  {data.competitorsData.map((competitor, index) => (
-                    <div key={index} className="flex justify-between items-center border-b pb-2 last:border-0 last:pb-0">
-                      <span>{competitor.name}</span>
-                      <div className="flex items-center">
-                        <span className="font-medium">{competitor.carbonValue}</span>
-                        <span className="text-sm text-muted-foreground ml-1">{competitor.unit}</span>
-                        <Badge 
-                          className={`ml-2 ${
-                            competitor.difference.startsWith('-') 
-                              ? 'bg-green-100 text-green-800 hover:bg-green-200 border-green-200' 
-                              : 'bg-amber-100 text-amber-800 hover:bg-amber-200 border-amber-200'
-                          }`}
-                        >
-                          {competitor.difference}
-                        </Badge>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-          
-          {/* 行业基准数据 */}
-          <div>
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">行业基准数据</h3>
-            <Card>
-              <CardContent className="p-4">
-                <div className="space-y-3">
-                  {data.industryBenchmarks.map((benchmark, index) => (
-                    <div key={index} className="flex justify-between items-center border-b pb-2 last:border-0 last:pb-0">
-                      <span>{benchmark.name}</span>
-                      <div className="flex items-center">
-                        <span className="font-medium">{benchmark.value}</span>
-                        <span className="text-sm text-muted-foreground ml-1">{benchmark.unit}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-          
-          {/* 相关报告链接 */}
-          <div>
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">相关报告链接</h3>
-            <Card>
-              <CardContent className="p-4">
-                <div className="space-y-3">
-                  {data.reportLinks.map((link, index) => (
-                    <div key={index} className="flex items-center">
-                      {link.type === 'prediction' ? (
-                        <BarChart2 className="h-4 w-4 mr-2 text-blue-600" />
-                      ) : link.type === 'ilcd' ? (
-                        <FileDown className="h-4 w-4 mr-2 text-green-600" />
-                      ) : (
-                        <FileText className="h-4 w-4 mr-2 text-gray-600" />
-                      )}
-                      <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center">
-                        {link.name}
-                        <LinkIcon className="h-3 w-3 ml-1" />
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-          
-          {/* 截止日期 */}
-          <div>
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">截止日期</h3>
-            <Card>
-              <CardContent className="p-4 flex items-center">
-                <CalendarIcon className="h-4 w-4 mr-2 text-muted-foreground" />
-                <span>{data.deadline}</span>
               </CardContent>
             </Card>
           </div>
           
           {/* 邮件主题和内容 */}
           <div>
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">邮件信息</h3>
+            <h3 className="text-sm font-medium text-muted-foreground mb-2">{t('email_info')}</h3>
             <Card>
               <CardContent className="p-4">
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm font-medium">邮件主题</p>
+                    <p className="text-sm font-medium">{t('email_subject')}</p>
                     <p className="p-2 bg-muted/40 rounded mt-1">{data.subject}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium">邮件内容</p>
+                    <p className="text-sm font-medium">{t('email_content')}</p>
                     <div className="p-2 bg-muted/40 rounded mt-1 whitespace-pre-line">
                       {data.content}
                     </div>
                     {/* 添加对比图到邮件内容 */}
                     <div className="mt-4 p-3 border border-dashed rounded-md">
-                      <p className="text-sm font-medium mb-2">此邮件将包含以下碳足迹对比图：</p>
+                      <p className="text-sm font-medium mb-2">{t('carbon_footprint_chart')}</p>
                       <div className="h-48">
                         <ComparisonChartPreview 
                           competitorsData={data.competitorsData}
@@ -277,7 +190,7 @@ const DataRequestPreview: React.FC<DataRequestPreviewProps> = ({
                         />
                       </div>
                       <p className="text-xs text-muted-foreground mt-2 italic">
-                        注：此图表将作为图片附件或嵌入内容发送
+                        {t('chart_note')}
                       </p>
                     </div>
                   </div>
@@ -289,10 +202,10 @@ const DataRequestPreview: React.FC<DataRequestPreviewProps> = ({
         
         <DialogFooter className="flex space-x-2 justify-end">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            返回编辑
+            {t('return_to_edit')}
           </Button>
           <Button onClick={onConfirm}>
-            确认发送
+            {t('confirm_send')}
           </Button>
         </DialogFooter>
       </DialogContent>
