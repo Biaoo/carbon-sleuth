@@ -266,9 +266,9 @@ export const translations = {
     'urgency_low': '低 - 一个月内回复',
     'urgency_medium': '中 - 两周内回复',
     'urgency_high': '高 - 一周内回复',
-    'response_deadline': '响应截止日期',
+    'response_deadline_label': '响应截止日期',
     'select_date': '选择日期',
-    'additional_info': '附加说明（选填）',
+    'additional_info_label': '附加说明（选填）',
     'additional_info_placeholder': '请输入任何需要补充的信息或特殊要求',
     'preview_request_ignore_validation': '预览请求（忽略验证）',
     'validate_and_preview': '验证并预览',
@@ -339,6 +339,27 @@ export const translations = {
     'unspecified_email': '未指定邮箱',
     'no_items_selected': '未选择数据项',
     'asap': '尽快',
+    
+    // Prediction Confidence Levels
+    'confidence_level_low': '低',
+    'confidence_level_medium': '中等',
+    'confidence_level_high': '高',
+    
+    // Prediction Contributors
+    'contributor_materials': '原材料生产',
+    'contributor_manufacturing': '制造工艺',
+    'contributor_transportation': '运输',
+    
+    // Inference Stages
+    'stage_collecting_info': '正在收集产品基础信息...',
+    'stage_analyzing_composition': '分析产品组成信息...',
+    'stage_getting_tech_info': '获取生产技术信息...',
+    'stage_identifying_competitors': '识别相关竞品供应商...',
+    'stage_building_lca': '构建LCA模型...',
+    'stage_calculating_footprint': '计算碳足迹值...',
+    'stage_generating_report': '生成预测报告...',
+    'stage_prediction_complete': '预测完成！',
+    'estimated_completion_time': '预计完成时间: 40-60秒',
   },
   en: {
     // Navbar
@@ -593,9 +614,9 @@ export const translations = {
     'urgency_low': 'Low - Reply within a month',
     'urgency_medium': 'Medium - Reply within two weeks',
     'urgency_high': 'High - Reply within a week',
-    'response_deadline': 'Response Deadline',
+    'response_deadline_label': 'Response Deadline',
     'select_date': 'Select date',
-    'additional_info': 'Additional Information (Optional)',
+    'additional_info_label': 'Additional Information (Optional)',
     'additional_info_placeholder': 'Enter any additional information or special requirements',
     'preview_request_ignore_validation': 'Preview Request (Ignore Validation)',
     'validate_and_preview': 'Validate and Preview',
@@ -666,6 +687,27 @@ export const translations = {
     'unspecified_email': 'Unspecified Email',
     'no_items_selected': 'No items selected',
     'asap': 'as soon as possible',
+    
+    // Prediction Confidence Levels
+    'confidence_level_low': 'Low',
+    'confidence_level_medium': 'Medium',
+    'confidence_level_high': 'High',
+    
+    // Prediction Contributors
+    'contributor_materials': 'Materials Production',
+    'contributor_manufacturing': 'Manufacturing Process',
+    'contributor_transportation': 'Transportation',
+    
+    // Inference Stages
+    'stage_collecting_info': 'Collecting product basic information...',
+    'stage_analyzing_composition': 'Analyzing product composition...',
+    'stage_getting_tech_info': 'Getting production technology information...',
+    'stage_identifying_competitors': 'Identifying relevant competitor suppliers...',
+    'stage_building_lca': 'Building LCA model...',
+    'stage_calculating_footprint': 'Calculating carbon footprint...',
+    'stage_generating_report': 'Generating prediction report...',
+    'stage_prediction_complete': 'Prediction complete!',
+    'estimated_completion_time': 'Estimated completion time: 40-60 seconds',
   }
 };
 

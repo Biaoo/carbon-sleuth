@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Clock } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -10,7 +9,7 @@ interface ProgressTrackerProps {
 }
 
 const ProgressTracker = ({ isLoading, progress, stage }: ProgressTrackerProps) => {
-  const { language, t } = useLanguage();
+  const { t } = useLanguage();
   
   if (!isLoading) return null;
   
@@ -28,11 +27,7 @@ const ProgressTracker = ({ isLoading, progress, stage }: ProgressTrackerProps) =
       </div>
       <div className="flex items-center justify-center mt-4 text-sm text-muted-foreground bg-white/50 p-2 rounded-lg border border-secondary/30">
         <Clock className="h-4 w-4 mr-2 text-primary/70" />
-        <span>
-          {language === 'zh' 
-            ? "预计完成时间: 40-60秒" 
-            : "Estimated completion time: 40-60 seconds"}
-        </span>
+        <span>{t('estimated_completion_time')}</span>
       </div>
     </div>
   );

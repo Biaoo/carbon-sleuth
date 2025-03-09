@@ -26,7 +26,7 @@ interface ComparisonChartProps {
 export const ComparisonChart: React.FC<ComparisonChartProps> = ({
   data,
   height = "100%",
-  yAxisLabel = 'kg CO₂e/件',
+  yAxisLabel = 'kg CO₂e/Unit',
 }) => {
   const navigate = useNavigate();
   const { t, language } = useLanguage();

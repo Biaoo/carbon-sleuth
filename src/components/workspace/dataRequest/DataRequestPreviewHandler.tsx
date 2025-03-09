@@ -41,6 +41,19 @@ export const useDataRequestPreviewHandler = ({
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewData, setPreviewData] = useState<DataRequestPreviewData | null>(null);
 
+  // Mock data for current product prediction result with localization
+  const mockCurrentProductPrediction = {
+    carbonValue: 42.8,
+    unit: "kg CO₂e",
+    confidenceLevel: t('confidence_level_medium'),
+    uncertaintyRange: "±15%",
+    mainContributors: [
+      `${t('contributor_materials')} (58%)`,
+      `${t('contributor_manufacturing')} (27%)`,
+      `${t('contributor_transportation')} (12%)`
+    ]
+  };
+
   // Generate a data submission link for each supplier/product combination
   const generateDataSubmissionLink = (supplier: string, product: string) => {
     const timestamp = Date.now();

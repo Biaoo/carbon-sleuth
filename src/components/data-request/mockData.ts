@@ -3,16 +3,16 @@
 const bilingual = (zh: string, en: string) => ({ zh, en });
 
 export const mockCompetitorsData = [
-  { name: bilingual("竞品A - NS-310", "Competitor A - NS-310").zh, carbonValue: 47.5, unit: "kg CO₂e/件", difference: "+11.0%" },
-  { name: bilingual("竞品B - HE-305", "Competitor B - HE-305").zh, carbonValue: 51.2, unit: "kg CO₂e/件", difference: "+19.6%" },
-  { name: bilingual("竞品C - BF-290", "Competitor C - BF-290").zh, carbonValue: 49.8, unit: "kg CO₂e/件", difference: "+16.4%" },
-  { name: bilingual("竞品D - SP-320", "Competitor D - SP-320").zh, carbonValue: 39.5, unit: "kg CO₂e/件", difference: "-7.7%" }
+  { name: bilingual("竞品A - NS-310", "Competitor A - NS-310").zh, carbonValue: 47.5, unit: "kg CO₂e/Unit", difference: "+11.0%" },
+  { name: bilingual("竞品B - HE-305", "Competitor B - HE-305").zh, carbonValue: 51.2, unit: "kg CO₂e/Unit", difference: "+19.6%" },
+  { name: bilingual("竞品C - BF-290", "Competitor C - BF-290").zh, carbonValue: 49.8, unit: "kg CO₂e/Unit", difference: "+16.4%" },
+  { name: bilingual("竞品D - SP-320", "Competitor D - SP-320").zh, carbonValue: 39.5, unit: "kg CO₂e/Unit", difference: "-7.7%" }
 ];
 
 export const mockIndustryBenchmarks = [
-  { name: bilingual("行业领先水平", "Industry Leading Level").zh, value: 35.0, unit: "kg CO₂e/件" },
-  { name: bilingual("行业平均水平", "Industry Average Level").zh, value: 65.2, unit: "kg CO₂e/件" },
-  { name: bilingual("行业基准线", "Industry Baseline").zh, value: 80.0, unit: "kg CO₂e/件" }
+  { name: bilingual("行业领先水平", "Industry Leading Level").zh, value: 35.0, unit: "kg CO₂e/Unit" },
+  { name: bilingual("行业平均水平", "Industry Average Level").zh, value: 65.2, unit: "kg CO₂e/Unit" },
+  { name: bilingual("行业基准线", "Industry Baseline").zh, value: 80.0, unit: "kg CO₂e/Unit" }
 ];
 
 export const mockReportLinks = [
