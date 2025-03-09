@@ -1,9 +1,10 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const usePredictionSimulation = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [stage, setStage] = useState('');
@@ -11,18 +12,18 @@ export const usePredictionSimulation = () => {
   const handleStartPrediction = (productName: string, supplierName: string) => {
     setIsLoading(true);
     setProgress(0);
-    setStage('正在收集产品基础信息...');
+    setStage(t('stage_collecting_info'));
     
     const simulatePrediction = () => {
       const stages = [
-        { progress: 10, text: '正在收集产品基础信息...' },
-        { progress: 25, text: '分析产品组成信息...' },
-        { progress: 40, text: '获取生产技术信息...' },
-        { progress: 55, text: '识别相关竞品供应商...' },
-        { progress: 70, text: '构建LCA模型...' },
-        { progress: 85, text: '计算碳足迹值...' },
-        { progress: 95, text: '生成预测报告...' },
-        { progress: 100, text: '预测完成！' }
+        { progress: 10, text: t('stage_collecting_info') },
+        { progress: 25, text: t('stage_analyzing_composition') },
+        { progress: 40, text: t('stage_getting_tech_info') },
+        { progress: 55, text: t('stage_identifying_competitors') },
+        { progress: 70, text: t('stage_building_lca') },
+        { progress: 85, text: t('stage_calculating_footprint') },
+        { progress: 95, text: t('stage_generating_report') },
+        { progress: 100, text: t('stage_prediction_complete') }
       ];
       
       let currentStage = 0;
