@@ -22,7 +22,7 @@ export const mockResultData: PredictionResultData = {
   supplierName: bilingual('上海绿能科技有限公司', 'Shanghai Green Energy Technology Co., Ltd.'),
   date: '2023-11-20',
   carbonValue: 42.8,
-  unit: 'kg CO₂e/件',
+  unit: 'kg CO₂e/Unit',
   confidenceLevel: 'high',
   industryAvg: 65.2,
   reductionPotential: 22.4,
