@@ -12,13 +12,16 @@ import { usePredictionSimulation } from '@/components/workspace/usePredictionSim
 
 // Import types
 import { HistoryItem } from '@/components/inference/HistoryList';
+import { BilingualText } from '@/components/prediction-result/types';
+
+const bilingual = (zh: string, en: string) => ({ zh, en });
 
 // Mock historical predictions
 const historyItems: HistoryItem[] = [
   {
     id: 101,
-    productName: '可降解塑料餐具',
-    supplierName: '绿环包装科技',
+    productName: bilingual('可降解塑料餐具', 'Biodegradable Plastic Utensils'),
+    supplierName: bilingual('绿环包装科技', 'Green Loop Packaging Technology'),
     date: '2023-06-20',
     status: 'completed',
     result: 3.7,
@@ -26,8 +29,8 @@ const historyItems: HistoryItem[] = [
   },
   {
     id: 102,
-    productName: '竹纤维床单',
-    supplierName: '自然家居集团',
+    productName: bilingual('竹纤维床单', 'Bamboo Fiber Bedsheet'),
+    supplierName: bilingual('自然家居集团', 'Natural Home Group'),
     date: '2023-06-15',
     status: 'completed',
     result: 2.1,
@@ -35,8 +38,8 @@ const historyItems: HistoryItem[] = [
   },
   {
     id: 103,
-    productName: '太阳能移动电源',
-    supplierName: '绿能科技',
+    productName: bilingual('太阳能移动电源', 'Solar Mobile Power Bank'),
+    supplierName: bilingual('绿能科技', 'Green Energy Technology'),
     date: '2023-06-10',
     status: 'completed',
     result: 8.5,

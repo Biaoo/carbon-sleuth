@@ -1,43 +1,47 @@
-
 import React, { useEffect, useState } from 'react';
 import { BarChart2, Users, Building, Leaf } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+const bilingual = (zh: string, en: string) => ({ zh, en });
+
 
 const stats = [
   {
     icon: <BarChart2 className="h-6 w-6 text-data-blue" />,
     value: 3570,
-    label: '已分析产品数量',
+    label: bilingual('已分析产品数量', 'Analyzed Product Count'),
     suffix: '+',
     increment: 42
   },
   {
     icon: <Building className="h-6 w-6 text-tech-purple" />,
     value: 18,
-    label: '覆盖行业数量',
+    label: bilingual('覆盖行业数量', 'Industry Coverage Count'),
     suffix: '',
     increment: 1
   },
   {
     icon: <Leaf className="h-6 w-6 text-eco-green" />,
     value: 25,
-    label: '平均减碳潜力',
+    label: bilingual('平均减碳潜力', 'Average Carbon Reduction Potential'),
     suffix: '%',
     increment: 0.4
   },
   {
     icon: <Users className="h-6 w-6 text-action-orange" />,
     value: 98,
-    label: '用户满意度',
+    label: bilingual('用户满意度', 'User Satisfaction Rate'),
     suffix: '%',
     increment: 0.1
   }
 ];
 
 const Stats = () => {
+  const { language } = useLanguage();
   const [animatedStats, setAnimatedStats] = useState(stats.map(stat => ({
     ...stat,
     displayValue: 0
   })));
+  
 
   useEffect(() => {
     let mounted = true;
@@ -102,7 +106,9 @@ const Stats = () => {
                   <span className="text-3xl font-bold">{Math.floor(stat.displayValue)}</span>
                   <span className="text-xl font-semibold">{stat.suffix}</span>
                 </div>
-                <p className="text-sm text-muted-foreground">{stat.label}</p>
+                <p className="text-sm text-muted-foreground">
+                  {typeof stat.label === 'string' ? stat.label : language === 'zh' ? stat.label.zh : stat.label.en}
+                </p>
               </div>
             </div>
           ))}

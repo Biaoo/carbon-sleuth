@@ -367,7 +367,7 @@ According to research [5], the energy consumption of this product's manufacturin
       title: bilingual("行业基准对比", "Industry Benchmark Comparison"),
       description: bilingual("与光伏产品行业基准相比，本产品碳足迹表现优异", "Compared to the photovoltaic product industry benchmark, this product's carbon footprint performance is excellent"),
       data: [
-        { category: bilingual("行业基准线", "Industry Benchmark"), value: 65.2, unit: "kg CO₂e/件", difference: 22.4, error: 6.5 }
+        { category: bilingual("行业基准线", "Industry Benchmark"), value: 65.2, unit: "kg CO₂e/Unit", difference: 22.4, error: 6.5 }
       ]
     },
     competitorsComparison: {

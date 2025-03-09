@@ -12,7 +12,7 @@ interface WorkspaceInferenceHistoryProps {
 
 const WorkspaceInferenceHistory: React.FC<WorkspaceInferenceHistoryProps> = ({ historyItems }) => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   // Function to handle viewing details
   const handleViewDetails = (id: number) => {
@@ -42,8 +42,12 @@ const WorkspaceInferenceHistory: React.FC<WorkspaceInferenceHistoryProps> = ({ h
             <div key={item.id} className="p-4 hover:bg-muted/20 transition-colors">
               <div className="flex justify-between items-start">
                 <div>
-                  <h4 className="font-medium">{item.productName}</h4>
-                  <p className="text-sm text-muted-foreground">{item.supplierName}</p>
+                  <h4 className="font-medium">
+                    {typeof item.productName === 'string' ? item.productName : language === 'zh' ? item.productName.zh : item.productName.en}
+                  </h4>
+                  <p className="text-sm text-muted-foreground">
+                    {typeof item.supplierName === 'string' ? item.supplierName : language === 'zh' ? item.supplierName.zh : item.supplierName.en}
+                  </p>
                   <div className="flex items-center mt-2 text-sm">
                     <span className="text-muted-foreground">{t('prediction_date')}: {item.date}</span>
                     <span className="mx-2">•</span>

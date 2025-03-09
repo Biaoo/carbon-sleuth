@@ -1,16 +1,16 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Clock, Search, History } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { BilingualText } from '../prediction-result/types';
 
 // History item type
 export interface HistoryItem {
   id: number;
-  productName: string;
-  supplierName: string;
+  productName: string | BilingualText;
+  supplierName: string | BilingualText;
   date: string;
   status: string;
   result: number;
@@ -23,7 +23,7 @@ interface HistoryListProps {
 
 const HistoryList = ({ historyItems }: HistoryListProps) => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   
   return (
     <div className="bg-white rounded-xl border border-border shadow-subtle">
@@ -46,8 +46,12 @@ const HistoryList = ({ historyItems }: HistoryListProps) => {
           <div key={item.id} className="p-6 hover:bg-secondary/30 transition-colors">
             <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
               <div>
-                <h3 className="font-semibold mb-1">{item.productName}</h3>
-                <p className="text-sm text-muted-foreground mb-2">{item.supplierName}</p>
+                <h3 className="font-semibold mb-1">
+                  {typeof item.productName === 'string' ? item.productName : language === 'zh' ? item.productName.zh : item.productName.en}
+                </h3>
+                <p className="text-sm text-muted-foreground mb-2">
+                  {typeof item.supplierName === 'string' ? item.supplierName : language === 'zh' ? item.supplierName.zh : item.supplierName.en}
+                </p>
                 <div className="flex items-center text-sm text-muted-foreground">
                   <Clock className="h-4 w-4 mr-1" />
                   <span>{item.date}</span>
