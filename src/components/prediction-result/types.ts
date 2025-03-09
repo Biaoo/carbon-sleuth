@@ -6,7 +6,7 @@ export interface PredictionResultData {
   date: string;
   carbonValue: number;
   unit: string;
-  confidenceLevel: string;
+  confidenceLevel: string | BilingualText;
   industryAvg: number;
   reductionPotential: number;
   dataQuality: number;
