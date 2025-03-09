@@ -1,469 +1,899 @@
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+// Available languages
+export type Language = 'zh' | 'en';
 
-// Define language type
-type Language = 'en' | 'zh';
-
-// Define translations type
-interface Translations {
-  [key: string]: {
-    en: string;
-    zh: string;
-  };
-}
-
-// Interface for the context value
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
 }
 
-// Create translations object
-const translations: Translations = {
-  // Navigation
-  app_name: {
-    en: 'Carbon Footprint Platform',
-    zh: '碳足迹平台'
-  },
-  home: {
-    en: 'Home',
-    zh: '首页'
-  },
-  search: {
-    en: 'Search',
-    zh: '搜索'
-  },
-  inference: {
-    en: 'Prediction',
-    zh: '预测'
-  },
-  data_request: {
-    en: 'Data Request',
-    zh: '数据请求'
-  },
-  recommendation: {
-    en: 'Recommendation',
-    zh: '推荐'
-  },
-  workspace: {
-    en: 'Workspace',
-    zh: '工作台'
-  },
-  login: {
-    en: 'Login',
-    zh: '登录'
-  },
-  
-  // Home page
-  hero_title: {
-    en: 'Predict and Optimize Product Carbon Footprint',
-    zh: '预测和优化产品碳足迹'
-  },
-  hero_subtitle: {
-    en: 'Leverage AI to understand, measure, and reduce the environmental impact of your products across the entire lifecycle',
-    zh: '利用人工智能理解、测量和减少产品全生命周期的环境影响'
-  },
-  get_started: {
-    en: 'Get Started',
-    zh: '开始使用'
-  },
-  learn_more: {
-    en: 'Learn More',
-    zh: '了解更多'
-  },
-  cta_title: {
-    en: 'Ready to Reduce Your Product\'s Carbon Footprint?',
-    zh: '准备好减少您产品的碳足迹了吗？'
-  },
-  cta_description: {
-    en: 'Start with our AI-powered carbon footprint prediction tool to identify hotspots and receive tailored optimization recommendations.',
-    zh: '使用我们由AI驱动的碳足迹预测工具，识别热点并获取定制化的优化建议。'
-  },
-  start_prediction: {
-    en: 'Start Prediction',
-    zh: '开始预测'
-  },
-  search_products: {
-    en: 'Search Products',
-    zh: '搜索产品'
-  },
-  core_features: {
-    en: 'Core Features',
-    zh: '核心功能'
-  },
-  features_description: {
-    en: 'Our platform offers a comprehensive suite of tools to help you manage and reduce the carbon footprint of your products.',
-    zh: '我们的平台提供全面的工具套件，帮助您管理和减少产品的碳足迹。'
-  },
-  feature_search_title: {
-    en: 'Product Database Search',
-    zh: '产品数据库搜索'
-  },
-  feature_search_desc: {
-    en: 'Access our extensive database of products with verified carbon footprint data for benchmarking.',
-    zh: '访问我们广泛的产品数据库，获取经过验证的碳足迹数据进行基准比较。'
-  },
-  feature_prediction_title: {
-    en: 'AI-Powered Prediction',
-    zh: 'AI驱动的预测'
-  },
-  feature_prediction_desc: {
-    en: 'Quickly estimate your product\'s carbon footprint using our advanced machine learning models.',
-    zh: '使用我们的高级机器学习模型快速估算您的产品碳足迹。'
-  },
-  feature_comparison_title: {
-    en: 'Competitive Analysis',
-    zh: '竞争分析'
-  },
-  feature_comparison_desc: {
-    en: 'Compare your product\'s environmental performance against industry benchmarks and competitors.',
-    zh: '将您的产品环境表现与行业基准和竞争对手进行比较。'
-  },
-  feature_data_request_title: {
-    en: 'Supplier Data Collection',
-    zh: '供应商数据收集'
-  },
-  feature_data_request_desc: {
-    en: 'Streamline the process of requesting and collecting carbon footprint data from your suppliers.',
-    zh: '简化从供应商请求和收集碳足迹数据的过程。'
-  },
-  feature_recommendation_title: {
-    en: 'Optimization Recommendations',
-    zh: '优化建议'
-  },
-  feature_recommendation_desc: {
-    en: 'Receive personalized suggestions to optimize your product and reduce its carbon footprint.',
-    zh: '获取个性化建议，优化您的产品并减少其碳足迹。'
-  },
-  
-  // Prediction Result
-  product_info: {
-    en: 'Product Information',
-    zh: '产品信息'
-  },
-  carbon_footprint: {
-    en: 'Carbon Footprint',
-    zh: '碳足迹'
-  },
-  industry_comparison: {
-    en: 'Industry Comparison',
-    zh: '行业比较'
-  },
-  improvement_suggestions: {
-    en: 'Improvement Suggestions',
-    zh: '改进建议'
-  },
-  technical_details: {
-    en: 'Technical Details',
-    zh: '技术详情'
-  },
-  lca_model: {
-    en: 'LCA Model',
-    zh: '生命周期评估模型'
-  },
-  similar_products: {
-    en: 'Similar Products',
-    zh: '类似产品'
-  },
-  lca_model_flowchart: {
-    en: 'LCA Model Flowchart',
-    zh: '生命周期评估模型流程图'
-  },
-  
-  // Data Request Form
-  data_request_form_title: {
-    en: 'Create Data Request',
-    zh: '创建数据请求'
-  },
-  data_request_form_subtitle: {
-    en: 'Fill out the form below to create a data request for your supplier',
-    zh: '填写以下表格，为您的供应商创建数据请求'
-  },
-  supplier_product_info_form: {
-    en: 'Supplier & Product Information',
-    zh: '供应商和产品信息'
-  },
-  supplier_name_form: {
-    en: 'Supplier Name',
-    zh: '供应商名称'
-  },
-  supplier_name_placeholder_form: {
-    en: 'Enter supplier company name',
-    zh: '输入供应商公司名称'
-  },
-  product_name_form: {
-    en: 'Product Name',
-    zh: '产品名称'
-  },
-  product_name_placeholder_form: {
-    en: 'Enter product name or model',
-    zh: '输入产品名称或型号'
-  },
-  contact_info_form: {
-    en: 'Contact Information',
-    zh: '联系信息'
-  },
-  contact_name_form: {
-    en: 'Contact Name',
-    zh: '联系人姓名'
-  },
-  contact_name_placeholder_form: {
-    en: 'Enter contact person name',
-    zh: '输入联系人姓名'
-  },
-  contact_email_form: {
-    en: 'Email',
-    zh: '邮箱'
-  },
-  contact_email_placeholder_form: {
-    en: 'Enter contact email',
-    zh: '输入联系人邮箱'
-  },
-  contact_phone_form: {
-    en: 'Phone (Optional)',
-    zh: '电话（可选）'
-  },
-  contact_phone_placeholder_form: {
-    en: 'Enter contact phone number',
-    zh: '输入联系人电话号码'
-  },
-  request_details_form: {
-    en: 'Request Details',
-    zh: '请求详情'
-  },
-  request_items_form: {
-    en: 'Requested Data',
-    zh: '请求数据'
-  },
-  request_items_description_form: {
-    en: 'Select the data you want to request from the supplier',
-    zh: '选择您想从供应商处请求的数据'
-  },
-  product_cf_data: {
-    en: 'Product Carbon Footprint Data',
-    zh: '产品碳足迹数据'
-  },
-  material_composition: {
-    en: 'Material Composition',
-    zh: '材料成分'
-  },
-  energy_consumption: {
-    en: 'Energy Consumption Data',
-    zh: '能源消耗数据'
-  },
-  manufacturing_process: {
-    en: 'Manufacturing Process Details',
-    zh: '制造过程详情'
-  },
-  transportation_data: {
-    en: 'Transportation & Logistics Data',
-    zh: '运输和物流数据'
-  },
-  certifications: {
-    en: 'Environmental Certifications',
-    zh: '环境认证'
-  },
-  deadline_form: {
-    en: 'Response Deadline',
-    zh: '响应截止日期'
-  },
-  deadline_description_form: {
-    en: 'When do you need this data by?',
-    zh: '您需要在何时获得此数据？'
-  },
-  urgency_form: {
-    en: 'Urgency Level',
-    zh: '紧急程度'
-  },
-  low_urgency: {
-    en: 'Low',
-    zh: '低'
-  },
-  medium_urgency: {
-    en: 'Medium',
-    zh: '中'
-  },
-  high_urgency: {
-    en: 'High',
-    zh: '高'
-  },
-  additional_info_form: {
-    en: 'Additional Information',
-    zh: '附加信息'
-  },
-  additional_info_placeholder: {
-    en: 'Enter any additional details or specific requirements for this data request...',
-    zh: '输入有关此数据请求的任何其他详细信息或具体要求...'
-  },
-  preview_request_button: {
-    en: 'Preview Request',
-    zh: '预览请求'
-  },
-  send_request_button: {
-    en: 'Send Request',
-    zh: '发送请求'
-  },
-  edit_request_button: {
-    en: 'Edit Request',
-    zh: '编辑请求'
-  },
-  
-  // Workspace
-  workspace_overview: {
-    en: 'Overview',
-    zh: '概览'
-  },
-  workspace_inference_history: {
-    en: 'Prediction History',
-    zh: '预测历史'
-  },
-  workspace_data_collections: {
-    en: 'Data Collections',
-    zh: '数据集合'
-  },
-  workspace_data_request: {
-    en: 'Data Request',
-    zh: '数据请求'
-  },
-  workspace_request_management: {
-    en: 'Request Management',
-    zh: '请求管理'
-  },
-  workspace_settings: {
-    en: 'Settings',
-    zh: '设置'
-  },
-  request_management: {
-    en: 'Request Management',
-    zh: '请求管理'
-  },
-  request_records: {
-    en: 'Request Records',
-    zh: '请求记录'
-  },
-  search_requests: {
-    en: 'Search requests...',
-    zh: '搜索请求...'
-  },
-  filter_status: {
-    en: 'Filter by status',
-    zh: '按状态筛选'
-  },
-  all_statuses: {
-    en: 'All Statuses',
-    zh: '所有状态'
-  },
-  request_details: {
-    en: 'Request Details',
-    zh: '请求详情'
-  },
-  request_id: {
-    en: 'Request ID',
-    zh: '请求ID'
-  },
-  supplier: {
-    en: 'Supplier',
-    zh: '供应商'
-  },
-  product: {
-    en: 'Product',
-    zh: '产品'
-  },
-  contact_method: {
-    en: 'Contact Method',
-    zh: '联系方式'
-  },
-  send_date: {
-    en: 'Send Date',
-    zh: '发送日期'
-  },
-  response_deadline: {
-    en: 'Response Deadline',
-    zh: '响应截止日期'
-  },
-  response_progress: {
-    en: 'Response Progress',
-    zh: '响应进度'
-  },
-  request_content: {
-    en: 'Request Content',
-    zh: '请求内容'
-  },
-  request_attachments: {
-    en: 'Request Attachments',
-    zh: '请求附件'
-  },
-  download: {
-    en: 'Download',
-    zh: '下载'
-  },
-  supplier_response: {
-    en: 'Supplier Response',
-    zh: '供应商响应'
-  },
-  send_reminder: {
-    en: 'Send Reminder',
-    zh: '发送提醒'
-  },
-  export_details: {
-    en: 'Export Details',
-    zh: '导出详情'
-  },
-  cancel_request: {
-    en: 'Cancel Request',
-    zh: '取消请求'
-  },
-  select_request_view_details: {
-    en: 'Select a Request to View Details',
-    zh: '选择请求查看详情'
-  },
-  select_request_description: {
-    en: 'Click on any request from the list on the left to view its details and manage the request status.',
-    zh: '点击左侧列表中的任何请求，查看其详细信息并管理请求状态。'
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+// Translations
+export const translations = {
+  zh: {
+    // Navbar
+    'Navbar.home': '首页',
+    'Navbar.product_search': '产品搜索',
+    'Navbar.workspace': '工作台',
+    'Navbar.low_carbon_recommendations': '低碳推荐',
+    'Navbar.login': '登录',
+    
+    // Hero section
+    'Hero.hero_badge': '可持续未来的智能选择',
+    'Hero.hero_title_1': '智能分析产品碳足迹',
+    'Hero.hero_title_2': '引领绿色供应链革新',
+    'Hero.hero_description': '通过AI驱动的精准碳足迹分析，帮助企业优化供应链，实现可持续发展目标，提升市场竞争力。',
+    'Hero.search_placeholder': '搜索产品或供应商...',
+    'Hero.search_button': '搜索',
+    'Hero.tags': ['电子产品', '纺织品', '食品饮料', '建筑材料', '包装材料'],
+    'Hero.start_prediction': '开始预测产品碳足迹',
+    'Hero.view_recommendations': '查看低碳供应商推荐',
+    
+    // Features section
+    'Features.core_features': '核心功能',
+    'Features.features_description': '通过先进的AI技术和专业的碳足迹分析方法，我们为企业提供全方位的低碳转型解决方案',
+    'Features.feature_search_title': '产品碳足迹搜索与浏览',
+    'Features.feature_search_desc': '快速搜索产品和供应商的碳足迹数据，清晰了解数据来源，获取相关低碳建议。',
+    'Features.feature_prediction_title': '产品碳足迹预测',
+    'Features.feature_prediction_desc': '基于AI推理技术，对产品碳足迹进行精准预测，生成详细分析报告和可视化结果。',
+    'Features.feature_comparison_title': '竞品碳足迹对比',
+    'Features.feature_comparison_desc': '多维度比较竞争对手产品的碳足迹表现，识别市场优势和优化空间。',
+    'Features.feature_data_request_title': '供应商数据请求',
+    'Features.feature_data_request_desc': '一键生成专业的数据请求，通过多种渠道与供应商高效沟通，获取真实碳足迹数据。',
+    'Features.feature_recommendation_title': '低碳供应商推荐',
+    'Features.feature_recommendation_desc': '智能推荐碳足迹表现优异的供应商，展示减碳亮点和最佳实践案例。',
+    
+    // Call to Action section
+    'CallToAction.cta_title': '开始您的低碳供应链之旅',
+    'CallToAction.cta_description': '立即使用我们的AI驱动碳足迹分析工具，挖掘减碳潜力，发现商业机遇，引领可持续发展。',
+    'CallToAction.search_products': '搜索产品碳足迹',
+    
+    // Recent Products section
+    'RecentProducts.recent_products_title': '最新产品碳足迹',
+    'RecentProducts.recent_products_desc': '浏览最新添加的产品碳足迹数据，掌握行业绿色发展动态',
+    'RecentProducts.view_all': '查看全部',
+    'RecentProducts.actual_data': '实际数据',
+    'RecentProducts.prediction_result': '预测结果',
+    'RecentProducts.details': '详情',
+    
+    // Low Carbon Recommendations section
+    'LowCarbonRecommendations.low_carbon_suppliers_title': '优秀低碳供应商推荐',
+    'LowCarbonRecommendations.low_carbon_suppliers_desc': '发现碳足迹表现卓越的供应商，助力绿色供应链建设',
+    'LowCarbonRecommendations.view_all_recommendations': '查看全部推荐',
+    'LowCarbonRecommendations.carbon_footprint_rating': '碳足迹评分',
+    'LowCarbonRecommendations.low_carbon_highlights': '低碳亮点',
+    'LowCarbonRecommendations.view_supplier_details': '查看供应商详情',
+    
+    // Footer
+    'Footer.company_description': '专注于提供产品碳足迹分析和环保供应链优化的先进解决方案。让可持续发展成为每个企业的竞争优势。',
+    'Footer.company_address': '上海市浦东新区张江高科技园区',
+    'Footer.quick_links': '快速链接',
+    'Footer.lca_inference': 'LCA模型推理',
+    'Footer.data_request_link': '数据请求',
+    'Footer.resource_center': '资源中心',
+    'Footer.carbon_footprint_wiki': '碳足迹百科',
+    'Footer.industry_reports': '行业报告',
+    'Footer.best_practices': '最佳实践',
+    'Footer.policy_updates': '政策动态',
+    'Footer.faq': '常见问题',
+    'Footer.subscribe': '订阅动态',
+    'Footer.subscribe_desc': '订阅我们的新闻邮件，及时了解最新的可持续发展趋势和产品更新。',
+    'Footer.email_placeholder': '您的邮箱地址',
+    'Footer.subscribe_button': '订阅',
+    'Footer.privacy_policy': '隐私政策',
+    'Footer.terms_of_use': '使用条款',
+    'Footer.about_us': '关于我们',
+    
+    // Comparison Chart
+    'ComparisonChart.uncertainty_range_info': '误差棒表示碳足迹计算的不确定度范围',
+    'ComparisonChart.industry_benchmark': '行业基准',
+    'ComparisonChart.lowest_competitor': '最低竞品',
+    'ComparisonChart.carbon_footprint_value': '碳足迹值',
+    
+    // Prediction Result
+    'PredictionResult.prediction_result_badge': '预测结果',
+    'PredictionResult.prediction_date': '预测日期',
+    'PredictionResult.copy_link': '复制链接',
+    'PredictionResult.share': '分享',
+    'PredictionResult.export_report': '导出报告',
+    'PredictionResult.request_supplier_data': '请求供应商实际数据',
+    'PredictionResult.request_data_tooltip': '预测数据只是基于现有信息的估算。请求供应商提供实际数据，以获得更精确的碳足迹分析。',
+    'PredictionResult.product_info': '产品详细信息',
+    'PredictionResult.reference_sources': '参考来源',
+    
+    // Prediction Result additional translations
+    'PredictionResult.view_report': '查看报告',
+    'PredictionResult.carbon_footprint_breakdown': '碳足迹组成明细',
+    'PredictionResult.uncertainty_range': '不确定度范围',
+    'PredictionResult.prediction_history': '历史预测记录',
+    
+    // PredictionResult component translations
+    'PredictionResult.carbon_footprint_prediction_result': '碳足迹预测结果',
+    'PredictionResult.product_carbon_industry_comparison': '产品碳足迹值与行业对比分析',
+    'PredictionResult.industry_comparison_analysis': '行业对比分析',
+    'PredictionResult.main_component_analysis': '主要组成分析',
+    'PredictionResult.carbon_footprint_composition': '碳足迹主要来源组成',
+    'PredictionResult.lifecycle_phase_analysis': '生命周期阶段分析',
+    'PredictionResult.carbon_footprint_distribution': '产品全生命周期各阶段碳足迹分布',
+    'PredictionResult.emission_reduction_suggestions': '减排优化建议',
+    'PredictionResult.carbon_reduction_suggestions_desc': '基于产品特性和行业最佳实践的碳减排建议',
+    'PredictionResult.similar_products_comparison': '相似产品对比',
+    'PredictionResult.similar_products_comparison_desc': '与市场上同类产品的碳足迹对比',
+    'PredictionResult.compared_to_current': '低于当前产品',
+    'PredictionResult.higher_than_current': '高于当前产品',
+    'PredictionResult.click_for_details': '点击查看详情',
+    
+    // Workspace Request Management
+    'WorkspaceRequestManagement.request_management': '请求管理',
+    'WorkspaceRequestManagement.request_records': '请求记录',
+    'WorkspaceRequestManagement.search_requests': '搜索请求...',
+    'WorkspaceRequestManagement.filter_status': '状态筛选',
+    'WorkspaceRequestManagement.all_statuses': '全部状态',
+    'WorkspaceRequestManagement.request_details': '请求详情',
+    'WorkspaceRequestManagement.request_id': '请求 ID',
+    'WorkspaceRequestManagement.supplier': '供应商',
+    'WorkspaceRequestManagement.product': '产品',
+    'WorkspaceRequestManagement.contact_method': '联系方式',
+    'WorkspaceRequestManagement.send_date': '发送日期',
+    'WorkspaceRequestManagement.response_deadline': '响应截止日期',
+    'WorkspaceRequestManagement.response_progress': '响应进度',
+    'WorkspaceRequestManagement.request_content': '请求内容',
+    'WorkspaceRequestManagement.request_attachments': '请求附件',
+    'WorkspaceRequestManagement.download': '下载',
+    'WorkspaceRequestManagement.supplier_response': '供应商响应',
+    'WorkspaceRequestManagement.send_reminder': '发送提醒',
+    'WorkspaceRequestManagement.export_details': '导出详情',
+    'WorkspaceRequestManagement.cancel_request': '取消请求',
+    'WorkspaceRequestManagement.select_request_view_details': '选择请求查看详情',
+    'WorkspaceRequestManagement.select_request_description': '从左侧列表中选择一个请求记录，查看详细信息和供应商响应',
+    
+    // Workspace Data Collections
+    'WorkspaceDataCollections.data_collections': '数据集合',
+    'WorkspaceDataCollections.product_carbon_data': '产品碳足迹数据',
+    'WorkspaceDataCollections.production_process_data': '生产工艺数据',
+    'WorkspaceDataCollections.last_updated': '最后更新',
+    'WorkspaceDataCollections.view': '查看',
+    'WorkspaceDataCollections.product_carbon_data_desc': '包含50个不同产品的碳足迹数据',
+    'WorkspaceDataCollections.production_process_data_desc': '包含30种不同生产工艺的能耗数据',
+    
+    // Search Page
+    'SearchPage.product_carbon_footprint_search': '产品碳足迹搜索',
+    'SearchPage.search_product_supplier_category': '搜索产品名称、供应商或类别...',
+    'SearchPage.filter': '筛选',
+    'SearchPage.filter_and_sort': '筛选与排序',
+    'SearchPage.industry': '行业',
+    'SearchPage.data_type': '数据类型',
+    'SearchPage.sort_by': '排序方式',
+    'SearchPage.clear_filters': '清除筛选',
+    'SearchPage.applied_filters': '已应用筛选',
+    'SearchPage.search': '搜索',
+    'SearchPage.sort': '排序',
+    'SearchPage.clear_all': '清除全部',
+    'SearchPage.found': '找到',
+    'SearchPage.results': '个结果',
+    'SearchPage.no_results_found': '未找到相关结果',
+    'SearchPage.try_adjusting_search': '尝试调整搜索条件或筛选选项，也可以使用我们的预测功能生成新的碳足迹数据。',
+    'SearchPage.start_new_prediction': '开始新的预测',
+    'SearchPage.related_supplier_recommendations': '相关供应商推荐',
+    'SearchPage.product_count': '产品数量',
+    
+    // Workspace General
+    'WorkspaceGeneral.return_to_home': '返回主页',
+    'WorkspaceGeneral.return': '返回',
+    'WorkspaceGeneral.menu': '菜单',
+    'WorkspaceGeneral.workspace_modules': '工作台模块',
+    'WorkspaceGeneral.function_modules': '功能模块',
+    'WorkspaceGeneral.pro_features': '专业版功能',
+    'WorkspaceGeneral.pro_features_desc': '使用专业版解锁更多高级功能与数据分析',
+    'WorkspaceGeneral.upgrade_to_pro': '升级专业版',
+    'WorkspaceGeneral.close': '关闭',
+    'WorkspaceGeneral.data_request': '数据请求',
+    
+    // Workspace Inference
+    'WorkspaceInference.carbon_footprint_prediction': '碳足迹预测',
+    'WorkspaceInference.new_prediction': '新建预测',
+    'WorkspaceInference.history_records': '历史记录',
+    'WorkspaceInference.in_progress': '进行中',
+    'WorkspaceInference.no_active_predictions': '当前没有进行中的预测任务',
+    'WorkspaceInference.prediction_history_title': '预测历史记录',
+    'WorkspaceInference.history_prediction_list': '历史预测列表',
+    'WorkspaceInference.view_details': '查看详情',
+    
+    // Workspace Data Request
+    'WorkspaceDataRequest.new_request': '新建请求',
+    'WorkspaceDataRequest.historical_requests': '历史请求',
+    'WorkspaceDataRequest.redirect_from_prediction': '从预测结果页面跳转',
+    'WorkspaceDataRequest.creating_data_request': '您正在为',
+    'WorkspaceDataRequest.of_supplier': '的产品',
+    'WorkspaceDataRequest.creating_data_request_2': '创建数据请求。',
+    'WorkspaceDataRequest.prefilled_info': '我们已为您预填了部分信息，请补充完整其余内容。',
+
+    // InferenceForm
+    'InferenceForm.product_name_placeholder': '产品名称（如：有机棉T恤）',
+    'InferenceForm.product_category_placeholder': '产品类别（如：纺织品、电子产品）',
+    'InferenceForm.supplier_info': '供应商信息',
+    'InferenceForm.supplier_name_placeholder': '供应商名称（如：绿能科技有限公司）',
+    'InferenceForm.product_description': '产品描述（可选）',
+    'InferenceForm.product_description_placeholder': '简要描述产品特性、材料、制造工艺等信息，将有助于提高预测准确性',
+    'InferenceForm.environmental_tips': '环保小贴士',
+    'InferenceForm.environmental_tips_desc': '提供详细的产品信息可以帮助我们更准确地预测碳足迹。如有产品技术文档，可在预测后上传以提高准确性。',
+    'InferenceForm.cancel_prediction': '取消预测',
+    'InferenceForm.save_draft': '保存草稿',
+    
+    // PredictionResult
+    'PredictionResult.return_button': '返回',
+    'PredictionResult.link_copied': '链接已复制',
+    'PredictionResult.link_copied_desc': '预测结果链接已复制到剪贴板',
+    'PredictionResult.prediction_needs_accuracy': '预测数据存在不确定性？',
+    'PredictionResult.prediction_accuracy_desc': '本页面显示的数据仅为预测结果，可能与实际情况存在差异。向供应商请求实际数据，获取更精准的碳足迹分析与减排建议。',
+    'PredictionResult.need_more_accurate_data': '需要更准确的数据分析？',
+    'PredictionResult.accurate_data_desc': '通过获取供应商的实际生产数据，我们可以为您提供更精确的碳足迹分析和减排方案。向供应商发送数据请求，只需几分钟即可完成。',
+    'prediction_disclaimer': '本结果由企业已披露信息及相关统计数据推理得到，仅为预测结果，不能完全反映供应商实际生产水平。对于碳核算、认证场景，应使用企业实际数据，实际数据缺失时，将采用已有行业均值数据作为缺省值。',
+    'ImprovementDifficulty.improvement_difficulty_easy': '容易',
+    'ImprovementDifficulty.improvement_difficulty_medium': '中等',
+    'ImprovementDifficulty.improvement_difficulty_hard': '困难',
+    'PotentialReduction.potential_reduction': '潜在减排',
+
+    // Data Request Form
+    'DataRequestForm.supplier_product_info_form': '供应商与产品信息',
+    'DataRequestForm.supplier_name_form': '供应商名称',
+    'DataRequestForm.supplier_name_placeholder_form': '请输入供应商名称',
+    'DataRequestForm.product_name_form': '产品名称',
+    'DataRequestForm.product_name_placeholder_form': '请输入产品名称',
+    'DataRequestForm.contact_info_form': '联系信息',
+    'DataRequestForm.contact_name_form': '联系人姓名',
+    'DataRequestForm.contact_name_placeholder_form': '请输入联系人姓名',
+    'DataRequestForm.contact_email_form': '联系邮箱',
+    'DataRequestForm.contact_email_placeholder_form': '请输入联系邮箱',
+    'DataRequestForm.contact_phone_form': '联系电话（选填）',
+    'DataRequestForm.contact_phone_placeholder_form': '请输入联系电话',
+    'DataRequestForm.request_data_items': '请求数据项',
+    'DataRequestForm.request_data_items_description': '选择您需要供应商提供的数据类型',
+    'DataRequestForm.product_specs': '产品规格参数',
+    'DataRequestForm.material_composition': '材料组成情况',
+    'DataRequestForm.manufacturing_process': '制造工艺流程',
+    'DataRequestForm.energy_consumption': '能源消耗数据',
+    'DataRequestForm.transportation_logistics': '运输物流信息',
+    'DataRequestForm.certifications': '相关认证文件',
+    'DataRequestForm.test_reports': '检测报告数据',
+    'DataRequestForm.packaging_details': '包装材料详情',
+    'DataRequestForm.suppliers_info': '上游供应商信息',
+    'DataRequestForm.waste_data': '废弃物处理数据',
+    'DataRequestForm.urgency_level': '紧急程度',
+    'DataRequestForm.urgency_low': '低 - 一个月内回复',
+    'DataRequestForm.urgency_medium': '中 - 两周内回复',
+    'DataRequestForm.urgency_high': '高 - 一周内回复',
+    'DataRequestForm.response_deadline_form': '响应截止日期',
+    'DataRequestForm.select_date': '选择日期',
+    'DataRequestForm.additional_info_form': '附加说明（选填）',
+    'DataRequestForm.additional_info_placeholder': '请输入任何需要补充的信息或特殊要求',
+    'DataRequestForm.preview_request_ignore_validation': '预览请求（忽略验证）',
+    'DataRequestForm.validate_and_preview': '验证并预览',
+    
+    // Data Request Preview
+    'DataRequestPreview.data_request_preview': '数据请求预览',
+    'DataRequestPreview.confirm_content_accuracy': '请确认以下内容是否准确，准确无误后点击发送',
+    'DataRequestPreview.supplier_info_label': '供应商信息',
+    'DataRequestPreview.supplier_name_label': '供应商名称',
+    'DataRequestPreview.product_info_label': '产品信息',
+    'DataRequestPreview.product_name_label': '产品名称',
+    'DataRequestPreview.contact_info_label': '联系信息',
+    'DataRequestPreview.contact_name_label': '联系人',
+    'DataRequestPreview.contact_email_label': '邮箱',
+    'DataRequestPreview.contact_phone_label': '电话',
+    'DataRequestPreview.request_details_label': '请求详情',
+    'DataRequestPreview.requested_data': '请求的数据',
+    'DataRequestPreview.urgency_level_label': '紧急程度',
+    'DataRequestPreview.response_deadline_label': '响应截止日期',
+    'DataRequestPreview.additional_notes': '附加说明',
+    'DataRequestPreview.email_info': '邮件信息',
+    'DataRequestPreview.email_subject': '邮件主题',
+    'DataRequestPreview.email_content': '邮件内容',
+    'DataRequestPreview.carbon_footprint_chart': '此邮件将包含以下碳足迹对比图：',
+    'DataRequestPreview.chart_note': '注：此图表将作为图片附件或嵌入内容发送',
+    'DataRequestPreview.return_to_edit': '返回编辑',
+    'DataRequestPreview.confirm_send': '确认发送',
+    
+    // Email Content
+    'DataRequestEmail.email_subject_template': '关于{product}碳足迹数据收集 - {supplier}',
+    'DataRequestEmail.email_greeting': '尊敬的{supplier}团队：',
+    'DataRequestEmail.email_hello': '您好！',
+    'DataRequestEmail.email_intro_with_name': '我们是{name}，来自碳知源环保科技有限公司的采购团队。我们最近一直在关注贵公司的{product}，对其性能和环保特性非常感兴趣。',
+    'DataRequestEmail.email_intro_without_name': '我们是碳知源环保科技有限公司的采购团队。我们最近一直在关注贵公司的{product}，对其性能和环保特性非常感兴趣。',
+    'DataRequestEmail.email_purpose': '作为一家重视可持续发展的企业，我们正在对所有供应链产品进行碳足迹评估，以期打造更加环保的产品线。在浏览贵公司产品资料的过程中，我们注意到{product}在行业内具有竞争力，因此希望能获取更详细的产品碳足迹数据，以便我们做出更全面的评估。',
+    'DataRequestEmail.current_prediction_title': '【当前产品预测结果】',
+    'DataRequestEmail.current_prediction_intro': '根据我们平台对{product}的初步碳足迹预测：',
+    'DataRequestEmail.current_prediction_value': '• 预计碳足迹值：{value} {unit}',
+    'DataRequestEmail.current_prediction_confidence': '• 置信水平：{level}',
+    'DataRequestEmail.current_prediction_uncertainty': '• 不确定性范围：{range}',
+    'DataRequestEmail.current_prediction_contributors': '• 主要贡献因素：{contributors}',
+    'DataRequestEmail.current_prediction_disclaimer': '以上预测结果可能与实际情况存在差异，我们希望通过获取更准确的数据来优化此预测结果。',
+    'DataRequestEmail.requested_items_intro': '具体来说，我们希望获取以下信息：',
+    'DataRequestEmail.market_comparison_title': '【市场对比数据】',
+    'DataRequestEmail.industry_benchmark_title': '【行业基准数据】',
+    'DataRequestEmail.platform_prediction_title': '【关于平台预测数据说明】',
+    'DataRequestEmail.platform_prediction_desc': '请注意，我们平台提供的碳足迹预测数据具有以下特点：',
+    'DataRequestEmail.platform_prediction_point1': '• 预测结果主要基于公开披露的行业数据及AI推理技术',
+    'DataRequestEmail.platform_prediction_point2': '• 预测数据存在一定程度的不确定性（通常在±15%范围内）',
+    'DataRequestEmail.platform_prediction_point3': '• 预测结果可能无法完全反映实际生产情况或特定工艺差异',
+    'DataRequestEmail.platform_prediction_point4': '• 获取您的实际数据将帮助我们提高预测准确性，并为您提供更有针对性的减碳建议',
+    'DataRequestEmail.reports_intro': '以下是我们整理的相关行业报告，您可能会感兴趣：',
+    'DataRequestEmail.data_submission_title': '【数据填报链接】',
+    'DataRequestEmail.data_submission_desc': '为了方便您提交相关数据，我们创建了一个专属数据填报页面，您可以通过以下链接进行填报：',
+    'DataRequestEmail.data_submission_security': '该链接是为贵公司专门生成的安全链接，无需注册即可直接填报数据。链接有效期为30天。',
+    'DataRequestEmail.closing_with_deadline': '如果贵公司能够提供这些数据，将极大地帮助我们评估{product}在我们供应链中的环保表现，并为后续可能的合作奠定基础。由于项目进度安排，希望能在{deadline}前收到相关信息。此请求为{urgency}。',
+    'DataRequestEmail.closing_without_deadline': '如果贵公司能够提供这些数据，将极大地帮助我们评估{product}在我们供应链中的环保表现，并为后续可能的合作奠定基础。希望能尽快收到您的回复。此请求为{urgency}。',
+    'DataRequestEmail.additional_info_section': '补充说明：\n{info}',
+    'DataRequestEmail.email_thanks': '感谢您的关注与支持！期待与贵公司进一步合作。',
+    'DataRequestEmail.email_closing': '祝商祺！',
+    'DataRequestEmail.email_signature': '{name}\n{email}\n{phone}\n碳知源环保科技有限公司',
+    'DataRequestEmail.urgency_text_low': '低优先级',
+    'DataRequestEmail.urgency_text_medium': '常规优先级',
+    'DataRequestEmail.urgency_text_high': '高优先级',
+    'DataRequestEmail.unspecified_supplier': '未指定供应商',
+    'DataRequestEmail.unspecified_product': '未指定产品',
+    'DataRequestEmail.unspecified_contact': '未指定联系人',
+    'DataRequestEmail.unspecified_email': '未指定邮箱',
+    'DataRequestEmail.no_items_selected': '未选择数据项',
+    'DataRequestEmail.asap': '尽快',
+    
+    // Prediction Confidence Levels
+    'PredictionConfidence.confidence_level_low': '低',
+    'PredictionConfidence.confidence_level_medium': '中等',
+    'PredictionConfidence.confidence_level_high': '高',
+    
+    // Prediction Contributors
+    'PredictionContributors.contributor_materials': '原材料生产',
+    'PredictionContributors.contributor_manufacturing': '制造工艺',
+    'PredictionContributors.contributor_transportation': '运输',
+    
+    // Inference Stages
+    'InferenceStages.stage_collecting_info': '正在收集产品基础信息...',
+    'InferenceStages.stage_analyzing_composition': '分析产品组成信息...',
+    'InferenceStages.stage_getting_tech_info': '获取生产技术信息...',
+    'InferenceStages.stage_identifying_competitors': '识别相关竞品供应商...',
+    'InferenceStages.stage_building_lca': '构建LCA模型...',
+    'InferenceStages.stage_calculating_footprint': '计算碳足迹值...',
+    'InferenceStages.stage_generating_report': '生成预测报告...',
+    'InferenceStages.stage_prediction_complete': '预测完成！',
+    'InferenceStages.estimated_completion_time': '预计完成时间: 40-60秒',
+    
+    // Form Validation
+    'FormValidation.required_fields_error': '请提供产品名称和供应商名称',
+    'FormValidation.product_name_required': '请输入产品名称',
+    'FormValidation.supplier_name_required': '请输入供应商名称',
+    'FormValidation.validation_error': '表单验证错误',
+    
+    // LCA Model Card
+    'LCA.lca_model_flowchart': 'LCA模型流程图',
+    
+    // Recommendation Page
+    'Recommendation.low_carbon_recommendation': '低碳推荐',
+    'Recommendation.recommendation_description': '发现优秀的低碳供应商、产品和最佳实践，加速您的可持续发展之旅',
+    'Recommendation.search_recommendations': '搜索推荐...',
+    'Recommendation.low_carbon_suppliers': '低碳供应商',
+    'Recommendation.low_carbon_products': '低碳产品',
+    'Recommendation.carbon_reduction_best_practices': '减碳最佳实践',
+    'Recommendation.all_industries': '全部行业',
+    'Recommendation.renewable_energy': '可再生能源',
+    'Recommendation.material_science': '材料科学',
+    'Recommendation.energy_storage': '储能技术',
+    'Recommendation.electronics_manufacturing': '电子制造',
+    'Recommendation.building_materials': '建筑材料',
+    'Recommendation.all_categories': '全部类别',
+    'Recommendation.solar_energy': '太阳能',
+    'Recommendation.wind_energy': '风能',
+    'Recommendation.battery_technology': '电池技术',
+    'Recommendation.composite_materials': '复合材料',
+    'Recommendation.smart_hardware': '智能硬件',
+    'Recommendation.green_building_materials': '绿色建材',
+    'Recommendation.all_regions': '全部地区',
+    'Recommendation.east_china': '华东',
+    'Recommendation.south_china': '华南',
+    'Recommendation.north_china': '华北',
+    'Recommendation.central_china': '华中',
+    'Recommendation.west_china': '西部',
+    'Recommendation.sort_by': '排序方式',
+    'Recommendation.carbon_performance_score': '碳绩效得分',
+    'Recommendation.overall_rating': '综合评分',
+    'Recommendation.latest_added': '最新添加',
+    'Recommendation.all_data': '全部数据',
+    'Recommendation.measured_data': '实测数据',
+    'Recommendation.predicted_data': '预测数据',
+    'Recommendation.carbon_reduction_level': '降碳水平',
+    'Recommendation.significant_reduction': '显著降碳 (>40%)',
+    'Recommendation.medium_reduction': '中等降碳 (20-40%)',
+    'Recommendation.slight_reduction': '轻微降碳 (<20%)',
+    'Recommendation.reduction_magnitude': '降碳幅度',
+    'Recommendation.carbon_footprint_value': '碳足迹值',
+    'Recommendation.industry_applicability': '行业适用性',
+    'Recommendation.manufacturing': '制造业',
+    'Recommendation.energy_industry': '能源行业',
+    'Recommendation.chemical_industry': '化工行业',
+    'Recommendation.electronics_industry': '电子行业',
+    'Recommendation.automotive_industry': '汽车行业',
+    'Recommendation.implementation_difficulty': '实施难度',
+    'Recommendation.easy_to_implement': '容易实施',
+    'Recommendation.medium_difficulty': '中等难度',
+    'Recommendation.high_difficulty': '高难度',
+    'Recommendation.return_on_investment_period': '投资回报期',
+    'Recommendation.all_periods': '全部',
+    'Recommendation.short_term': '短期 (<1年)',
+    'Recommendation.medium_term': '中期 (1-3年)',
+    'Recommendation.long_term': '长期 (>3年)',
+    'Recommendation.carbon_reduction_effect': '减碳效果',
+    'Recommendation.return_on_investment': '投资回报',
+    'Recommendation.load_more': '加载更多',
+    'Recommendation.carbon_performance': '碳绩效',
+    'Recommendation.low_carbon_highlights': '低碳亮点',
+    'Recommendation.product_coverage': '产品覆盖',
+    'Recommendation.view_details': '查看详情',
+    'Recommendation.industry_average': '行业平均',
+    'Recommendation.carbon_reduction_highlights': '减碳亮点',
+    'Recommendation.implementation_results': '实施成果',
+  },
+  en: {
+    // Navbar
+    'Navbar.home': 'Home',
+    'Navbar.product_search': 'Product Search',
+    'Navbar.workspace': 'Workspace',
+    'Navbar.low_carbon_recommendations': 'Low Carbon',
+    'Navbar.login': 'Login',
+    
+    // Hero section
+    'Hero.hero_badge': 'Smart Choice for a Sustainable Future',
+    'Hero.hero_title_1': 'Intelligent Product Carbon Footprint Analysis',
+    'Hero.hero_title_2': 'Leading Green Supply Chain Innovation',
+    'Hero.hero_description': 'Through AI-driven precise carbon footprint analysis, we help companies optimize supply chains, achieve sustainable development goals, and enhance market competitiveness.',
+    'Hero.search_placeholder': 'Search products or suppliers...',
+    'Hero.search_button': 'Search',
+    'Hero.tags': ['Electronics', 'Textiles', 'Food & Beverage', 'Building Materials', 'Packaging'],
+    'Hero.start_prediction': 'Start Product Carbon Prediction',
+    'Hero.view_recommendations': 'View Low-Carbon Suppliers',
+    
+    // Features section
+    'Features.core_features': 'Core Features',
+    'Features.features_description': 'Using advanced AI technology and professional carbon footprint analysis methods, we provide comprehensive low-carbon transformation solutions for enterprises',
+    'Features.feature_search_title': 'Carbon Footprint Search & Browse',
+    'Features.feature_search_desc': 'Quickly search product and supplier carbon footprint data, clearly understand data sources, and get relevant low-carbon recommendations.',
+    'Features.feature_prediction_title': 'Carbon Footprint Prediction',
+    'Features.feature_prediction_desc': 'Based on AI inference technology, precisely predict product carbon footprints, generating detailed analysis reports and visualization results.',
+    'Features.feature_comparison_title': 'Competitor Carbon Comparison',
+    'Features.feature_comparison_desc': 'Compare competitors\' carbon footprint performance in multiple dimensions, identifying market advantages and optimization opportunities.',
+    'Features.feature_data_request_title': 'Supplier Data Requests',
+    'Features.feature_data_request_desc': 'Generate professional data requests with one click, communicate efficiently with suppliers through multiple channels, and obtain real carbon footprint data.',
+    'Features.feature_recommendation_title': 'Low Carbon Supplier Recommendations',
+    'Features.feature_recommendation_desc': 'Intelligently recommend suppliers with excellent carbon footprint performance, showcasing carbon reduction highlights and best practice cases.',
+    
+    // Call to Action section
+    'CallToAction.cta_title': 'Start Your Low-Carbon Supply Chain Journey',
+    'CallToAction.cta_description': 'Use our AI-driven carbon footprint analysis tools now to uncover carbon reduction potential, discover business opportunities, and lead sustainable development.',
+    'CallToAction.search_products': 'Search Product Carbon Footprints',
+    
+    // Recent Products section
+    'RecentProducts.recent_products_title': 'Latest Carbon Footprints',
+    'RecentProducts.recent_products_desc': 'Browse the latest added product carbon footprint data to keep up with green development trends in the industry',
+    'RecentProducts.view_all': 'View All',
+    'RecentProducts.actual_data': 'Actual Data',
+    'RecentProducts.prediction_result': 'Prediction Result',
+    'RecentProducts.details': 'Details',
+    
+    // Low Carbon Recommendations section
+    'LowCarbonRecommendations.low_carbon_suppliers_title': 'Excellent Low-Carbon Suppliers',
+    'LowCarbonRecommendations.low_carbon_suppliers_desc': 'Discover suppliers with outstanding carbon footprint performance to support green supply chain construction',
+    'LowCarbonRecommendations.view_all_recommendations': 'View All Recommendations',
+    'LowCarbonRecommendations.carbon_footprint_rating': 'Carbon Footprint Rating',
+    'LowCarbonRecommendations.low_carbon_highlights': 'Low Carbon Highlights',
+    'LowCarbonRecommendations.view_supplier_details': 'View Supplier Details',
+    
+    // Footer
+    'Footer.company_description': 'Focused on providing advanced solutions for product carbon footprint analysis and environmentally friendly supply chain optimization. Making sustainable development a competitive advantage for every business.',
+    'Footer.company_address': 'Zhangjiang Hi-Tech Park, Pudong New Area, Shanghai',
+    'Footer.quick_links': 'Quick Links',
+    'Footer.lca_inference': 'LCA Model Inference',
+    'Footer.data_request_link': 'Data Request',
+    'Footer.resource_center': 'Resource Center',
+    'Footer.carbon_footprint_wiki': 'Carbon Footprint Wiki',
+    'Footer.industry_reports': 'Industry Reports',
+    'Footer.best_practices': 'Best Practices',
+    'Footer.policy_updates': 'Policy Updates',
+    'Footer.faq': 'FAQ',
+    'Footer.subscribe': 'Subscribe',
+    'Footer.subscribe_desc': 'Subscribe to our newsletter to stay updated on the latest sustainable development trends and product updates.',
+    'Footer.email_placeholder': 'Your email address',
+    'Footer.subscribe_button': 'Subscribe',
+    'Footer.privacy_policy': 'Privacy Policy',
+    'Footer.terms_of_use': 'Terms of Use',
+    'Footer.about_us': 'About Us',
+    
+    // Comparison Chart
+    'ComparisonChart.uncertainty_range_info': 'Error bars represent the uncertainty range of carbon footprint calculation',
+    'ComparisonChart.industry_benchmark': 'Industry Benchmark',
+    'ComparisonChart.lowest_competitor': 'Lowest Competitor',
+    'ComparisonChart.carbon_footprint_value': 'Carbon Footprint Value',
+    
+    // Prediction Result
+    'PredictionResult.prediction_result_badge': 'Prediction Result',
+    'PredictionResult.prediction_date': 'Prediction Date',
+    'PredictionResult.copy_link': 'Copy Link',
+    'PredictionResult.share': 'Share',
+    'PredictionResult.export_report': 'Export Report',
+    'PredictionResult.request_supplier_data': 'Request Supplier Data',
+    'PredictionResult.request_data_tooltip': 'The prediction data is only an estimate based on existing information. Request actual data from suppliers for more accurate carbon footprint analysis.',
+    'PredictionResult.product_info': 'Product Information',
+    'PredictionResult.reference_sources': 'Reference Sources',
+    
+    // Prediction Result additional translations
+    'PredictionResult.view_report': 'View Report',
+    'PredictionResult.carbon_footprint_breakdown': 'Carbon Footprint Breakdown',
+    'PredictionResult.uncertainty_range': 'Uncertainty Range',
+    'PredictionResult.prediction_history': 'Prediction History',
+    
+    // PredictionResult component translations
+    'PredictionResult.carbon_footprint_prediction_result': 'Carbon Footprint Prediction Result',
+    'PredictionResult.product_carbon_industry_comparison': 'Product Carbon Footprint and Industry Comparison',
+    'PredictionResult.industry_comparison_analysis': 'Industry Comparison Analysis',
+    'PredictionResult.main_component_analysis': 'Main Component Analysis',
+    'PredictionResult.carbon_footprint_composition': 'Carbon Footprint Composition',
+    'PredictionResult.lifecycle_phase_analysis': 'Lifecycle Phase Analysis',
+    'PredictionResult.carbon_footprint_distribution': 'Carbon Footprint Distribution Across Product Lifecycle Phases',
+    'PredictionResult.emission_reduction_suggestions': 'Emission Reduction Suggestions',
+    'PredictionResult.carbon_reduction_suggestions_desc': 'Carbon reduction suggestions based on product characteristics and industry best practices',
+    'PredictionResult.similar_products_comparison': 'Similar Products Comparison',
+    'PredictionResult.similar_products_comparison_desc': 'Carbon footprint comparison with similar products in the market',
+    'PredictionResult.compared_to_current': 'Lower than current product',
+    'PredictionResult.higher_than_current': 'Higher than current product',
+    'PredictionResult.click_for_details': 'Click for details',
+    
+    // Workspace Request Management
+    'WorkspaceRequestManagement.request_management': 'Request Management',
+    'WorkspaceRequestManagement.request_records': 'Request Records',
+    'WorkspaceRequestManagement.search_requests': 'Search requests...',
+    'WorkspaceRequestManagement.filter_status': 'Filter by Status',
+    'WorkspaceRequestManagement.all_statuses': 'All Statuses',
+    'WorkspaceRequestManagement.request_details': 'Request Details',
+    'WorkspaceRequestManagement.request_id': 'Request ID',
+    'WorkspaceRequestManagement.supplier': 'Supplier',
+    'WorkspaceRequestManagement.product': 'Product',
+    'WorkspaceRequestManagement.contact_method': 'Contact Method',
+    'WorkspaceRequestManagement.send_date': 'Send Date',
+    'WorkspaceRequestManagement.response_deadline': 'Response Deadline',
+    'WorkspaceRequestManagement.response_progress': 'Response Progress',
+    'WorkspaceRequestManagement.request_content': 'Request Content',
+    'WorkspaceRequestManagement.request_attachments': 'Request Attachments',
+    'WorkspaceRequestManagement.download': 'Download',
+    'WorkspaceRequestManagement.supplier_response': 'Supplier Response',
+    'WorkspaceRequestManagement.send_reminder': 'Send Reminder',
+    'WorkspaceRequestManagement.export_details': 'Export Details',
+    'WorkspaceRequestManagement.cancel_request': 'Cancel Request',
+    'WorkspaceRequestManagement.select_request_view_details': 'Select a Request to View Details',
+    'WorkspaceRequestManagement.select_request_description': 'Select a request record from the list on the left to view detailed information and supplier responses',
+    
+    // Workspace Data Collections
+    'WorkspaceDataCollections.data_collections': 'Data Collections',
+    'WorkspaceDataCollections.product_carbon_data': 'Product Carbon Footprint Data',
+    'WorkspaceDataCollections.production_process_data': 'Production Process Data',
+    'WorkspaceDataCollections.last_updated': 'Last Updated',
+    'WorkspaceDataCollections.view': 'View',
+    'WorkspaceDataCollections.product_carbon_data_desc': 'Contains carbon footprint data for 50 different products',
+    'WorkspaceDataCollections.production_process_data_desc': 'Contains energy consumption data for 30 different production processes',
+    
+    // Search Page
+    'SearchPage.product_carbon_footprint_search': 'Product Carbon Footprint Search',
+    'SearchPage.search_product_supplier_category': 'Search product name, supplier or category...',
+    'SearchPage.filter': 'Filter',
+    'SearchPage.filter_and_sort': 'Filter & Sort',
+    'SearchPage.industry': 'Industry',
+    'SearchPage.data_type': 'Data Type',
+    'SearchPage.sort_by': 'Sort By',
+    'SearchPage.clear_filters': 'Clear Filters',
+    'SearchPage.applied_filters': 'Applied Filters',
+    'SearchPage.search': 'Search',
+    'SearchPage.sort': 'Sort',
+    'SearchPage.clear_all': 'Clear All',
+    'SearchPage.found': 'Found',
+    'SearchPage.results': 'results',
+    'SearchPage.no_results_found': 'No Results Found',
+    'SearchPage.try_adjusting_search': 'Try adjusting your search criteria or filter options, or use our prediction feature to generate new carbon footprint data.',
+    'SearchPage.start_new_prediction': 'Start New Prediction',
+    'SearchPage.related_supplier_recommendations': 'Related Supplier Recommendations',
+    'SearchPage.product_count': 'Product Count',
+    
+    // Workspace General
+    'WorkspaceGeneral.return_to_home': 'Return to Home',
+    'WorkspaceGeneral.return': 'Return',
+    'WorkspaceGeneral.menu': 'Menu',
+    'WorkspaceGeneral.workspace_modules': 'Workspace Modules',
+    'WorkspaceGeneral.function_modules': 'Function Modules',
+    'WorkspaceGeneral.pro_features': 'Pro Features',
+    'WorkspaceGeneral.pro_features_desc': 'Unlock more advanced features and data analysis with Pro version',
+    'WorkspaceGeneral.upgrade_to_pro': 'Upgrade to Pro',
+    'WorkspaceGeneral.close': 'Close',
+    'WorkspaceGeneral.data_request': 'Data Request',
+    
+    // Workspace Inference
+    'WorkspaceInference.carbon_footprint_prediction': 'Carbon Footprint Prediction',
+    'WorkspaceInference.new_prediction': 'New Prediction',
+    'WorkspaceInference.history_records': 'History Records',
+    'WorkspaceInference.in_progress': 'In Progress',
+    'WorkspaceInference.no_active_predictions': 'No active prediction tasks currently',
+    'WorkspaceInference.prediction_history_title': 'Prediction History',
+    'WorkspaceInference.history_prediction_list': 'History Prediction List',
+    'WorkspaceInference.view_details': 'View Details',
+    
+    // Workspace Data Request
+    'WorkspaceDataRequest.new_request': 'New Request',
+    'WorkspaceDataRequest.historical_requests': 'Historical Requests',
+    'WorkspaceDataRequest.redirect_from_prediction': 'Redirected from Prediction Result',
+    'WorkspaceDataRequest.creating_data_request': 'You are creating a data request for',
+    'WorkspaceDataRequest.of_supplier': 'of',
+    'WorkspaceDataRequest.creating_data_request_2': '.',
+    'WorkspaceDataRequest.prefilled_info': 'We have pre-filled some information for you, please complete the remaining content.',
+
+    // InferenceForm
+    'InferenceForm.product_name_placeholder': 'Product name (e.g., Organic Cotton T-shirt)',
+    'InferenceForm.product_category_placeholder': 'Product category (e.g., Textiles, Electronics)',
+    'InferenceForm.supplier_info': 'Supplier Information',
+    'InferenceForm.supplier_name_placeholder': 'Supplier name (e.g., Green Tech Co., Ltd.)',
+    'InferenceForm.product_description': 'Product Description (Optional)',
+    'InferenceForm.product_description_placeholder': 'Briefly describe product features, materials, manufacturing processes, etc., which will help improve prediction accuracy',
+    'InferenceForm.environmental_tips': 'Environmental Tips',
+    'InferenceForm.environmental_tips_desc': 'Providing detailed product information can help us predict carbon footprints more accurately. If you have product technical documentation, you can upload it after prediction to improve accuracy',
+    'InferenceForm.cancel_prediction': 'Cancel Prediction',
+    'InferenceForm.save_draft': 'Save Draft',
+    
+    // PredictionResult
+    'PredictionResult.return_button': 'Return',
+    'PredictionResult.link_copied': 'Link Copied',
+    'PredictionResult.link_copied_desc': 'Prediction result link has been copied to clipboard',
+    'PredictionResult.prediction_needs_accuracy': 'Prediction data has uncertainty?',
+    'PredictionResult.prediction_accuracy_desc': 'The data shown on this page is only a prediction result and may differ from the actual situation. Request actual data from suppliers for more accurate carbon footprint analysis and emission reduction recommendations.',
+    'PredictionResult.need_more_accurate_data': 'Need more accurate data analysis?',
+    'PredictionResult.accurate_data_desc': 'By obtaining actual production data from suppliers, we can provide you with more precise carbon footprint analysis and emission reduction solutions. Send a data request to suppliers, which only takes a few minutes to complete.',
+    'PredictionResult.prediction_disclaimer': 'This result is derived from information disclosed by the company and related statistical data. It is only a prediction result and cannot fully reflect the actual production level of the supplier. For carbon accounting and certification scenarios, actual data should be used. When actual data is missing, industry average data will be used as default values.',
+    'PredictionResult.improvement_difficulty_easy': 'Easy',
+    'PredictionResult.improvement_difficulty_medium': 'Medium',
+    'PredictionResult.improvement_difficulty_hard': 'Hard',
+    'PredictionResult.potential_reduction': 'Potential Reduction',
+
+    // Data Request Form
+    'DataRequestForm.supplier_product_info_form': 'Supplier and Product Information',
+    'DataRequestForm.supplier_name_form': 'Supplier Name',
+    'DataRequestForm.supplier_name_placeholder_form': 'Enter supplier name',
+    'DataRequestForm.product_name_form': 'Product Name',
+    'DataRequestForm.product_name_placeholder_form': 'Enter product name',
+    'DataRequestForm.contact_info_form': 'Contact Information',
+    'DataRequestForm.contact_name_form': 'Contact Name',
+    'DataRequestForm.contact_name_placeholder_form': 'Enter contact name',
+    'DataRequestForm.contact_email_form': 'Contact Email',
+    'DataRequestForm.contact_email_placeholder_form': 'Enter contact email',
+    'DataRequestForm.contact_phone_form': 'Contact Phone (Optional)',
+    'DataRequestForm.contact_phone_placeholder_form': 'Enter contact phone',
+    'DataRequestForm.request_data_items': 'Requested Data Items',
+    'DataRequestForm.request_data_items_description': 'Select the types of data you need from the supplier',
+    'DataRequestForm.product_specs': 'Product Specifications',
+    'DataRequestForm.material_composition': 'Material Composition',
+    'DataRequestForm.manufacturing_process': 'Manufacturing Process',
+    'DataRequestForm.energy_consumption': 'Energy Consumption Data',
+    'DataRequestForm.transportation_logistics': 'Transportation & Logistics',
+    'DataRequestForm.certifications': 'Certifications',
+    'DataRequestForm.test_reports': 'Test Reports',
+    'DataRequestForm.packaging_details': 'Packaging Details',
+    'DataRequestForm.suppliers_info': 'Upstream Suppliers Information',
+    'DataRequestForm.waste_data': 'Waste Management Data',
+    'DataRequestForm.urgency_level': 'Urgency Level',
+    'DataRequestForm.urgency_low': 'Low - Reply within a month',
+    'DataRequestForm.urgency_medium': 'Medium - Reply within two weeks',
+    'DataRequestForm.urgency_high': 'High - Reply within a week',
+    'DataRequestForm.response_deadline_form': 'Response Deadline',
+    'DataRequestForm.select_date': 'Select date',
+    'DataRequestForm.additional_info_form': 'Additional Information (Optional)',
+    'DataRequestForm.additional_info_placeholder': 'Enter any additional information or special requirements',
+    'DataRequestForm.preview_request_ignore_validation': 'Preview Request (Ignore Validation)',
+    'DataRequestForm.validate_and_preview': 'Validate and Preview',
+    
+    // Data Request Preview
+    'DataRequestForm.data_request_preview': 'Data Request Preview',
+    'DataRequestForm.confirm_content_accuracy': 'Please confirm the accuracy of the following content before sending',
+    'DataRequestForm.supplier_info_label': 'Supplier Information',
+    'DataRequestForm.supplier_name_label': 'Supplier Name',
+    'DataRequestForm.product_info_label': 'Product Information',
+    'DataRequestForm.product_name_label': 'Product Name',
+    'DataRequestForm.contact_info_label': 'Contact Information',
+    'DataRequestForm.contact_name_label': 'Contact Person',
+    'DataRequestForm.contact_email_label': 'Email',
+    'DataRequestForm.contact_phone_label': 'Phone',
+    'DataRequestForm.request_details_label': 'Request Details',
+    'DataRequestForm.requested_data': 'Requested Data',
+    'DataRequestForm.urgency_level_label': 'Urgency Level',
+    'DataRequestForm.response_deadline_label': 'Response Deadline',
+    'DataRequestForm.additional_notes': 'Additional Notes',
+    'DataRequestForm.email_info': 'Email Information',
+    'DataRequestForm.email_subject': 'Email Subject',
+    'DataRequestForm.email_content': 'Email Content',
+    'DataRequestForm.carbon_footprint_chart': 'This email will include the following carbon footprint comparison chart:',
+    'DataRequestForm.chart_note': 'Note: This chart will be sent as an image attachment or embedded in the content',
+    'DataRequestForm.return_to_edit': 'Return to Edit',
+    'DataRequestForm.confirm_send': 'Confirm and Send',
+    
+    // Email Content
+      'DataRequestForm.email_subject_template': 'Carbon Footprint Data Collection for {product} - {supplier}',
+    'DataRequestForm.email_greeting': 'Dear {supplier} Team,',
+    'DataRequestForm.email_hello': 'Hello!',
+    'DataRequestForm.email_intro_with_name': 'We are {name} from the procurement team at CarbonSleuth Environmental Technology Co., Ltd. We have been following your {product} and are very interested in its performance and environmental characteristics.',
+    'DataRequestForm.email_intro_without_name': 'We are from the procurement team at CarbonSleuth Environmental Technology Co., Ltd. We have been following your {product} and are very interested in its performance and environmental characteristics.',
+    'DataRequestForm.email_purpose': 'As a company that values sustainable development, we are conducting carbon footprint assessments for all products in our supply chain to create a more environmentally friendly product line. While reviewing your company\'s product information, we noticed that {product} is competitive in the industry, so we hope to obtain more detailed product carbon footprint data to make a more comprehensive assessment.',
+    'DataRequestForm.current_prediction_title': '[Current Product Prediction Results]',
+    'DataRequestForm.current_prediction_intro': 'According to our platform\'s preliminary carbon footprint prediction for {product}:',
+    'DataRequestForm.current_prediction_value': '• Estimated carbon footprint: {value} {unit}',
+    'DataRequestForm.current_prediction_confidence': '• Confidence level: {level}',
+    'DataRequestForm.current_prediction_uncertainty': '• Uncertainty range: {range}',
+    'DataRequestForm.current_prediction_contributors': '• Main contributing factors: {contributors}',
+    'DataRequestForm.current_prediction_disclaimer': 'The above prediction results may differ from the actual situation. We hope to optimize this prediction by obtaining more accurate data.',
+    'DataRequestForm.requested_items_intro': 'Specifically, we would like to obtain the following information:',
+    'DataRequestForm.market_comparison_title': '[Market Comparison Data]',
+    'DataRequestForm.industry_benchmark_title': '[Industry Benchmark Data]',
+    'DataRequestForm.platform_prediction_title': '[About Platform Prediction Data]',
+    'DataRequestForm.platform_prediction_desc': 'Please note that our platform\'s carbon footprint prediction data has the following characteristics:',
+    'DataRequestForm.platform_prediction_point1': '• Prediction results are mainly based on publicly disclosed industry data and AI inference technology',
+    'DataRequestForm.platform_prediction_point2': '• Prediction data has a certain degree of uncertainty (usually within ±15%)',
+    'DataRequestForm.platform_prediction_point3': '• Prediction results may not fully reflect actual production conditions or specific process differences',
+    'DataRequestForm.platform_prediction_point4': '• Obtaining your actual data will help us improve prediction accuracy and provide you with more targeted carbon reduction suggestions',
+    'DataRequestForm.reports_intro': 'Here are some relevant industry reports we have compiled that you might find interesting:',
+    'DataRequestForm.data_submission_title': '[Data Submission Link]',
+    'DataRequestForm.data_submission_desc': 'To facilitate your data submission, we have created a dedicated data submission page that you can access via the following link:',
+    'DataRequestForm.data_submission_security': 'This link is a secure link specially generated for your company. You can submit data directly without registration. The link is valid for 30 days.',
+    'DataRequestForm.closing_with_deadline': 'If your company can provide this data, it will greatly help us evaluate the environmental performance of {product} in our supply chain and lay the foundation for possible future cooperation. Due to project schedule arrangements, we hope to receive the relevant information by {deadline}. This request is {urgency}.',
+    'DataRequestForm.closing_without_deadline': 'If your company can provide this data, it will greatly help us evaluate the environmental performance of {product} in our supply chain and lay the foundation for possible future cooperation. We hope to receive your reply as soon as possible. This request is {urgency}.',
+    'DataRequestForm.additional_info_section': 'Additional information:\n{info}',
+    'DataRequestForm.email_thanks': 'Thank you for your attention and support! We look forward to further cooperation with your company.',
+    'DataRequestForm.email_closing': 'Best regards,',
+    'DataRequestForm.email_signature': '{name}\n{email}\n{phone}\nCarbonSleuth Environmental Technology Co., Ltd.',
+    'DataRequestForm.urgency_text_low': 'low priority',
+    'DataRequestForm.urgency_text_medium': 'normal priority',
+    'DataRequestForm.urgency_text_high': 'high priority',
+    'DataRequestForm.unspecified_supplier': 'Unspecified Supplier',
+    'DataRequestForm.unspecified_product': 'Unspecified Product',
+    'DataRequestForm.unspecified_contact': 'Unspecified Contact',
+    'DataRequestForm.unspecified_email': 'Unspecified Email',
+    'DataRequestForm.no_items_selected': 'No items selected',
+    'DataRequestForm.asap': 'as soon as possible',
+    
+    // Prediction Confidence Levels
+    'DataRequestForm.confidence_level_low': 'Low',
+    'DataRequestForm.confidence_level_medium': 'Medium',
+    'DataRequestForm.confidence_level_high': 'High',
+    
+    // Prediction Contributors
+    'DataRequestForm.contributor_materials': 'Materials Production',
+    'DataRequestForm.contributor_manufacturing': 'Manufacturing Process',
+    'DataRequestForm.contributor_transportation': 'Transportation',
+    
+    // Inference Stages
+    'DataRequestForm.stage_collecting_info': 'Collecting product basic information...',
+    'DataRequestForm.stage_analyzing_composition': 'Analyzing product composition...',
+    'DataRequestForm.stage_getting_tech_info': 'Getting production technology information...',
+    'DataRequestForm.stage_identifying_competitors': 'Identifying relevant competitor suppliers...',
+    'DataRequestForm.stage_building_lca': 'Building LCA model...',
+    'DataRequestForm.stage_calculating_footprint': 'Calculating carbon footprint...',
+    'DataRequestForm.stage_generating_report': 'Generating prediction report...',
+    'DataRequestForm.stage_prediction_complete': 'Prediction complete!',
+    'DataRequestForm.estimated_completion_time': 'Estimated completion time: 40-60 seconds',
+    
+    // Form Validation
+    'DataRequestForm.required_fields_error': 'Please provide both product name and supplier name',
+    'DataRequestForm.product_name_required': 'Please enter product name',
+    'DataRequestForm.supplier_name_required': 'Please enter supplier name',
+    'DataRequestForm.validation_error': 'Form Validation Error',
+    
+    // LCA Model Card
+    'DataRequestForm.lca_model_flowchart': 'LCA Model Flowchart',
+    
+    // Recommendation Page
+    'DataRequestForm.low_carbon_recommendation': 'Low Carbon Recommendations',
+    'DataRequestForm.recommendation_description': 'Discover excellent low-carbon suppliers, products, and best practices to accelerate your sustainability journey',
+    'DataRequestForm.search_recommendations': 'Search recommendations...',
+    'DataRequestForm.low_carbon_suppliers': 'Low Carbon Suppliers',
+    'DataRequestForm.low_carbon_products': 'Low Carbon Products',
+    'DataRequestForm.carbon_reduction_best_practices': 'Carbon Reduction Best Practices',
+    'DataRequestForm.all_industries': 'All Industries',
+    'DataRequestForm.renewable_energy': 'Renewable Energy',
+    'DataRequestForm.material_science': 'Material Science',
+    'DataRequestForm.energy_storage': 'Energy Storage',
+    'DataRequestForm.electronics_manufacturing': 'Electronics Manufacturing',
+    'DataRequestForm.building_materials': 'Building Materials',
+    'DataRequestForm.all_categories': 'All Categories',
+    'DataRequestForm.solar_energy': 'Solar Energy',
+    'DataRequestForm.wind_energy': 'Wind Energy',
+    'DataRequestForm.battery_technology': 'Battery Technology',
+    'DataRequestForm.composite_materials': 'Composite Materials',
+    'DataRequestForm.smart_hardware': 'Smart Hardware',
+    'DataRequestForm.green_building_materials': 'Green Building Materials',
+    'DataRequestForm.all_regions': 'All Regions',
+    'DataRequestForm.east_china': 'East China',
+    'DataRequestForm.south_china': 'South China',
+    'DataRequestForm.north_china': 'North China',
+    'DataRequestForm.central_china': 'Central China',
+    'DataRequestForm.west_china': 'Western China',
+    'DataRequestForm.sort_by': 'Sort By',
+    'DataRequestForm.carbon_performance_score': 'Carbon Performance Score',
+    'DataRequestForm.overall_rating': 'Overall Rating',
+    'DataRequestForm.latest_added': 'Latest Added',
+    'DataRequestForm.all_data': 'All Data',
+    'DataRequestForm.measured_data': 'Measured Data',
+    'DataRequestForm.predicted_data': 'Predicted Data',
+    'DataRequestForm.carbon_reduction_level': 'Carbon Reduction Level',
+    'DataRequestForm.significant_reduction': 'Significant Reduction (>40%)',
+    'DataRequestForm.medium_reduction': 'Medium Reduction (20-40%)',
+    'DataRequestForm.slight_reduction': 'Slight Reduction (<20%)',
+    'DataRequestForm.reduction_magnitude': 'Reduction Magnitude',
+    'DataRequestForm.carbon_footprint_value': 'Carbon Footprint Value',
+    'DataRequestForm.industry_applicability': 'Industry Applicability',
+    'DataRequestForm.manufacturing': 'Manufacturing',
+    'DataRequestForm.energy_industry': 'Energy Industry',
+    'DataRequestForm.chemical_industry': 'Chemical Industry',
+    'DataRequestForm.electronics_industry': 'Electronics Industry',
+    'DataRequestForm.automotive_industry': 'Automotive Industry',
+    'DataRequestForm.implementation_difficulty': 'Implementation Difficulty',
+    'DataRequestForm.easy_to_implement': 'Easy to Implement',
+    'DataRequestForm.medium_difficulty': 'Medium Difficulty',
+    'DataRequestForm.high_difficulty': 'High Difficulty',
+    'DataRequestForm.return_on_investment_period': 'Return on Investment Period',
+    'DataRequestForm.all_periods': 'All Periods',
+    'DataRequestForm.short_term': 'Short Term (<1 year)',
+    'DataRequestForm.medium_term': 'Medium Term (1-3 years)',
+    'DataRequestForm.long_term': 'Long Term (>3 years)',
+    'DataRequestForm.carbon_reduction_effect': 'Carbon Reduction Effect',
+    'DataRequestForm.return_on_investment': 'Return on Investment',
+    'DataRequestForm.load_more': 'Load More',
+    'DataRequestForm.carbon_performance': 'Carbon Performance',
+    'DataRequestForm.low_carbon_highlights': 'Low Carbon Highlights',
+    'DataRequestForm.product_coverage': 'Product Coverage',
+    'DataRequestForm.view_details': 'View Details',
+    'DataRequestForm.industry_average': 'Industry Average',
+    'DataRequestForm.carbon_reduction_highlights': 'Carbon Reduction Highlights',
+    'DataRequestForm.implementation_results': 'Implementation Results',
   }
 };
 
-// Create the context with default values
-const LanguageContext = createContext<LanguageContextType>({
-  language: 'en',
-  setLanguage: () => {},
-  t: () => ''
-});
-
-// Provider component
 interface LanguageProviderProps {
   children: ReactNode;
 }
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  // Initialize with browser language or fallback to English
-  const getBrowserLanguage = (): Language => {
-    const browserLang = navigator.language.split('-')[0];
-    return browserLang === 'zh' ? 'zh' : 'en';
+  // Get initial language from localStorage or use browser language
+  const getInitialLanguage = (): Language => {
+    const savedLanguage = localStorage.getItem('language') as Language;
+    if (savedLanguage && ['en', 'zh'].includes(savedLanguage)) {
+      return savedLanguage;
+    }
+    
+    // Try to detect from browser
+    const browserLang = navigator.language.toLowerCase();
+    return browserLang.startsWith('zh') ? 'zh' : 'en';
   };
-
-  const [language, setLanguage] = useState<Language>(getBrowserLanguage());
-
+  
+  const [language, setLanguage] = useState<Language>(getInitialLanguage);
+  
+  // Update localStorage when language changes
+  useEffect(() => {
+    localStorage.setItem('language', language);
+  }, [language]);
+  
   // Translation function
-  const t = useCallback(
-    (key: string): string => {
-      const translation = translations[key];
-      if (!translation) {
-        console.warn(`Translation key not found: ${key}`);
-        return key;
-      }
-      return translation[language];
-    },
-    [language]
-  );
-
+  const t = (key: string): string => {
+    return translations[language][key] || key;
+  };
+  
   const value = {
     language,
     setLanguage,
     t
   };
-
+  
   return (
     <LanguageContext.Provider value={value}>
       {children}
@@ -471,13 +901,10 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   );
 };
 
-// Custom hook for using the language context
-export const useLanguage = (): LanguageContextType => {
+export const useLanguage = () => {
   const context = useContext(LanguageContext);
   if (context === undefined) {
     throw new Error('useLanguage must be used within a LanguageProvider');
   }
   return context;
 };
-
-export default LanguageContext;

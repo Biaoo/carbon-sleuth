@@ -30,14 +30,14 @@ export interface InferenceData {
 
 export interface ProductInfo {
   title: string | BilingualText;
-  icon: any; // Changed from unknown to any to allow for Lucide icons
+  icon: unknown;
   markdownContent: string | BilingualText;
   citations?: Citation[];
 }
 
 export interface CompetitorsInfo {
   title: string | BilingualText;
-  icon: any; // Changed from unknown to any
+  icon: unknown;
   data: CompetitorData[];
 }
 

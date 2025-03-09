@@ -3,7 +3,7 @@ import React from 'react';
 import { 
   CardTitle 
 } from '@/components/ui/card';
-import { BookOpen, Info, FileText, Tool, Users } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 import ProductInfoCard from './ProductInfoCard';
 import UnifiedReferenceSidebar from './UnifiedReferenceSidebar';
 import CompetitorsList from './CompetitorsList';
@@ -29,18 +29,6 @@ const ProductInfoSection: React.FC<ProductInfoSectionProps> = ({
     return language === 'zh' ? text.zh : text.en;
   };
   
-  // Map Lucide icons based on inferenceData
-  // We're using predefined Lucide icons instead of relying on the unknown icon property
-  const getIconForSection = (sectionName: string) => {
-    switch(sectionName) {
-      case 'productBasicInfo': return Info;
-      case 'productComposition': return FileText;
-      case 'productionTechnology': return Tool;
-      case 'competitorsInfo': return Users;
-      default: return Info;
-    }
-  };
-  
   return (
     <div className="mb-8">
       <CardTitle className="text-2xl mb-6 flex items-center">
@@ -55,28 +43,28 @@ const ProductInfoSection: React.FC<ProductInfoSectionProps> = ({
             {/* Product Basic Info */}
             <ProductInfoCard 
               title={inferenceData.productBasicInfo.title}
-              icon={getIconForSection('productBasicInfo')}
+              icon={inferenceData.productBasicInfo.icon}
               markdownContent={inferenceData.productBasicInfo.markdownContent}
             />
             
             {/* Product Composition Info */}
             <ProductInfoCard 
               title={inferenceData.productComposition.title}
-              icon={getIconForSection('productComposition')}
+              icon={inferenceData.productComposition.icon}
               markdownContent={inferenceData.productComposition.markdownContent}
             />
             
             {/* Production Technology Info */}
             <ProductInfoCard 
               title={inferenceData.productionTechnology.title}
-              icon={getIconForSection('productionTechnology')}
+              icon={inferenceData.productionTechnology.icon}
               markdownContent={inferenceData.productionTechnology.markdownContent}
             />
             
             {/* Competitors Info */}
             <CompetitorsList 
               title={inferenceData.competitorsInfo.title}
-              icon={getIconForSection('competitorsInfo')}
+              icon={inferenceData.competitorsInfo.icon}
               competitors={inferenceData.competitorsInfo.data}
             />
           </div>
