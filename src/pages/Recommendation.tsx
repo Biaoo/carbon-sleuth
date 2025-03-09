@@ -31,6 +31,8 @@ import {
   ExternalLink,
   Search 
 } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+
 
 // 模拟数据 - 低碳供应商
 const mockSuppliers = [
@@ -229,6 +231,7 @@ const mockPractices = [
 
 // 供应商卡片组件
 const SupplierCard = ({ supplier }: { supplier: any }) => {
+  const { t } = useLanguage();
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="pb-2">
@@ -254,11 +257,11 @@ const SupplierCard = ({ supplier }: { supplier: any }) => {
                 style={{ width: `${supplier.carbonScore}%` }}
               ></div>
             </div>
-            <span className="text-sm font-medium">碳绩效 {supplier.carbonScore}/100</span>
+            <span className="text-sm font-medium">{t('carbon_performance')} {supplier.carbonScore}/100</span>
           </div>
           
           <div className="mt-2">
-            <p className="text-xs text-muted-foreground mb-1">低碳亮点</p>
+            <p className="text-xs text-muted-foreground mb-1">{t('low_carbon_highlights')}</p>
             <div className="flex flex-wrap gap-1">
               {supplier.highlights.map((highlight: string, index: number) => (
                 <Badge key={index} variant="secondary" className="font-normal">
@@ -269,7 +272,7 @@ const SupplierCard = ({ supplier }: { supplier: any }) => {
           </div>
           
           <div className="mt-2">
-            <p className="text-xs text-muted-foreground mb-1">产品覆盖</p>
+            <p className="text-xs text-muted-foreground mb-1">{t('product_coverage')}</p>
             <p className="text-sm">{supplier.products.join(', ')}</p>
           </div>
         </div>
@@ -280,7 +283,7 @@ const SupplierCard = ({ supplier }: { supplier: any }) => {
           <span>{supplier.region}</span>
         </div>
         <Button variant="ghost" size="sm" className="text-xs">
-          查看详情
+          {t('view_details')}
           <ExternalLink className="h-3 w-3 ml-1" />
         </Button>
       </CardFooter>
@@ -319,11 +322,11 @@ const ProductCard = ({ product }: { product: any }) => {
           </div>
           
           <p className="text-xs text-muted-foreground flex items-center">
-            <span>行业平均: {product.industryAvg} {product.unit}</span>
+            <span>{t('industry_average')}: {product.industryAvg} {product.unit}</span>
           </p>
           
           <div className="mt-2">
-            <p className="text-xs text-muted-foreground mb-1">减碳亮点</p>
+            <p className="text-xs text-muted-foreground mb-1">{t('carbon_reduction_highlights')}</p>
             <div className="space-y-1">
               {product.highlights.map((highlight: string, index: number) => (
                 <div key={index} className="flex items-start">
@@ -341,7 +344,7 @@ const ProductCard = ({ product }: { product: any }) => {
           <span>{product.category}</span>
         </div>
         <Button variant="ghost" size="sm" className="text-xs">
-          查看详情
+          {t('view_details')}
           <ExternalLink className="h-3 w-3 ml-1" />
         </Button>
       </CardFooter>
@@ -351,6 +354,7 @@ const ProductCard = ({ product }: { product: any }) => {
 
 // 最佳实践卡片组件
 const PracticeCard = ({ practice }: { practice: any }) => {
+  const { t } = useLanguage();
   return (
     <Card className="overflow-hidden h-full flex flex-col">
       <div className="h-40 bg-gray-100 relative">
@@ -371,7 +375,7 @@ const PracticeCard = ({ practice }: { practice: any }) => {
           {practice.description}
         </p>
         <div className="space-y-2">
-          <p className="text-xs font-medium">实施成果</p>
+          <p className="text-xs font-medium">{t('implementation_results')}</p>
           <div className="space-y-1">
             {practice.results.map((result: string, index: number) => (
               <div key={index} className="flex items-start">
@@ -397,7 +401,7 @@ const PracticeCard = ({ practice }: { practice: any }) => {
             )}
           </div>
           <Button variant="ghost" size="sm" className="text-xs">
-            查看详情
+            {t('view_details')}
           </Button>
         </div>
       </CardFooter>
@@ -406,6 +410,7 @@ const PracticeCard = ({ practice }: { practice: any }) => {
 };
 
 const Recommendation: React.FC = () => {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState('suppliers');
   
   return (
@@ -413,9 +418,9 @@ const Recommendation: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold">低碳推荐</h1>
+            <h1 className="text-3xl font-bold">{t('low_carbon_recommendation')}</h1>
             <p className="text-muted-foreground mt-2">
-              发现优秀的低碳供应商、产品和最佳实践，加速您的可持续发展之旅
+              {t('discover_excellent_low_carbon_suppliers_products_and_best_practices_to_accelerate_your_sustainable_development_journey')}
             </p>
           </div>
           <div className="mt-4 md:mt-0 w-full md:w-auto flex space-x-2">
@@ -426,15 +431,15 @@ const Recommendation: React.FC = () => {
                 className="pl-9 w-full"
               />
             </div>
-            <Button>筛选</Button>
+            <Button>{t('filter')}</Button>
           </div>
         </div>
         
         <Tabs defaultValue="suppliers" value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full max-w-md grid-cols-3 mb-8">
-            <TabsTrigger value="suppliers">低碳供应商</TabsTrigger>
-            <TabsTrigger value="products">低碳产品</TabsTrigger>
-            <TabsTrigger value="practices">减碳最佳实践</TabsTrigger>
+            <TabsTrigger value="suppliers">{t('low_carbon_suppliers')}</TabsTrigger>
+            <TabsTrigger value="products">{t('low_carbon_products')}</TabsTrigger>
+            <TabsTrigger value="practices">{t('carbon_reduction_best_practices')}</TabsTrigger>
           </TabsList>
           
           {/* 筛选区域 */}
@@ -446,12 +451,12 @@ const Recommendation: React.FC = () => {
                     <SelectValue placeholder="行业分类" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">全部行业</SelectItem>
-                    <SelectItem value="energy">可再生能源</SelectItem>
-                    <SelectItem value="material">材料科学</SelectItem>
-                    <SelectItem value="storage">储能技术</SelectItem>
-                    <SelectItem value="electronics">电子制造</SelectItem>
-                    <SelectItem value="building">建筑材料</SelectItem>
+                    <SelectItem value="all">{t('all_industries')}</SelectItem>
+                    <SelectItem value="energy">{t('renewable_energy')}</SelectItem>
+                    <SelectItem value="material">{t('material_science')}</SelectItem>
+                    <SelectItem value="storage">{t('energy_storage')}</SelectItem>
+                    <SelectItem value="electronics">{t('electronics_manufacturing')}</SelectItem>
+                    <SelectItem value="building">{t('building_materials')}</SelectItem>
                   </SelectContent>
                 </Select>
                 
@@ -460,13 +465,13 @@ const Recommendation: React.FC = () => {
                     <SelectValue placeholder="产品类别" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">全部类别</SelectItem>
-                    <SelectItem value="solar">太阳能</SelectItem>
-                    <SelectItem value="wind">风能</SelectItem>
-                    <SelectItem value="battery">电池技术</SelectItem>
-                    <SelectItem value="material">复合材料</SelectItem>
-                    <SelectItem value="smart">智能硬件</SelectItem>
-                    <SelectItem value="green">绿色建材</SelectItem>
+                    <SelectItem value="all">{t('all_categories')}</SelectItem>
+                    <SelectItem value="solar">{t('solar_energy')}</SelectItem>
+                    <SelectItem value="wind">{t('wind_energy')}</SelectItem>
+                    <SelectItem value="battery">{t('battery_technology')}</SelectItem>
+                    <SelectItem value="material">{t('composite_materials')}</SelectItem>
+                    <SelectItem value="smart">{t('smart_hardware')}</SelectItem>
+                    <SelectItem value="green">{t('green_building_materials')}</SelectItem>
                   </SelectContent>
                 </Select>
                 
@@ -475,12 +480,12 @@ const Recommendation: React.FC = () => {
                     <SelectValue placeholder="地区" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">全部地区</SelectItem>
-                    <SelectItem value="east">华东</SelectItem>
-                    <SelectItem value="south">华南</SelectItem>
-                    <SelectItem value="north">华北</SelectItem>
-                    <SelectItem value="central">华中</SelectItem>
-                    <SelectItem value="west">西部</SelectItem>
+                    <SelectItem value="all">{t('all_regions')}</SelectItem>
+                    <SelectItem value="east">{t('east_china')}</SelectItem>
+                    <SelectItem value="south">{t('south_china')}</SelectItem>
+                    <SelectItem value="north">{t('north_china')}</SelectItem>
+                    <SelectItem value="central">{t('central_china')}</SelectItem>
+                    <SelectItem value="west">{t('west_china')}</SelectItem>
                   </SelectContent>
                 </Select>
                 
@@ -489,9 +494,9 @@ const Recommendation: React.FC = () => {
                     <SelectValue placeholder="排序方式" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="score">碳绩效得分</SelectItem>
-                    <SelectItem value="rating">综合评分</SelectItem>
-                    <SelectItem value="latest">最新添加</SelectItem>
+                    <SelectItem value="score">{t('carbon_performance_score')}</SelectItem>
+                    <SelectItem value="rating">{t('overall_rating')}</SelectItem>
+                    <SelectItem value="latest">{t('latest_added')}</SelectItem>
                   </SelectContent>
                 </Select>
               </>
@@ -504,12 +509,12 @@ const Recommendation: React.FC = () => {
                     <SelectValue placeholder="产品类别" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">全部类别</SelectItem>
-                    <SelectItem value="energy">可再生能源</SelectItem>
-                    <SelectItem value="material">材料科学</SelectItem>
-                    <SelectItem value="storage">储能技术</SelectItem>
-                    <SelectItem value="electronics">智能硬件</SelectItem>
-                    <SelectItem value="building">绿色建材</SelectItem>
+                    <SelectItem value="all">{t('all_categories')}</SelectItem>
+                    <SelectItem value="energy">{t('renewable_energy')}</SelectItem>
+                    <SelectItem value="material">{t('material_science')}</SelectItem>
+                    <SelectItem value="storage">{t('energy_storage')}</SelectItem>
+                    <SelectItem value="electronics">{t('smart_hardware')}</SelectItem>
+                    <SelectItem value="building">{t('green_building_materials')}</SelectItem>
                   </SelectContent>
                 </Select>
                 
@@ -518,9 +523,9 @@ const Recommendation: React.FC = () => {
                     <SelectValue placeholder="数据类型" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">全部数据</SelectItem>
-                    <SelectItem value="verified">实测数据</SelectItem>
-                    <SelectItem value="predicted">预测数据</SelectItem>
+                    <SelectItem value="all">{t('all_data')}</SelectItem>
+                    <SelectItem value="verified">{t('verified_data')}</SelectItem>
+                    <SelectItem value="predicted">{t('predicted_data')}</SelectItem>
                   </SelectContent>
                 </Select>
                 
@@ -529,10 +534,10 @@ const Recommendation: React.FC = () => {
                     <SelectValue placeholder="降碳水平" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">全部</SelectItem>
-                    <SelectItem value="high">显著降碳 ({'>'}40%)</SelectItem>
-                    <SelectItem value="medium">中等降碳 (20-40%)</SelectItem>
-                    <SelectItem value="low">轻微降碳 ({'<'}20%)</SelectItem>
+                    <SelectItem value="all">{t('all')}</SelectItem>
+                    <SelectItem value="high">{t('high_carbon_reduction')}</SelectItem>
+                    <SelectItem value="medium">{t('medium_carbon_reduction')}</SelectItem>
+                    <SelectItem value="low">{t('low_carbon_reduction')}</SelectItem>
                   </SelectContent>
                 </Select>
                 
@@ -541,9 +546,9 @@ const Recommendation: React.FC = () => {
                     <SelectValue placeholder="排序方式" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="reduction">降碳幅度</SelectItem>
-                    <SelectItem value="carbon">碳足迹值</SelectItem>
-                    <SelectItem value="latest">最新添加</SelectItem>
+                    <SelectItem value="reduction">{t('carbon_reduction_percentage')}</SelectItem>
+                    <SelectItem value="carbon">{t('carbon_footprint_value')}</SelectItem>
+                    <SelectItem value="latest">{t('latest_added')}</SelectItem>
                   </SelectContent>
                 </Select>
               </>
@@ -556,12 +561,12 @@ const Recommendation: React.FC = () => {
                     <SelectValue placeholder="行业适用性" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">全部行业</SelectItem>
-                    <SelectItem value="manufacturing">制造业</SelectItem>
-                    <SelectItem value="energy">能源行业</SelectItem>
-                    <SelectItem value="chemical">化工行业</SelectItem>
-                    <SelectItem value="electronics">电子行业</SelectItem>
-                    <SelectItem value="automotive">汽车行业</SelectItem>
+                    <SelectItem value="all">{t('all_industries')}</SelectItem>
+                    <SelectItem value="manufacturing">{t('manufacturing')}</SelectItem>
+                    <SelectItem value="energy">{t('energy_industry')}</SelectItem>
+                    <SelectItem value="chemical">{t('chemical_industry')}</SelectItem>
+                    <SelectItem value="electronics">{t('electronics_industry')}</SelectItem>
+                    <SelectItem value="automotive">{t('automotive_industry')}</SelectItem>
                   </SelectContent>
                 </Select>
                 
@@ -570,10 +575,10 @@ const Recommendation: React.FC = () => {
                     <SelectValue placeholder="实施难度" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">全部难度</SelectItem>
-                    <SelectItem value="easy">容易实施</SelectItem>
-                    <SelectItem value="medium">中等难度</SelectItem>
-                    <SelectItem value="hard">高难度</SelectItem>
+                    <SelectItem value="all">{t('all_difficulty')}</SelectItem>
+                    <SelectItem value="easy">{t('easy_to_implement')}</SelectItem>
+                    <SelectItem value="medium">{t('medium_difficulty')}</SelectItem>
+                    <SelectItem value="hard">{t('high_difficulty')}</SelectItem>
                   </SelectContent>
                 </Select>
                 
@@ -582,10 +587,10 @@ const Recommendation: React.FC = () => {
                     <SelectValue placeholder="投资回报期" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">全部</SelectItem>
-                    <SelectItem value="short">短期 ({'<'}1年)</SelectItem>
-                    <SelectItem value="medium">中期 (1-3年)</SelectItem>
-                    <SelectItem value="long">长期 ({'>'}3年)</SelectItem>
+                    <SelectItem value="all">{t('all')}</SelectItem>
+                    <SelectItem value="short">{t('short_term')}</SelectItem>
+                    <SelectItem value="medium">{t('medium_term')}</SelectItem>
+                    <SelectItem value="long">{t('long_term')}</SelectItem>
                   </SelectContent>
                 </Select>
                 
@@ -594,9 +599,9 @@ const Recommendation: React.FC = () => {
                     <SelectValue placeholder="排序方式" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="impact">减碳效果</SelectItem>
-                    <SelectItem value="roi">投资回报</SelectItem>
-                    <SelectItem value="latest">最新添加</SelectItem>
+                    <SelectItem value="impact">{t('carbon_reduction_effect')}</SelectItem>
+                    <SelectItem value="roi">{t('return_on_investment')}</SelectItem>
+                    <SelectItem value="latest">{t('latest_added')}</SelectItem>
                   </SelectContent>
                 </Select>
               </>
@@ -612,7 +617,7 @@ const Recommendation: React.FC = () => {
             </div>
             
             <div className="mt-8 flex justify-center">
-              <Button variant="outline">加载更多</Button>
+              <Button variant="outline">{t('load_more')}</Button>
             </div>
           </TabsContent>
           
@@ -624,7 +629,7 @@ const Recommendation: React.FC = () => {
             </div>
             
             <div className="mt-8 flex justify-center">
-              <Button variant="outline">加载更多</Button>
+              <Button variant="outline">{t('load_more')}</Button>
             </div>
           </TabsContent>
           
@@ -636,7 +641,7 @@ const Recommendation: React.FC = () => {
             </div>
             
             <div className="mt-8 flex justify-center">
-              <Button variant="outline">加载更多</Button>
+              <Button variant="outline">{t('load_more')}</Button>
             </div>
           </TabsContent>
         </Tabs>
