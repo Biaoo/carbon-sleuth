@@ -18,7 +18,7 @@ const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ form }) =
       name="additionalInfo"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{t('additional_info')}</FormLabel>
+          <FormLabel>{t('additional_info_form')}</FormLabel>
           <FormControl>
             <Textarea 
               placeholder={t('additional_info_placeholder')} 

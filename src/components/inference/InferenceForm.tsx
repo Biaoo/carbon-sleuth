@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -17,6 +16,7 @@ import {
 } from 'lucide-react';
 import { Form, FormField, FormItem, FormControl, FormDescription } from '@/components/ui/form';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useToast } from '@/hooks/use-toast';
 
 interface InferenceFormProps {
   onStartPrediction: (productName: string, supplierName: string) => void;
@@ -28,14 +28,67 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
   const [productCategory, setProductCategory] = useState('');
   const [supplierName, setSupplierName] = useState('');
   const [productDescription, setProductDescription] = useState('');
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const { toast } = useToast();
+  
+  // 创建引用以访问输入元素
+  const productNameInputRef = useRef<HTMLInputElement>(null);
+  const supplierNameInputRef = useRef<HTMLInputElement>(null);
+  
+  // 当语言变化时更新自定义验证消息
+  useEffect(() => {
+    if (productNameInputRef.current) {
+      productNameInputRef.current.setCustomValidity('');
+    }
+    if (supplierNameInputRef.current) {
+      supplierNameInputRef.current.setCustomValidity('');
+    }
+  }, [language]);
+  
+  // 处理产品名称输入变化
+  const handleProductNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProductName(e.target.value);
+    if (e.target.validity.valueMissing && e.target.required) {
+      e.target.setCustomValidity(t('product_name_required'));
+    } else {
+      e.target.setCustomValidity('');
+    }
+  };
+  
+  // 处理供应商名称输入变化
+  const handleSupplierNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSupplierName(e.target.value);
+    if (e.target.validity.valueMissing && e.target.required) {
+      e.target.setCustomValidity(t('supplier_name_required'));
+    } else {
+      e.target.setCustomValidity('');
+    }
+  };
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!productName || !supplierName) {
-      // Show error
-      console.error('Please provide both product name and supplier name');
+    // 验证表单
+    if (!productName && !supplierName) {
+      toast({
+        title: t('validation_error'),
+        description: t('required_fields_error'),
+        variant: "destructive",
+      });
+      return;
+    } else if (!productName) {
+      toast({
+        title: t('validation_error'),
+        description: t('product_name_required'),
+        variant: "destructive",
+      });
+      return;
+    } else if (!supplierName) {
+      toast({
+        title: t('validation_error'),
+        description: t('supplier_name_required'),
+        variant: "destructive",
+      });
       return;
     }
     
@@ -60,7 +113,7 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
         {t('carbon_footprint_prediction')}
       </h2>
       
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Left Column */}
           <div className="space-y-6">
@@ -73,9 +126,10 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
               
               <div className="relative transition-all duration-300 focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-md rounded-lg mb-4">
                 <Input
+                  ref={productNameInputRef}
                   type="text"
                   value={productName}
-                  onChange={(e) => setProductName(e.target.value)}
+                  onChange={handleProductNameChange}
                   placeholder={t('product_name_placeholder')}
                   className="h-12 border-secondary/80 bg-white/80 backdrop-blur-sm focus:border-primary/40 transition-all pl-4"
                   disabled={isLoading}
@@ -104,9 +158,10 @@ const InferenceForm = ({ onStartPrediction, isLoading }: InferenceFormProps) => 
               
               <div className="relative transition-all duration-300 focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-md rounded-lg">
                 <Input
+                  ref={supplierNameInputRef}
                   type="text"
                   value={supplierName}
-                  onChange={(e) => setSupplierName(e.target.value)}
+                  onChange={handleSupplierNameChange}
                   placeholder={t('supplier_name_placeholder')}
                   className="h-12 border-secondary/80 bg-white/80 backdrop-blur-sm focus:border-primary/40 transition-all pl-4"
                   disabled={isLoading}

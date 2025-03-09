@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BarChart } from 'lucide-react';
 import { 
@@ -9,6 +8,7 @@ import {
   CardTitle 
 } from '@/components/ui/card';
 import LcaFlowchart from './LcaFlowchart';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface LcaParameter {
   name: string;
@@ -35,6 +35,8 @@ export const LcaModelCard: React.FC<LcaModelCardProps> = ({
   parameters,
   flowchart
 }) => {
+  const { t } = useLanguage();
+  
   return (
     <Card>
       <CardHeader className="flex flex-row items-start space-y-0 pb-2">
@@ -57,7 +59,7 @@ export const LcaModelCard: React.FC<LcaModelCardProps> = ({
         </div>
         
         <div className="mt-4">
-          <h4 className="text-sm font-medium mb-3">LCA模型流程图</h4>
+          <h4 className="text-sm font-medium mb-3">{t('lca_model_flowchart')}</h4>
           <LcaFlowchart nodes={flowchart} />
         </div>
       </CardContent>

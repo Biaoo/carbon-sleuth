@@ -30,16 +30,16 @@ const SupplierProductSection: React.FC<SupplierProductSectionProps> = ({ form })
   
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">{t('supplier_product_info')}</h2>
+      <h2 className="text-xl font-semibold mb-4">{t('supplier_product_info_form')}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FormField
           control={form.control}
           name="supplierName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('supplier_name')}</FormLabel>
+              <FormLabel>{t('supplier_name_form')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('supplier_name_placeholder')} {...field} />
+                <Input placeholder={t('supplier_name_placeholder_form')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -51,9 +51,9 @@ const SupplierProductSection: React.FC<SupplierProductSectionProps> = ({ form })
           name="productName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('product_name')}</FormLabel>
+              <FormLabel>{t('product_name_form')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('product_name_placeholder')} {...field} />
+                <Input placeholder={t('product_name_placeholder_form')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

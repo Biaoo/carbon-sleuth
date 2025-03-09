@@ -14,16 +14,16 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ form }) => {
   
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">{t('contact_info')}</h2>
+      <h2 className="text-xl font-semibold mb-4">{t('contact_info_form')}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FormField
           control={form.control}
           name="contactName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('contact_name')}</FormLabel>
+              <FormLabel>{t('contact_name_form')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('contact_name_placeholder')} {...field} />
+                <Input placeholder={t('contact_name_placeholder_form')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -35,9 +35,9 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ form }) => {
           name="contactEmail"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('contact_email')}</FormLabel>
+              <FormLabel>{t('contact_email_form')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('contact_email_placeholder')} {...field} />
+                <Input placeholder={t('contact_email_placeholder_form')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -49,9 +49,9 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ form }) => {
           name="contactPhone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t('contact_phone')}</FormLabel>
+              <FormLabel>{t('contact_phone_form')}</FormLabel>
               <FormControl>
-                <Input placeholder={t('contact_phone_placeholder')} {...field} />
+                <Input placeholder={t('contact_phone_placeholder_form')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

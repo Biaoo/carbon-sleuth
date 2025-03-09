@@ -238,18 +238,18 @@ export const translations = {
     'potential_reduction': '潜在减排',
 
     // Data Request Form
-    'supplier_product_info': '供应商与产品信息',
-    'supplier_name': '供应商名称',
-    'supplier_name_placeholder': '请输入供应商名称',
-    'product_name': '产品名称',
-    'product_name_placeholder': '请输入产品名称',
-    'contact_info': '联系信息',
-    'contact_name': '联系人姓名',
-    'contact_name_placeholder': '请输入联系人姓名',
-    'contact_email': '联系邮箱',
-    'contact_email_placeholder': '请输入联系邮箱',
-    'contact_phone': '联系电话（选填）',
-    'contact_phone_placeholder': '请输入联系电话',
+    'supplier_product_info_form': '供应商与产品信息',
+    'supplier_name_form': '供应商名称',
+    'supplier_name_placeholder_form': '请输入供应商名称',
+    'product_name_form': '产品名称',
+    'product_name_placeholder_form': '请输入产品名称',
+    'contact_info_form': '联系信息',
+    'contact_name_form': '联系人姓名',
+    'contact_name_placeholder_form': '请输入联系人姓名',
+    'contact_email_form': '联系邮箱',
+    'contact_email_placeholder_form': '请输入联系邮箱',
+    'contact_phone_form': '联系电话（选填）',
+    'contact_phone_placeholder_form': '请输入联系电话',
     'request_data_items': '请求数据项',
     'request_data_items_description': '选择您需要供应商提供的数据类型',
     'product_specs': '产品规格参数',
@@ -266,9 +266,9 @@ export const translations = {
     'urgency_low': '低 - 一个月内回复',
     'urgency_medium': '中 - 两周内回复',
     'urgency_high': '高 - 一周内回复',
-    'response_deadline_label': '响应截止日期',
+    'response_deadline_form': '响应截止日期',
     'select_date': '选择日期',
-    'additional_info_label': '附加说明（选填）',
+    'additional_info_form': '附加说明（选填）',
     'additional_info_placeholder': '请输入任何需要补充的信息或特殊要求',
     'preview_request_ignore_validation': '预览请求（忽略验证）',
     'validate_and_preview': '验证并预览',
@@ -360,6 +360,15 @@ export const translations = {
     'stage_generating_report': '生成预测报告...',
     'stage_prediction_complete': '预测完成！',
     'estimated_completion_time': '预计完成时间: 40-60秒',
+    
+    // Form Validation
+    'required_fields_error': '请提供产品名称和供应商名称',
+    'product_name_required': '请输入产品名称',
+    'supplier_name_required': '请输入供应商名称',
+    'validation_error': '表单验证错误',
+    
+    // LCA Model Card
+    'lca_model_flowchart': 'LCA模型流程图',
   },
   en: {
     // Navbar
@@ -586,18 +595,18 @@ export const translations = {
     'potential_reduction': 'Potential Reduction',
 
     // Data Request Form
-    'supplier_product_info': 'Supplier and Product Information',
-    'supplier_name': 'Supplier Name',
-    'supplier_name_placeholder': 'Enter supplier name',
-    'product_name': 'Product Name',
-    'product_name_placeholder': 'Enter product name',
-    'contact_info': 'Contact Information',
-    'contact_name': 'Contact Name',
-    'contact_name_placeholder': 'Enter contact name',
-    'contact_email': 'Contact Email',
-    'contact_email_placeholder': 'Enter contact email',
-    'contact_phone': 'Contact Phone (Optional)',
-    'contact_phone_placeholder': 'Enter contact phone',
+    'supplier_product_info_form': 'Supplier and Product Information',
+    'supplier_name_form': 'Supplier Name',
+    'supplier_name_placeholder_form': 'Enter supplier name',
+    'product_name_form': 'Product Name',
+    'product_name_placeholder_form': 'Enter product name',
+    'contact_info_form': 'Contact Information',
+    'contact_name_form': 'Contact Name',
+    'contact_name_placeholder_form': 'Enter contact name',
+    'contact_email_form': 'Contact Email',
+    'contact_email_placeholder_form': 'Enter contact email',
+    'contact_phone_form': 'Contact Phone (Optional)',
+    'contact_phone_placeholder_form': 'Enter contact phone',
     'request_data_items': 'Requested Data Items',
     'request_data_items_description': 'Select the types of data you need from the supplier',
     'product_specs': 'Product Specifications',
@@ -614,9 +623,9 @@ export const translations = {
     'urgency_low': 'Low - Reply within a month',
     'urgency_medium': 'Medium - Reply within two weeks',
     'urgency_high': 'High - Reply within a week',
-    'response_deadline_label': 'Response Deadline',
+    'response_deadline_form': 'Response Deadline',
     'select_date': 'Select date',
-    'additional_info_label': 'Additional Information (Optional)',
+    'additional_info_form': 'Additional Information (Optional)',
     'additional_info_placeholder': 'Enter any additional information or special requirements',
     'preview_request_ignore_validation': 'Preview Request (Ignore Validation)',
     'validate_and_preview': 'Validate and Preview',
@@ -708,6 +717,15 @@ export const translations = {
     'stage_generating_report': 'Generating prediction report...',
     'stage_prediction_complete': 'Prediction complete!',
     'estimated_completion_time': 'Estimated completion time: 40-60 seconds',
+    
+    // Form Validation
+    'required_fields_error': 'Please provide both product name and supplier name',
+    'product_name_required': 'Please enter product name',
+    'supplier_name_required': 'Please enter supplier name',
+    'validation_error': 'Form Validation Error',
+    
+    // LCA Model Card
+    'lca_model_flowchart': 'LCA Model Flowchart',
   }
 };
 

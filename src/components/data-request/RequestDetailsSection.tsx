@@ -53,7 +53,7 @@ const RequestDetailsSection: React.FC<RequestDetailsSectionProps> = ({ form }) =
   
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">{t('request_details')}</h2>
+      <h2 className="text-xl font-semibold mb-4">{t('request_details_label')}</h2>
       
       {/* Request Data Items */}
       <FormField
@@ -141,7 +141,7 @@ const RequestDetailsSection: React.FC<RequestDetailsSectionProps> = ({ form }) =
           name="deadline"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>{t('response_deadline')}</FormLabel>
+              <FormLabel>{t('response_deadline_form')}</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
