@@ -32,6 +32,20 @@ const DataRequestPreview: React.FC<DataRequestPreviewProps> = ({
 }) => {
   const { t, language } = useLanguage();
   
+  // Helper function to determine urgency from content
+  const getUrgencyFromContent = () => {
+    if (data.content.includes(t('urgency_text_high'))) {
+      return 'high';
+    } else if (data.content.includes(t('urgency_text_medium'))) {
+      return 'medium';
+    } else if (data.content.includes(t('urgency_text_low'))) {
+      return 'low';
+    }
+    return 'medium'; // Default
+  };
+  
+  const urgency = getUrgencyFromContent();
+  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
@@ -46,7 +60,7 @@ const DataRequestPreview: React.FC<DataRequestPreviewProps> = ({
           {/* 基本信息 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h3 className="text-sm font-medium text-muted-foreground mb-2">{t('supplier_info')}</h3>
+              <h3 className="text-sm font-medium text-muted-foreground mb-2">{t('supplier_info_label')}</h3>
               <Card>
                 <CardContent className="p-4">
                   <div className="space-y-3">
@@ -60,7 +74,7 @@ const DataRequestPreview: React.FC<DataRequestPreviewProps> = ({
             </div>
             
             <div>
-              <h3 className="text-sm font-medium text-muted-foreground mb-2">{t('product_info')}</h3>
+              <h3 className="text-sm font-medium text-muted-foreground mb-2">{t('product_info_label')}</h3>
               <Card>
                 <CardContent className="p-4">
                   <div className="space-y-3">
@@ -129,7 +143,6 @@ const DataRequestPreview: React.FC<DataRequestPreviewProps> = ({
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* 紧急程度 - 从邮件内容中提取 */}
                     <div>
                       <p className="text-sm font-medium">{t('urgency_level_label')}</p>
                       <div className="flex items-center mt-2">
@@ -137,14 +150,14 @@ const DataRequestPreview: React.FC<DataRequestPreviewProps> = ({
                         <Badge 
                           variant="outline" 
                           className={`
-                            ${data.content.includes('高优先级') ? 'bg-red-50 text-red-700 border-red-200' : ''}
-                            ${data.content.includes('常规优先级') ? 'bg-amber-50 text-amber-700 border-amber-200' : ''}
-                            ${data.content.includes('低优先级') ? 'bg-green-50 text-green-700 border-green-200' : ''}
+                            ${urgency === 'high' ? 'bg-red-50 text-red-700 border-red-200' : ''}
+                            ${urgency === 'medium' ? 'bg-amber-50 text-amber-700 border-amber-200' : ''}
+                            ${urgency === 'low' ? 'bg-green-50 text-green-700 border-green-200' : ''}
                           `}
                         >
-                          {data.content.includes('高优先级') && t('urgency_high')}
-                          {data.content.includes('常规优先级') && t('urgency_medium')}
-                          {data.content.includes('低优先级') && t('urgency_low')}
+                          {urgency === 'high' && t('urgency_high')}
+                          {urgency === 'medium' && t('urgency_medium')}
+                          {urgency === 'low' && t('urgency_low')}
                         </Badge>
                       </div>
                     </div>

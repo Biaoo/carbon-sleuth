@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import { zhCN } from 'date-fns/locale';
 import { DataRequestPreviewData } from '@/components/prediction-result/types';
 import { UseFormReturn } from 'react-hook-form';
 import { FormData } from '@/components/data-request/SupplierProductSection';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { 
   mockCompetitorsData,
   mockIndustryBenchmarks,
@@ -35,6 +37,7 @@ export const useDataRequestPreviewHandler = ({
   navigateToHome
 }: UseDataRequestPreviewHandlerProps) => {
   const { toast } = useToast();
+  const { t, language } = useLanguage();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewData, setPreviewData] = useState<DataRequestPreviewData | null>(null);
 
@@ -57,72 +60,146 @@ export const useDataRequestPreviewHandler = ({
     // Prepare preview data with fallbacks for empty values
     const selectedItems = values.requestItems && values.requestItems.length > 0
       ? values.requestItems.map(
-          itemId => dataItems.find(item => item.id === itemId)?.label || ""
+          itemId => {
+            const item = dataItems.find(item => item.id === itemId);
+            return item ? t(item.label) : "";
+          }
         ).filter(Boolean)
-      : ["未选择数据项"];
+      : [t('no_items_selected')];
     
-    // Generate email subject and content based on form values with fallbacks
-    const subject = `关于${values.productName || "产品"}碳足迹数据收集 - ${values.supplierName || "供应商"}`;
+    // Get urgency text based on current language
     const urgencyText = values.urgency ? {
-      low: "低优先级",
-      medium: "常规优先级",
-      high: "高优先级"
-    }[values.urgency as 'low' | 'medium' | 'high'] : "常规优先级";
+      low: t('urgency_text_low'),
+      medium: t('urgency_text_medium'),
+      high: t('urgency_text_high')
+    }[values.urgency as 'low' | 'medium' | 'high'] : t('urgency_text_medium');
     
-    // Include industry benchmarking data in the email content
+    // Format the deadline based on current language
+    const formattedDeadline = values.deadline 
+      ? format(values.deadline, 'PPP', { locale: language === 'zh' ? zhCN : undefined })
+      : t('asap');
+    
+    // Generate email subject based on template
+    const subject = t('email_subject_template')
+      .replace('{product}', values.productName || t('unspecified_product'))
+      .replace('{supplier}', values.supplierName || t('unspecified_supplier'));
+    
+    // Build email content sections
+    const greeting = t('email_greeting').replace('{supplier}', values.supplierName || t('unspecified_supplier'));
+    const hello = t('email_hello');
+    
+    const intro = values.contactName 
+      ? t('email_intro_with_name').replace('{name}', values.contactName)
+      : t('email_intro_without_name');
+    
+    const purpose = t('email_purpose').replace('{product}', values.productName || t('unspecified_product'));
+    
+    // Current product prediction section
+    const currentProductPredictionTitle = t('current_prediction_title');
+    const currentProductPredictionIntro = t('current_prediction_intro')
+      .replace('{product}', values.productName || t('unspecified_product'));
+    
+    const currentProductPredictionValue = t('current_prediction_value')
+      .replace('{value}', mockCurrentProductPrediction.carbonValue.toString())
+      .replace('{unit}', mockCurrentProductPrediction.unit);
+    
+    const currentProductPredictionConfidence = t('current_prediction_confidence')
+      .replace('{level}', mockCurrentProductPrediction.confidenceLevel);
+    
+    const currentProductPredictionUncertainty = t('current_prediction_uncertainty')
+      .replace('{range}', mockCurrentProductPrediction.uncertaintyRange);
+    
+    const currentProductPredictionContributors = t('current_prediction_contributors')
+      .replace('{contributors}', mockCurrentProductPrediction.mainContributors.join('、'));
+    
+    const currentProductPredictionDisclaimer = t('current_prediction_disclaimer');
+    
+    const currentProductPredictionSection = `
+${currentProductPredictionTitle}
+${currentProductPredictionIntro}
+${currentProductPredictionValue}
+${currentProductPredictionConfidence}
+${currentProductPredictionUncertainty}
+${currentProductPredictionContributors}
+
+${currentProductPredictionDisclaimer}`;
+
+    // Requested items section
+    const requestedItemsIntro = t('requested_items_intro');
+    const requestedItemsList = selectedItems.map(item => `• ${item}`).join('\n');
+    
+    // Market comparison section
+    const marketComparisonTitle = t('market_comparison_title');
+    const marketComparisonData = mockCompetitorsData.map(comp => 
+      `• ${comp.name}: ${comp.carbonValue} ${comp.unit} (${comp.difference})`
+    ).join('\n');
+    
     const competitorsSection = `
-我们最近对市场上类似产品进行了碳足迹评估分析，现分享部分结果供您参考：
+${marketComparisonTitle}
+${marketComparisonData}
 
-【市场对比数据】
-${mockCompetitorsData.map(comp => `• ${comp.name}: ${comp.carbonValue} ${comp.unit} (${comp.difference})`).join('\n')}
-
-【行业基准数据】
+${t('industry_benchmark_title')}
 ${mockIndustryBenchmarks.map(bench => `• ${bench.name}: ${bench.value} ${bench.unit}`).join('\n')}`;
 
+    // Platform prediction section
+    const platformPredictionSection = `
+${t('platform_prediction_title')}
+${t('platform_prediction_desc')}
+${t('platform_prediction_point1')}
+${t('platform_prediction_point2')}
+${t('platform_prediction_point3')}
+${t('platform_prediction_point4')}`;
+
+    // Reports section
     const reportsSection = `
-以下是我们整理的相关行业报告，您可能会感兴趣：
+${t('reports_intro')}
 ${mockReportLinks.map(link => `• ${link.name}: ${window.location.origin}${link.url}`).join('\n')}`;
 
-    // Add section about the platform's prediction data
-    const platformPredictionSection = `
-【关于平台预测数据说明】
-请注意，我们平台提供的碳足迹预测数据具有以下特点：
-• 预测结果主要基于公开披露的行业数据及AI推理技术
-• 预测数据存在一定程度的不确定性（通常在±15%范围内）
-• 预测结果可能无法完全反映实际生产情况或特定工艺差异
-• 获取您的实际数据将帮助我们提高预测准确性，并为您提供更有针对性的减碳建议`;
-
-    // Add section about current product prediction
-    const currentProductPredictionSection = `
-【当前产品预测结果】
-根据我们平台对${values.productName || "该产品"}的初步碳足迹预测：
-• 预计碳足迹值：${mockCurrentProductPrediction.carbonValue} ${mockCurrentProductPrediction.unit}
-• 置信水平：${mockCurrentProductPrediction.confidenceLevel}
-• 不确定性范围：${mockCurrentProductPrediction.uncertaintyRange}
-• 主要贡献因素：${mockCurrentProductPrediction.mainContributors.join('、')}
-
-以上预测结果可能与实际情况存在差异，我们希望通过获取更准确的数据来优化此预测结果。`;
-
-    // Add data submission link section to the email
+    // Data submission section
     const dataSubmissionSection = `
-【数据填报链接】
-为了方便您提交相关数据，我们创建了一个专属数据填报页面，您可以通过以下链接进行填报：
+${t('data_submission_title')}
+${t('data_submission_desc')}
 ${dataSubmissionLink}
 
-该链接是为贵公司专门生成的安全链接，无需注册即可直接填报数据。链接有效期为30天。`;
+${t('data_submission_security')}`;
     
-    const content = `尊敬的${values.supplierName || "供应商"}团队：
+    // Closing section
+    const closingSection = values.deadline 
+      ? t('closing_with_deadline')
+          .replace('{product}', values.productName || t('unspecified_product'))
+          .replace('{deadline}', formattedDeadline)
+          .replace('{urgency}', urgencyText)
+      : t('closing_without_deadline')
+          .replace('{product}', values.productName || t('unspecified_product'))
+          .replace('{urgency}', urgencyText);
+    
+    // Additional info section (if provided)
+    const additionalInfoSection = values.additionalInfo 
+      ? t('additional_info_section').replace('{info}', values.additionalInfo) + '\n\n'
+      : '';
+    
+    // Thanks and closing
+    const thanksAndClosing = `${t('email_thanks')}\n\n${t('email_closing')}`;
+    
+    // Signature
+    const signature = t('email_signature')
+      .replace('{name}', values.contactName || t('unspecified_contact'))
+      .replace('{email}', values.contactEmail ? values.contactEmail : t('unspecified_email'))
+      .replace('{phone}', values.contactPhone ? values.contactPhone : '');
+    
+    // Combine all sections to create the complete email content
+    const content = `${greeting}
 
-您好！
+${hello}
 
-我们是${values.contactName ? values.contactName + "，" : ""}${values.contactName ? "来自" : ""}碳知源环保科技有限公司的采购团队。我们最近一直在关注贵公司的${values.productName || "相关产品"}，对其性能和环保特性非常感兴趣。
+${intro.replace('{product}', values.productName || t('unspecified_product'))}
 
-作为一家重视可持续发展的企业，我们正在对所有供应链产品进行碳足迹评估，以期打造更加环保的产品线。在浏览贵公司产品资料的过程中，我们注意到${values.productName || "您的产品"}在行业内具有竞争力，因此希望能获取更详细的产品碳足迹数据，以便我们做出更全面的评估。
+${purpose}
 
 ${currentProductPredictionSection}
 
-具体来说，我们希望获取以下信息：
-${selectedItems.map(item => `• ${item}`).join('\n')}
+${requestedItemsIntro}
+${requestedItemsList}
 
 ${competitorsSection}
 
@@ -132,30 +209,25 @@ ${reportsSection}
 
 ${dataSubmissionSection}
 
-如果贵公司能够提供这些数据，将极大地帮助我们评估${values.productName || "该产品"}在我们供应链中的环保表现，并为后续可能的合作奠定基础。${values.deadline ? `由于项目进度安排，希望能在${format(values.deadline, 'yyyy年MM月dd日')}前收到相关信息。` : '希望能尽快收到您的回复。'}此请求为${urgencyText}。
+${closingSection}
 
-${values.additionalInfo ? `补充说明：\n${values.additionalInfo}\n\n` : ''}感谢您的关注与支持！期待与贵公司进一步合作。
+${additionalInfoSection}${thanksAndClosing}
 
-祝商祺！
-
-${values.contactName || "采购团队"}
-${values.contactEmail ? values.contactEmail : ""}
-${values.contactPhone ? values.contactPhone : ""}
-碳知源环保科技有限公司`;
+${signature}`;
     
     setPreviewData({
-      supplier: values.supplierName || "未指定供应商",
-      product: values.productName || "未指定产品",
+      supplier: values.supplierName || t('unspecified_supplier'),
+      product: values.productName || t('unspecified_product'),
       dataItems: selectedItems,
       competitorsData: mockCompetitorsData,
       industryBenchmarks: mockIndustryBenchmarks,
       reportLinks: mockReportLinks,
       contact: {
-        name: values.contactName || "未指定联系人",
-        email: values.contactEmail || "未指定邮箱",
+        name: values.contactName || t('unspecified_contact'),
+        email: values.contactEmail || t('unspecified_email'),
         phone: values.contactPhone || ""
       },
-      deadline: values.deadline ? format(values.deadline, 'yyyy年MM月dd日') : "尽快",
+      deadline: formattedDeadline,
       subject,
       content,
       dataSubmissionLink,
@@ -171,8 +243,8 @@ ${values.contactPhone ? values.contactPhone : ""}
     
     // Here you would typically send the data to an API
     toast({
-      title: "数据请求已发送",
-      description: "已成功发送数据请求邮件",
+      title: language === 'zh' ? "数据请求已发送" : "Data request sent",
+      description: language === 'zh' ? "已成功发送数据请求邮件" : "Data request email has been sent successfully",
     });
     
     // Navigate back or to a confirmation page
