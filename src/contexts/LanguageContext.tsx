@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 // Available languages
@@ -191,6 +190,7 @@ export const translations = {
     'pro_features_desc': '使用专业版解锁更多高级功能与数据分析',
     'upgrade_to_pro': '升级专业版',
     'close': '关闭',
+    'data_request': '数据请求',
     
     // Workspace Inference
     'carbon_footprint_prediction': '碳足迹预测',
@@ -236,6 +236,42 @@ export const translations = {
     'improvement_difficulty_medium': '中等',
     'improvement_difficulty_hard': '困难',
     'potential_reduction': '潜在减排',
+
+    // Data Request Form
+    'supplier_product_info': '供应商与产品信息',
+    'supplier_name': '供应商名称',
+    'supplier_name_placeholder': '请输入供应商名称',
+    'product_name': '产品名称',
+    'product_name_placeholder': '请输入产品名称',
+    'contact_info': '联系信息',
+    'contact_name': '联系人姓名',
+    'contact_name_placeholder': '请输入联系人姓名',
+    'contact_email': '联系邮箱',
+    'contact_email_placeholder': '请输入联系邮箱',
+    'contact_phone': '联系电话（选填）',
+    'contact_phone_placeholder': '请输入联系电话',
+    'request_data_items': '请求数据项',
+    'request_data_items_description': '选择您需要供应商提供的数据类型',
+    'product_specs': '产品规格参数',
+    'material_composition': '材料组成情况',
+    'manufacturing_process': '制造工艺流程',
+    'energy_consumption': '能源消耗数据',
+    'transportation_logistics': '运输物流信息',
+    'certifications': '相关认证文件',
+    'test_reports': '检测报告数据',
+    'packaging_details': '包装材料详情',
+    'suppliers_info': '上游供应商信息',
+    'waste_data': '废弃物处理数据',
+    'urgency_level': '紧急程度',
+    'urgency_low': '低 - 一个月内回复',
+    'urgency_medium': '中 - 两周内回复',
+    'urgency_high': '高 - 一周内回复',
+    'response_deadline': '响应截止日期',
+    'select_date': '选择日期',
+    'additional_info': '附加说明（选填）',
+    'additional_info_placeholder': '请输入任何需要补充的信息或特殊要求',
+    'preview_request_ignore_validation': '预览请求（忽略验证）',
+    'validate_and_preview': '验证并预览',
   },
   en: {
     // Navbar
@@ -411,9 +447,10 @@ export const translations = {
     'workspace_modules': 'Workspace Modules',
     'function_modules': 'Function Modules',
     'pro_features': 'Pro Features',
-    'pro_features_desc': 'Upgrade to Pro to unlock more advanced features and data analysis',
+    'pro_features_desc': 'Unlock more advanced features and data analysis with Pro version',
     'upgrade_to_pro': 'Upgrade to Pro',
     'close': 'Close',
+    'data_request': 'Data Request',
     
     // Workspace Inference
     'carbon_footprint_prediction': 'Carbon Footprint Prediction',
@@ -459,6 +496,42 @@ export const translations = {
     'improvement_difficulty_medium': 'Medium',
     'improvement_difficulty_hard': 'Hard',
     'potential_reduction': 'Potential Reduction',
+
+    // Data Request Form
+    'supplier_product_info': 'Supplier and Product Information',
+    'supplier_name': 'Supplier Name',
+    'supplier_name_placeholder': 'Enter supplier name',
+    'product_name': 'Product Name',
+    'product_name_placeholder': 'Enter product name',
+    'contact_info': 'Contact Information',
+    'contact_name': 'Contact Name',
+    'contact_name_placeholder': 'Enter contact name',
+    'contact_email': 'Contact Email',
+    'contact_email_placeholder': 'Enter contact email',
+    'contact_phone': 'Contact Phone (Optional)',
+    'contact_phone_placeholder': 'Enter contact phone',
+    'request_data_items': 'Requested Data Items',
+    'request_data_items_description': 'Select the types of data you need from the supplier',
+    'product_specs': 'Product Specifications',
+    'material_composition': 'Material Composition',
+    'manufacturing_process': 'Manufacturing Process',
+    'energy_consumption': 'Energy Consumption Data',
+    'transportation_logistics': 'Transportation & Logistics',
+    'certifications': 'Certifications',
+    'test_reports': 'Test Reports',
+    'packaging_details': 'Packaging Details',
+    'suppliers_info': 'Upstream Suppliers Information',
+    'waste_data': 'Waste Management Data',
+    'urgency_level': 'Urgency Level',
+    'urgency_low': 'Low - Reply within a month',
+    'urgency_medium': 'Medium - Reply within two weeks',
+    'urgency_high': 'High - Reply within a week',
+    'response_deadline': 'Response Deadline',
+    'select_date': 'Select date',
+    'additional_info': 'Additional Information (Optional)',
+    'additional_info_placeholder': 'Enter any additional information or special requirements',
+    'preview_request_ignore_validation': 'Preview Request (Ignore Validation)',
+    'validate_and_preview': 'Validate and Preview',
   }
 };
 

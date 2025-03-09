@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { FormData } from '@/components/data-request/SupplierProductSection';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // Import refactored sections for data request
 import SupplierProductSection from '@/components/data-request/SupplierProductSection';
@@ -22,6 +22,8 @@ const DataRequestForm: React.FC<DataRequestFormProps> = ({
   onSubmit,
   onPreview
 }) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="max-w-3xl mx-auto">
       <Form {...form}>
@@ -41,10 +43,10 @@ const DataRequestForm: React.FC<DataRequestFormProps> = ({
           <div className="flex justify-between">
             {/* Added a Preview button that doesn't require form validation */}
             <Button type="button" variant="outline" onClick={onPreview}>
-              预览请求（忽略验证）
+              {t('preview_request_ignore_validation')}
             </Button>
             <Button type="submit">
-              验证并预览
+              {t('validate_and_preview')}
             </Button>
           </div>
         </form>

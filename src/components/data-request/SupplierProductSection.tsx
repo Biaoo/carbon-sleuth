@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // Updated schema with consistent types
 export const formSchema = z.object({
@@ -26,18 +26,20 @@ interface SupplierProductSectionProps {
 }
 
 const SupplierProductSection: React.FC<SupplierProductSectionProps> = ({ form }) => {
+  const { t } = useLanguage();
+  
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">供应商与产品信息</h2>
+      <h2 className="text-xl font-semibold mb-4">{t('supplier_product_info')}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FormField
           control={form.control}
           name="supplierName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>供应商名称</FormLabel>
+              <FormLabel>{t('supplier_name')}</FormLabel>
               <FormControl>
-                <Input placeholder="请输入供应商名称" {...field} />
+                <Input placeholder={t('supplier_name_placeholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -49,9 +51,9 @@ const SupplierProductSection: React.FC<SupplierProductSectionProps> = ({ form })
           name="productName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>产品名称</FormLabel>
+              <FormLabel>{t('product_name')}</FormLabel>
               <FormControl>
-                <Input placeholder="请输入产品名称" {...field} />
+                <Input placeholder={t('product_name_placeholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

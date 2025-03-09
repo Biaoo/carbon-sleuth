@@ -28,19 +28,20 @@ import { zhCN } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { UseFormReturn } from 'react-hook-form';
 import { FormData } from './SupplierProductSection';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // Data items that can be requested
 const dataItems = [
-  { id: "product_specs", label: "产品规格参数" },
-  { id: "material_composition", label: "材料组成情况" },
-  { id: "manufacturing_process", label: "制造工艺流程" },
-  { id: "energy_consumption", label: "能源消耗数据" },
-  { id: "transportation_logistics", label: "运输物流信息" },
-  { id: "certifications", label: "相关认证文件" },
-  { id: "test_reports", label: "检测报告数据" },
-  { id: "packaging_details", label: "包装材料详情" },
-  { id: "suppliers_info", label: "上游供应商信息" },
-  { id: "waste_data", label: "废弃物处理数据" },
+  { id: "product_specs", label: "product_specs" },
+  { id: "material_composition", label: "material_composition" },
+  { id: "manufacturing_process", label: "manufacturing_process" },
+  { id: "energy_consumption", label: "energy_consumption" },
+  { id: "transportation_logistics", label: "transportation_logistics" },
+  { id: "certifications", label: "certifications" },
+  { id: "test_reports", label: "test_reports" },
+  { id: "packaging_details", label: "packaging_details" },
+  { id: "suppliers_info", label: "suppliers_info" },
+  { id: "waste_data", label: "waste_data" },
 ];
 
 interface RequestDetailsSectionProps {
@@ -48,19 +49,22 @@ interface RequestDetailsSectionProps {
 }
 
 const RequestDetailsSection: React.FC<RequestDetailsSectionProps> = ({ form }) => {
+  const { t, language } = useLanguage();
+  
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">请求详情</h2>
+      <h2 className="text-xl font-semibold mb-4">{t('request_details')}</h2>
       
+      {/* Request Data Items */}
       <FormField
         control={form.control}
         name="requestItems"
         render={() => (
           <FormItem>
-            <div className="mb-2">
-              <FormLabel>请求数据项</FormLabel>
+            <div className="mb-4">
+              <FormLabel className="text-base">{t('request_data_items')}</FormLabel>
               <FormDescription>
-                请选择需要供应商提供的数据类型
+                {t('request_data_items_description')}
               </FormDescription>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -73,7 +77,7 @@ const RequestDetailsSection: React.FC<RequestDetailsSectionProps> = ({ form }) =
                     return (
                       <FormItem
                         key={item.id}
-                        className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-3"
+                        className="flex flex-row items-start space-x-3 space-y-0"
                       >
                         <FormControl>
                           <Checkbox
@@ -85,15 +89,15 @@ const RequestDetailsSection: React.FC<RequestDetailsSectionProps> = ({ form }) =
                                     field.value?.filter(
                                       (value) => value !== item.id
                                     )
-                                  )
+                                  );
                             }}
                           />
                         </FormControl>
-                        <FormLabel className="text-sm font-normal cursor-pointer">
-                          {item.label}
+                        <FormLabel className="font-normal">
+                          {t(item.label)}
                         </FormLabel>
                       </FormItem>
-                    )
+                    );
                   }}
                 />
               ))}
@@ -103,13 +107,41 @@ const RequestDetailsSection: React.FC<RequestDetailsSectionProps> = ({ form }) =
         )}
       />
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+      {/* Urgency Level */}
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <FormField
+          control={form.control}
+          name="urgency"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t('urgency_level')}</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="选择紧急程度" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="low">{t('urgency_low')}</SelectItem>
+                  <SelectItem value="medium">{t('urgency_medium')}</SelectItem>
+                  <SelectItem value="high">{t('urgency_high')}</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        {/* Response Deadline */}
         <FormField
           control={form.control}
           name="deadline"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>截止日期</FormLabel>
+              <FormLabel>{t('response_deadline')}</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -121,9 +153,9 @@ const RequestDetailsSection: React.FC<RequestDetailsSectionProps> = ({ form }) =
                       )}
                     >
                       {field.value ? (
-                        format(field.value, "yyyy年MM月dd日", { locale: zhCN })
+                        format(field.value, "PPP", { locale: language === 'zh' ? zhCN : undefined })
                       ) : (
-                        <span>请选择日期</span>
+                        <span>{t('select_date')}</span>
                       )}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
@@ -134,35 +166,14 @@ const RequestDetailsSection: React.FC<RequestDetailsSectionProps> = ({ form }) =
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
+                    disabled={(date) =>
+                      date < new Date(new Date().setHours(0, 0, 0, 0))
+                    }
                     initialFocus
-                    disabled={(date) => date < new Date()}
-                    locale={zhCN}
+                    locale={language === 'zh' ? zhCN : undefined}
                   />
                 </PopoverContent>
               </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={form.control}
-          name="urgency"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>优先级</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="请选择优先级" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="low">低 - 一般信息请求</SelectItem>
-                  <SelectItem value="medium">中 - 标准数据请求</SelectItem>
-                  <SelectItem value="high">高 - 紧急数据需求</SelectItem>
-                </SelectContent>
-              </Select>
               <FormMessage />
             </FormItem>
           )}

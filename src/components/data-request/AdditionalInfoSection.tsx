@@ -3,22 +3,25 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { Textarea } from '@/components/ui/textarea';
 import { UseFormReturn } from 'react-hook-form';
 import { FormData } from './SupplierProductSection';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface AdditionalInfoSectionProps {
   form: UseFormReturn<FormData>;
 }
 
 const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ form }) => {
+  const { t } = useLanguage();
+  
   return (
     <FormField
       control={form.control}
       name="additionalInfo"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>附加说明（选填）</FormLabel>
+          <FormLabel>{t('additional_info')}</FormLabel>
           <FormControl>
             <Textarea 
-              placeholder="请输入任何需要补充的信息或特殊要求" 
+              placeholder={t('additional_info_placeholder')} 
               className="min-h-[120px]" 
               {...field} 
             />
