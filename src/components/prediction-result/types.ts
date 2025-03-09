@@ -30,14 +30,14 @@ export interface InferenceData {
 
 export interface ProductInfo {
   title: string | BilingualText;
-  icon: any;
+  icon: unknown;
   markdownContent: string | BilingualText;
   citations?: Citation[];
 }
 
 export interface CompetitorsInfo {
   title: string | BilingualText;
-  icon: any;
+  icon: unknown;
   data: CompetitorData[];
 }
 
@@ -48,7 +48,7 @@ export interface CompetitorData {
 
 export interface LcaModel {
   title: string | BilingualText;
-  icon: any;
+  icon: unknown;
   modelName: string | BilingualText;
   description: string | BilingualText;
   parameters: LcaParameter[];
@@ -69,7 +69,7 @@ export interface FlowchartNode {
 
 export interface CarbonFootprintResult {
   title: string | BilingualText;
-  icon: any;
+  icon: unknown;
   totalValue: number;
   unit: string;
   breakdown: BreakdownItem[];
@@ -90,7 +90,7 @@ export interface ExplanatoryInfo {
 
 export interface References {
   title: string | BilingualText;
-  icon: any;
+  icon: unknown;
   sources: ReferenceSource[];
 }
 
@@ -103,7 +103,7 @@ export interface ReferenceSource {
 
 export interface TechnicalBasis {
   title: string | BilingualText;
-  icon: any;
+  icon: unknown;
   methods: TechnicalMethod[];
 }
 

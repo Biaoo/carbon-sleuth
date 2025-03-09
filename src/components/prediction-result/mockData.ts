@@ -32,12 +32,12 @@ export const mockResultData: PredictionResultData = {
   ],
   comparativeAnalysis: {
     chartData: [
-      { name: bilingual("本产品", "This Product"), value: 45.6, error: 2.3, highlight: true, fill: "#4338ca", itemType: "current" },
-      { name: bilingual("竞品A", "Lowest Competitor"), value: 38.5, error: 1.9, highlight: false, fill: "#a8b3cf", itemType: "competitor" },
-      { name: bilingual("竞品B", "Lowest Competitor"), value: 38.5, error: 1.9, highlight: false, fill: "#a8b3cf", itemType: "competitor" },
-      { name: bilingual("竞品C", "Lowest Competitor"), value: 38.5, error: 1.9, highlight: false, fill: "#a8b3cf", itemType: "competitor" },
-      { name: bilingual("竞品D", "Lowest Competitor"), value: 38.5, error: 1.9, highlight: false, fill: "#a8b3cf", itemType: "competitor" },
-      { name: bilingual("行业基准", "Industry Benchmark"), value: 52.1, error: 3.1, highlight: false, fill: "#a8b3cf", itemType: "industry" },
+      { name: bilingual("本产品", "This Product"), value: 40.6, error: 2.3, highlight: true, fill: "#4338ca", itemType: "current" },
+      { name: bilingual("竞品A", "Lowest Competitor"), value: 48.2, error: 1.9, highlight: false, fill: "#a8b3cf", itemType: "competitor" },
+      { name: bilingual("竞品B", "Lowest Competitor"), value: 38.5, error: 2.2, highlight: false, fill: "#a8b3cf", itemType: "competitor" },
+      { name: bilingual("竞品C", "Lowest Competitor"), value: 37.3, error: 1.8, highlight: false, fill: "#a8b3cf", itemType: "competitor" },
+      { name: bilingual("竞品D", "Lowest Competitor"), value: 32.1, error: 2.0, highlight: false, fill: "#a8b3cf", itemType: "competitor" },
+      { name: bilingual("行业基准", "Industry Benchmark"), value: 45.1, error: 3.1, highlight: false, fill: "#a8b3cf", itemType: "industry" },
     ],
     industryBenchmark: {
       title: bilingual("行业基准对比", "Industry Benchmark Comparison"),

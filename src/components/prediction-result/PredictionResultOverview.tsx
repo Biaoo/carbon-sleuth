@@ -46,7 +46,7 @@ const PredictionResultOverview: React.FC<PredictionResultOverviewProps> = ({
             <BarChart2 className="h-5 w-5 mr-2 text-muted-foreground" />
             {t('carbon_footprint_prediction_result')}
           </CardTitle>
-          <CardDescription>{t('product_carbon_industry_comparison')}</CardDescription>
+          {/* <CardDescription>{t('product_carbon_industry_comparison')}</CardDescription> */}
         </CardHeader>
         <CardContent>
           <div className="flex items-center mb-2">
