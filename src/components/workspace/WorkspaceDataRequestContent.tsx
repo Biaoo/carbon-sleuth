@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,7 +29,7 @@ const WorkspaceDataRequestContent: React.FC<WorkspaceDataRequestContentProps> = 
 }) => {
   const location = useLocation();
   const state = location.state as LocationState | null;
-  const { t, language } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
   
   // Set up the form with validation
   const form = useForm<FormData>({
@@ -50,9 +49,8 @@ const WorkspaceDataRequestContent: React.FC<WorkspaceDataRequestContentProps> = 
   
   // Set the language to Chinese
   useEffect(() => {
-    const { setLanguage } = useLanguage();
     setLanguage('zh');
-  }, []);
+  }, [setLanguage]);
   
   // Pre-fill form with data from props or location state if available
   useEffect(() => {
