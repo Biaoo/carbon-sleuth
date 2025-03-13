@@ -341,6 +341,9 @@ export const zhTranslations = {
   'role_buyer':'采购商',
   'role_supplier':'供应商',
   'role_carbon_service':'数据服务商',
+
+  'service_provider': '数据服务商',
+  'service_name': '服务名称',
 };
 
 // Now add the email content translations separately to avoid duplicates
