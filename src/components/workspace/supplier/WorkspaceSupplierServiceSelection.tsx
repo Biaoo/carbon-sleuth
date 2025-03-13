@@ -4,13 +4,13 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Check, Info, Star } from 'lucide-react';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import {
   Tooltip,
   TooltipContent,
@@ -29,6 +29,7 @@ interface ServiceProvider {
   description: string;
   price: string;
   features: string[];
+  recommended?: boolean;
 }
 
 const serviceProviders: ServiceProvider[] = [
@@ -41,7 +42,8 @@ const serviceProviders: ServiceProvider[] = [
     serviceTypes: ['碳足迹核算', '低碳认证'],
     description: '提供完整的产品生命周期碳足迹评估，符合ISO 14067标准，包含数据收集、计算与分析报告',
     price: '¥5,000',
-    features: ['产品生命周期分析', 'ISO 14067合规', '基础数据收集', '评估报告', '碳减排建议']
+    features: ['产品生命周期分析', 'ISO 14067合规', '基础数据收集', '评估报告', '碳减排建议'],
+    recommended: true
   },
   {
     id: 2,
@@ -52,7 +54,8 @@ const serviceProviders: ServiceProvider[] = [
     serviceTypes: ['供应链碳管理', '碳足迹核算'],
     description: '提供完整的企业碳管理解决方案，包括碳盘查、碳核算和减排路径规划',
     price: '¥8,500',
-    features: ['企业碳排放盘查', '多产品碳足迹核算', '供应链碳管理', '碳管理数字平台', '季度跟踪报告']
+    features: ['企业碳排放盘查', '多产品碳足迹核算', '供应链碳管理', '碳管理数字平台', '季度跟踪报告'],
+    recommended: true
   },
   {
     id: 3,
@@ -120,66 +123,87 @@ const WorkspaceSupplierServiceSelection: React.FC = () => {
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {serviceProviders.map((provider) => (
-          <Card key={provider.id} className="border border-border h-full flex flex-col">
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-lg">{provider.name}</CardTitle>
-                  <CardDescription className="mt-1">{provider.serviceName}</CardDescription>
-                </div>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-6 w-6">
-                        <Info className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="w-60">{provider.description}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-              
-              <div className="flex items-center mt-2">
-                <div className="flex mr-2">
-                  {renderRatingStars(provider.rating)}
-                </div>
-                <span className="text-sm font-medium">{provider.rating}</span>
-                <span className="text-sm text-muted-foreground ml-1">({provider.reviewCount})</span>
-              </div>
-              
-              <div className="flex flex-wrap gap-2 mt-3">
-                {provider.serviceTypes.map((type, index) => (
-                  <Badge key={index} variant="secondary" className="font-normal">
-                    {type}
-                  </Badge>
-                ))}
-              </div>
-            </CardHeader>
-            
-            <CardContent className="flex-grow">
-              <div className="mb-4">
-                <span className="text-2xl font-bold">{provider.price}</span>
-                <span className="text-sm text-muted-foreground ml-1">{t('per_product')}</span>
-              </div>
-              <ul className="space-y-2">
-                {provider.features.map((feature, index) => (
-                  <li key={index} className="flex items-start">
-                    <Check className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-            
-            <CardFooter className="mt-auto">
-              <Button className="w-full">{t('select_service')}</Button>
-            </CardFooter>
-          </Card>
-        ))}
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead width="200">{t('service_provider')}</TableHead>
+              <TableHead width="250">{t('service_name')}</TableHead>
+              <TableHead>{t('service_type')}</TableHead>
+              <TableHead className="text-center">{t('rating')}</TableHead>
+              <TableHead className="text-right">{t('price')}</TableHead>
+              <TableHead className="text-right">{t('action')}</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {serviceProviders.map((provider) => (
+              <TableRow key={provider.id}>
+                <TableCell className="font-medium">
+                  <div className="flex items-center gap-2">
+                    {provider.name}
+                    {provider.recommended && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{t('recommended_provider')}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-start gap-1">
+                    <span>{provider.serviceName}</span>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-60">{provider.description}</p>
+                          <ul className="mt-2 space-y-1">
+                            {provider.features.map((feature, idx) => (
+                              <li key={idx} className="flex items-start text-xs">
+                                <Check className="h-3 w-3 text-green-500 mr-1 mt-0.5 flex-shrink-0" />
+                                <span>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex flex-wrap gap-1">
+                    {provider.serviceTypes.map((type, index) => (
+                      <Badge key={index} variant="secondary" className="font-normal text-xs">
+                        {type}
+                      </Badge>
+                    ))}
+                  </div>
+                </TableCell>
+                <TableCell className="text-center">
+                  <div className="flex items-center justify-center">
+                    <div className="flex mr-1">
+                      {renderRatingStars(provider.rating)}
+                    </div>
+                    <span className="text-sm">{provider.rating}</span>
+                    <span className="text-xs text-muted-foreground ml-1">({provider.reviewCount})</span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-right font-medium">{provider.price}</TableCell>
+                <TableCell className="text-right">
+                  <Button>{t('select_service')}</Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
