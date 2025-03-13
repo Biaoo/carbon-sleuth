@@ -1,169 +1,253 @@
 
-import React from 'react';
-import { useLanguage } from '@/contexts/LanguageContext';
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Activity, Calendar, Clock, FileCheck, Users } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
+import { Label } from '@/components/ui/label';
+import { FileText, Search, RefreshCw, Link2, Send, Download, Clock4 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from '@/components/ui/table';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { useLanguage } from '@/contexts/LanguageContext';
+
+// Mock service order data
+const mockServiceOrders = [
+  {
+    id: 'SO-2023090101',
+    clientName: 'Eco Textiles',
+    serviceType: 'Carbon Footprint Verification',
+    status: 'active',
+    progress: 70,
+    startDate: '2023-09-01',
+    dueDate: '2023-10-15',
+    analysts: ['Wang Li', 'John Smith'],
+    description: 'Full verification of carbon footprint data for 3 textile products.'
+  },
+  {
+    id: 'SO-2023083002',
+    clientName: 'Green Electronics',
+    serviceType: 'Emission Reduction Plan',
+    status: 'pending',
+    progress: 25,
+    startDate: '2023-08-30',
+    dueDate: '2023-10-30',
+    analysts: ['Zhang Wei'],
+    description: 'Develop comprehensive emission reduction plan for manufacturing facility.'
+  },
+  {
+    id: 'SO-2023082503',
+    clientName: 'SustainFoods',
+    serviceType: 'LCA Model Development',
+    status: 'completed',
+    progress: 100,
+    startDate: '2023-08-25',
+    dueDate: '2023-09-25',
+    analysts: ['Li Na', 'Sarah Johnson'],
+    description: 'Develop custom LCA model for food packaging products.'
+  }
+];
 
 const WorkspaceOrderManagement: React.FC = () => {
   const { t } = useLanguage();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filter, setFilter] = useState('all');
+  const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
+  
+  // Filter and search logic
+  const filteredOrders = mockServiceOrders.filter(order => {
+    const matchesSearch = 
+      order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      order.serviceType.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    if (filter === 'all') return matchesSearch;
+    return matchesSearch && order.status === filter;
+  });
+  
+  // Find the selected order details
+  const selectedOrderDetails = mockServiceOrders.find(order => order.id === selectedOrder);
+  
+  // Helper to render the status badge
+  const renderStatusBadge = (status: string) => {
+    switch(status) {
+      case 'active':
+        return <Badge className="bg-blue-500">Active</Badge>;
+      case 'pending':
+        return <Badge className="bg-yellow-500">Pending</Badge>;
+      case 'completed':
+        return <Badge className="bg-green-500">Completed</Badge>;
+      default:
+        return <Badge>{status}</Badge>;
+    }
+  };
   
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-semibold mb-6">{t('order_management')}</h2>
-      
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {t('total_orders')}
-            </CardTitle>
-            <FileCheck className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">25</div>
-            <p className="text-xs text-muted-foreground">
-              +3 {t('from_last_month')}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {t('pending_orders')}
-            </CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">7</div>
-            <p className="text-xs text-muted-foreground">
-              -2 {t('from_last_month')}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {t('active_clients')}
-            </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">12</div>
-            <p className="text-xs text-muted-foreground">
-              +2 {t('from_last_month')}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {t('completed_this_month')}
-            </CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">5</div>
-            <p className="text-xs text-muted-foreground">
-              +1 {t('from_last_month')}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-      
-      <Tabs defaultValue="upcoming">
-        <TabsList className="mb-6">
-          <TabsTrigger value="upcoming">{t('upcoming_deadlines')}</TabsTrigger>
-          <TabsTrigger value="activity">{t('recent_activity')}</TabsTrigger>
-          <TabsTrigger value="notes">{t('client_notes')}</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="upcoming">
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('upcoming_deadlines')}</CardTitle>
-              <CardDescription>
-                {t('upcoming_deadlines_desc')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="flex items-center p-3 border rounded-lg">
-                    <div className="p-2 bg-primary/10 rounded-full mr-4">
-                      <Calendar className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium">ORD-2023-00{i} · 绿能科技</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {t('due_in_days', { days: i * 2 })}
-                      </p>
-                    </div>
-                    <Button size="sm" variant="outline" className="ml-auto">
-                      {t('view')}
-                    </Button>
-                  </div>
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-6">
+      {/* Order list section */}
+      <Card className="lg:col-span-4">
+        <CardHeader>
+          <CardTitle className="text-xl">Service Orders</CardTitle>
+          <div className="flex items-center space-x-2 mt-2">
+            <div className="relative flex-1">
+              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search orders..."
+                className="pl-8"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <Select value={filter} onValueChange={setFilter}>
+              <SelectTrigger className="w-32">
+                <SelectValue placeholder="All Statuses" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className="h-[calc(100vh-280px)]">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>ID</TableHead>
+                  <TableHead>Client</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredOrders.map((order) => (
+                  <TableRow 
+                    key={order.id}
+                    className={`cursor-pointer hover:bg-muted ${selectedOrder === order.id ? 'bg-muted' : ''}`}
+                    onClick={() => setSelectedOrder(order.id)}
+                  >
+                    <TableCell className="font-medium">{order.id}</TableCell>
+                    <TableCell>{order.clientName}</TableCell>
+                    <TableCell>{renderStatusBadge(order.status)}</TableCell>
+                  </TableRow>
                 ))}
+                {filteredOrders.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={3} className="text-center py-4 text-muted-foreground">
+                      No orders found
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        </CardContent>
+      </Card>
+      
+      {/* Order details section */}
+      <Card className="lg:col-span-8">
+        <CardHeader>
+          <CardTitle className="text-xl">Order Details</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {selectedOrderDetails ? (
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-4">
+                <div>
+                  <Label className="text-muted-foreground">Order ID</Label>
+                  <div className="font-medium mt-1">{selectedOrderDetails.id}</div>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Client</Label>
+                  <div className="font-medium mt-1">{selectedOrderDetails.clientName}</div>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Service Type</Label>
+                  <div className="font-medium mt-1">{selectedOrderDetails.serviceType}</div>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Status</Label>
+                  <div className="font-medium mt-1">{renderStatusBadge(selectedOrderDetails.status)}</div>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Start Date</Label>
+                  <div className="font-medium mt-1">{selectedOrderDetails.startDate}</div>
+                </div>
+                <div>
+                  <Label className="text-muted-foreground">Due Date</Label>
+                  <div className="font-medium mt-1">{selectedOrderDetails.dueDate}</div>
+                </div>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="activity">
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('recent_activity')}</CardTitle>
-              <CardDescription>
-                {t('recent_activity_desc')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="border-l-2 border-primary pl-4 ml-2 space-y-4">
-                  {[
-                    { action: t('order_status_changed'), time: '2 hours ago' },
-                    { action: t('new_order_received'), time: '1 day ago' },
-                    { action: t('report_generated'), time: '2 days ago' },
-                    { action: t('client_data_updated'), time: '3 days ago' }
-                  ].map((activity, i) => (
-                    <div key={i} className="relative">
-                      <div className="absolute -left-[22px] w-3 h-3 bg-primary rounded-full"></div>
-                      <h4 className="text-sm font-medium">{activity.action}</h4>
-                      <p className="text-xs text-muted-foreground">{activity.time}</p>
-                    </div>
+              
+              <div>
+                <Label className="text-muted-foreground">Progress</Label>
+                <div className="mt-2">
+                  <Progress value={selectedOrderDetails.progress} className="h-2" />
+                  <div className="text-sm text-right mt-1">{selectedOrderDetails.progress}% Complete</div>
+                </div>
+              </div>
+              
+              <div>
+                <Label className="text-muted-foreground">Assigned Analysts</Label>
+                <div className="mt-1 flex flex-wrap gap-2">
+                  {selectedOrderDetails.analysts.map((analyst, index) => (
+                    <Badge key={index} variant="outline" className="border-primary">
+                      {analyst}
+                    </Badge>
                   ))}
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="notes">
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('client_notes')}</CardTitle>
-              <CardDescription>
-                {t('client_notes_desc')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[
-                  { client: '绿环包装科技', note: t('sample_note_1') },
-                  { client: '自然家居集团', note: t('sample_note_2') },
-                  { client: '绿能科技', note: t('sample_note_3') }
-                ].map((note, i) => (
-                  <div key={i} className="p-3 border rounded-lg">
-                    <h4 className="font-medium">{note.client}</h4>
-                    <p className="text-sm text-muted-foreground mt-1">{note.note}</p>
-                  </div>
-                ))}
+              
+              <div>
+                <Label className="text-muted-foreground">Description</Label>
+                <div className="mt-1 text-sm">{selectedOrderDetails.description}</div>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+              
+              <Separator />
+              
+              <div className="flex justify-between items-center">
+                <div className="space-x-2">
+                  <Button variant="outline" size="sm">
+                    <FileText className="h-4 w-4 mr-2" />
+                    View Details
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <Download className="h-4 w-4 mr-2" />
+                    Export
+                  </Button>
+                </div>
+                
+                <div className="space-x-2">
+                  <Button variant="outline" size="sm">
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Update Status
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <Link2 className="h-4 w-4 mr-2" />
+                    Share Report
+                  </Button>
+                  <Button size="sm">
+                    <Send className="h-4 w-4 mr-2" />
+                    Send to Client
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-[calc(100vh-280px)]">
+              <FileText className="h-16 w-16 text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium">Select an Order to View Details</h3>
+              <p className="text-muted-foreground text-center max-w-md mt-2">
+                Click on an order from the list on the left to view detailed information and manage the service order.
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };
