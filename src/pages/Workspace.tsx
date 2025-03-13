@@ -9,6 +9,7 @@ import WorkspaceModuleRenderer from '@/components/workspace/WorkspaceModuleRende
 import WorkspaceMobileSidebar from '@/components/workspace/WorkspaceMobileSidebar';
 import { WorkspaceDesktopHeader, WorkspaceMobileHeader } from '@/components/workspace/WorkspaceHeader';
 import { usePredictionSimulation } from '@/components/workspace/usePredictionSimulation';
+import { UserRoleProvider } from '@/contexts/UserRoleContext';
 
 // Import types
 import { HistoryItem } from '@/components/inference/HistoryList';
@@ -97,49 +98,51 @@ const Workspace = () => {
   };
   
   return (
-    <ConsoleLayout>
-      <div className="flex h-screen bg-secondary/10">
-        {/* App branding header - only visible on desktop */}
-        <WorkspaceDesktopHeader navigateToHome={navigateToHome} />
-        
-        {/* Mobile toolbar */}
-        <WorkspaceMobileHeader 
-          navigateToHome={navigateToHome} 
-          sidebarOpen={sidebarOpen} 
-          setSidebarOpen={setSidebarOpen} 
-        />
-        
-        {/* Desktop sidebar */}
-        <div className="hidden md:block fixed left-0 top-14 bottom-0">
-          <WorkspaceSidebar 
+    <UserRoleProvider>
+      <ConsoleLayout>
+        <div className="flex h-screen bg-secondary/10">
+          {/* App branding header - only visible on desktop */}
+          <WorkspaceDesktopHeader navigateToHome={navigateToHome} />
+          
+          {/* Mobile toolbar */}
+          <WorkspaceMobileHeader 
+            navigateToHome={navigateToHome} 
+            sidebarOpen={sidebarOpen} 
+            setSidebarOpen={setSidebarOpen} 
+          />
+          
+          {/* Desktop sidebar */}
+          <div className="hidden md:block fixed left-0 top-14 bottom-0">
+            <WorkspaceSidebar 
+              activeModule={activeModule}
+              onChangeModule={handleChangeModule}
+              isMobile={false}
+            />
+          </div>
+          
+          {/* Mobile sidebar (overlay) */}
+          <WorkspaceMobileSidebar 
+            sidebarOpen={sidebarOpen}
             activeModule={activeModule}
             onChangeModule={handleChangeModule}
-            isMobile={false}
+            onClose={() => setSidebarOpen(false)}
           />
+          
+          {/* Main content area */}
+          <div className="flex-1 md:ml-64 pt-14 h-full overflow-auto transition-all duration-300" id="main-content">
+            <WorkspaceModuleRenderer 
+              activeModule={activeModule}
+              handleStartPrediction={handleStartPrediction}
+              isLoading={isLoading}
+              progress={progress}
+              stage={stage}
+              navigateToHome={navigateToHome}
+              historyItems={historyItems}
+            />
+          </div>
         </div>
-        
-        {/* Mobile sidebar (overlay) */}
-        <WorkspaceMobileSidebar 
-          sidebarOpen={sidebarOpen}
-          activeModule={activeModule}
-          onChangeModule={handleChangeModule}
-          onClose={() => setSidebarOpen(false)}
-        />
-        
-        {/* Main content area */}
-        <div className="flex-1 md:ml-64 pt-14 h-full overflow-auto transition-all duration-300" id="main-content">
-          <WorkspaceModuleRenderer 
-            activeModule={activeModule}
-            handleStartPrediction={handleStartPrediction}
-            isLoading={isLoading}
-            progress={progress}
-            stage={stage}
-            navigateToHome={navigateToHome}
-            historyItems={historyItems}
-          />
-        </div>
-      </div>
-    </ConsoleLayout>
+      </ConsoleLayout>
+    </UserRoleProvider>
   );
 };
 

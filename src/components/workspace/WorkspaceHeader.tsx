@@ -1,7 +1,9 @@
+
 import React from 'react';
-import { Leaf, Home, Globe } from 'lucide-react';
+import { Leaf, Home, Globe, UserCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useUserRole } from '@/contexts/UserRoleContext';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +17,16 @@ interface WorkspaceHeaderProps {
 
 export const WorkspaceDesktopHeader: React.FC<WorkspaceHeaderProps> = ({ navigateToHome }) => {
   const { t, language, setLanguage } = useLanguage();
+  const { userRole, setUserRole } = useUserRole();
+  
+  const getRoleLabel = (role: string) => {
+    switch (role) {
+      case 'buyer': return t('role_buyer');
+      case 'supplier': return t('role_supplier');
+      case 'carbon-service': return t('role_carbon_service');
+      default: return role;
+    }
+  };
   
   return (
     <div className="hidden md:flex items-center h-14 px-6 bg-background border-b border-border w-full fixed top-0 left-0 z-10">
@@ -25,6 +37,25 @@ export const WorkspaceDesktopHeader: React.FC<WorkspaceHeaderProps> = ({ navigat
         <span className="font-display text-lg font-semibold">CarbonSleuth</span>
       </div>
       <div className="ml-auto flex items-center gap-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="text-sm">
+              <UserCircle2 className="h-4 w-4 mr-1" />
+              {getRoleLabel(userRole)}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setUserRole('buyer')}>
+              {t('role_buyer')}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setUserRole('supplier')}>
+              {t('role_supplier')}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setUserRole('carbon-service')}>
+              {t('role_carbon_service')}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm" className="text-sm">
@@ -60,6 +91,16 @@ export const WorkspaceMobileHeader: React.FC<WorkspaceHeaderProps & {
   setSidebarOpen: (open: boolean) => void;
 }> = ({ navigateToHome, sidebarOpen, setSidebarOpen }) => {
   const { t, language, setLanguage } = useLanguage();
+  const { userRole, setUserRole } = useUserRole();
+  
+  const getRoleLabel = (role: string) => {
+    switch (role) {
+      case 'buyer': return t('role_buyer');
+      case 'supplier': return t('role_supplier');
+      case 'carbon-service': return t('role_carbon_service');
+      default: return role;
+    }
+  };
   
   return (
     <div className="md:hidden flex items-center justify-between h-14 px-4 bg-background border-b border-border w-full fixed top-0 z-10">
@@ -70,6 +111,24 @@ export const WorkspaceMobileHeader: React.FC<WorkspaceHeaderProps & {
         <span className="font-display text-lg font-semibold">CarbonSleuth</span>
       </div>
       <div className="flex items-center gap-2">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="text-sm px-2">
+              <UserCircle2 className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setUserRole('buyer')}>
+              {t('role_buyer')}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setUserRole('supplier')}>
+              {t('role_supplier')}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setUserRole('carbon-service')}>
+              {t('role_carbon_service')}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm" className="text-sm px-2">
