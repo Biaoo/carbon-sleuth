@@ -282,7 +282,65 @@ export const zhTranslations = {
   'carbon_footprint_chart': '此邮件将包含以下碳足迹对比图：',
   'chart_note': '注：此图表将作为图片附件或嵌入内容发送',
   'return_to_edit': '返回编辑',
-  'confirm_send': '确认发送'
+  'confirm_send': '确认发送',
+
+  // Workspace Supplier Data Entry
+  'data_entry': '数据填报',
+  'product_data_entry': '产品数据填报',
+  'product_name': '产品名称',
+  'product_name_placeholder_entry': '请输入产品名称',
+  'product_description_placeholder_entry': '请输入产品描述',
+  'enter_product_name': '请输入产品名称',
+  'enter_product_description': '请输入产品描述',
+  'product_category': '产品类别',
+  'select_category': '请选择产品类别',
+  'enter_product_category': '请输入产品类别',
+  'product_supplier': '产品供应商',
+  'enter_product_supplier': '请输入产品供应商',
+  'product_date': '产品生产日期',
+  'enter_product_date': '请输入产品生产日期',
+  'product_location': '产品生产地点',
+  'enter_product_location': '请输入产品生产地点',
+  'additional_info': '补充说明',
+  'submit_data': '提交数据',
+
+  'new_data_entry': '新建数据填报',
+  'my_data_records': '我的数据记录',
+
+  'carbon_services': '碳数据服务',
+  'select_service': '请选择碳数据服务',
+  'service_history': '服务历史记录',
+
+  'select_carbon_service': '请选择碳数据服务',
+  'service_selection_description':"根据您的需求(碳足迹核算、碳足迹认证、碳数据审核)选择需要的服务商",
+  
+  'service_orders': '服务订单',
+  'order_management': '订单管理',
+  'all_orders': '所有订单',
+  'status_pending': '待处理',
+  'status_in_progress': '进行中',
+  'status_completed': '已完成',
+  'status_cancelled': '已取消',
+  'status_refunded': '已退款',
+  'status_failed': '失败',
+  'status_expired': '已过期',
+
+  'all_services': '所有服务',
+  'carbon_footprint_assessment': '碳足迹核算',
+  'carbon_certification': '碳足迹认证',
+  'carbon_management': '碳管理',
+  'order_id': '订单ID',
+  'client_name': '客户名称',
+  'service_type': '服务类型',
+  'submission_date': '提交日期',
+  'status': '状态',
+  'actions': '操作',
+  'update_status': '更新状态',
+  'connect_client': '联系客户',
+
+  'role_buyer':'采购商',
+  'role_supplier':'供应商',
+  'role_carbon_service':'数据服务商',
 };
 
 // Now add the email content translations separately to avoid duplicates

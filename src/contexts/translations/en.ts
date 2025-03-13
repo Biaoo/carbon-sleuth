@@ -328,7 +328,65 @@ export const enEmailTranslations = {
   'unspecified_contact': 'Unspecified Contact',
   'unspecified_email': 'Unspecified Email',
   'no_items_selected': 'No items selected',
-  'asap': 'as soon as possible'
+  'asap': 'as soon as possible',
+
+  // Workspace Supplier Data Entry
+  'data_entry': 'Data Entry',
+  'product_data_entry': 'Product Data Entry',
+  'product_name': 'Product Name',
+  'product_name_placeholder_entry': 'Enter product name',
+  'product_description_placeholder_entry': 'Enter product description',
+  'enter_product_name': 'Enter product name',
+  'enter_product_description': 'Enter product description',
+  'product_category': 'Product Category',
+  'select_category': 'Select product category',
+  'enter_product_category': 'Enter product category',
+  'product_supplier': 'Product Supplier',
+  'enter_product_supplier': 'Enter product supplier',
+  'product_date': 'Product Production Date',
+  'enter_product_date': 'Enter product production date',
+  'product_location': 'Product Production Location',
+  'enter_product_location': 'Enter product production location',
+  'additional_info': 'Additional Information',
+  'submit_data': 'Submit Data',
+  
+  'new_data_entry': 'New Data Entry',
+  'my_data_records': 'My Data Records',
+  
+  'carbon_services': 'Carbon Data Services',
+  'select_service': 'Select Services',
+  'service_history': 'Service History',
+
+  'select_carbon_service': 'Select Carbon Data Service',
+  'service_selection_description':"Based on your needs (carbon footprint calculation, carbon footprint certification, carbon data audit), select the service provider you need.",
+  
+  'service_orders': 'Service Orders',
+  'order_management': 'Order Management',
+  'all_orders': 'All Orders',
+  'status_pending': 'Pending',
+  'status_in_progress': 'In Progress',
+  'status_completed': 'Completed',
+  'status_cancelled': 'Cancelled',
+  'status_refunded': 'Refunded',
+  'status_failed': 'Failed',
+  'status_expired': 'Expired',
+
+  'all_services': 'All Services',
+  'carbon_footprint_assessment': 'Carbon Footprint Assessment',
+  'carbon_certification': 'Carbon Footprint Certification',
+  'carbon_management': 'Carbon Management',
+  'order_id': 'Order ID',
+  'client_name': 'Client Name',
+  'service_type': 'Service Type',
+  'submission_date': 'Submission Date',
+  'status': 'Status',
+  'actions': 'Actions',
+  'update_status': 'Update Status',
+  'connect_client': 'Connect Client',
+
+  'role_buyer':'Buyer',
+  'role_supplier':'Supplier',
+  'role_carbon_service':'Carbon Service',
 };
 
 // Add prediction specific translations

@@ -90,43 +90,7 @@ const WorkspaceSupplierDataEntry: React.FC = () => {
                     </FormItem>
                   )}
                 />
-                
-                <FormField
-                  control={form.control}
-                  name="materialType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('material_type')}</FormLabel>
-                      <FormControl>
-                        <Input placeholder={t('enter_material_type')} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="productionProcess"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('production_process')}</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={t('select_process')} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="assembly">{t('assembly')}</SelectItem>
-                          <SelectItem value="manufacturing">{t('manufacturing')}</SelectItem>
-                          <SelectItem value="3d_printing">{t('3d_printing')}</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              
               </div>
               
               <FormField
@@ -138,9 +102,6 @@ const WorkspaceSupplierDataEntry: React.FC = () => {
                     <FormControl>
                       <Input type="number" placeholder="0.00" {...field} />
                     </FormControl>
-                    <FormDescription>
-                      {t('energy_consumption_desc')}
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
