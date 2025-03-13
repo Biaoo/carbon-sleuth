@@ -1,4 +1,3 @@
-
 // Chinese translations
 export const zhTranslations = {
   // Navbar
@@ -308,12 +307,13 @@ export const zhTranslations = {
   'my_data_records': '我的数据记录',
 
   'carbon_services': '碳数据服务',
-  'select_service': '请选择碳数据服务',
+  'select_service': '选择服务',
   'service_history': '服务历史记录',
 
-  'select_carbon_service': '请选择碳数据服务',
-  'service_selection_description':"根据您的需求(碳足迹核算、碳足迹认证、碳数据审核)选择需要的服务商",
-  
+  'select_carbon_service': '选择碳数据服务',
+  'service_selection_description': '根据您的需求(碳足迹核算、碳足迹认证、碳数据审核)选择适合的服务商',
+  'per_product': '每产品',
+
   'service_orders': '服务订单',
   'order_management': '订单管理',
   'all_orders': '所有订单',
@@ -386,7 +386,7 @@ export const zhEmailTranslations = {
   'unspecified_contact': '未指定联系人',
   'unspecified_email': '未指定邮箱',
   'no_items_selected': '未选择数据项',
-  'asap': '尽快'
+  'asap': '尽���'
 };
 
 // Add prediction and recommendation specific translations separately

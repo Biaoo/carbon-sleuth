@@ -1,4 +1,3 @@
-
 // English translations
 export const enTranslations = {
   // Navbar
@@ -197,7 +196,7 @@ export const enTranslations = {
   'of_supplier': 'of',
   'creating_data_request_2': '.',
   'prefilled_info': 'We have pre-filled some information for you, please complete the remaining content.',
-
+  
   // InferenceForm
   'product_name_placeholder': 'Product name (e.g., Organic Cotton T-shirt)',
   'product_category_placeholder': 'Product category (e.g., Textiles, Electronics)',
@@ -354,11 +353,12 @@ export const enEmailTranslations = {
   'my_data_records': 'My Data Records',
   
   'carbon_services': 'Carbon Data Services',
-  'select_service': 'Select Services',
+  'select_service': 'Select Service',
   'service_history': 'Service History',
 
   'select_carbon_service': 'Select Carbon Data Service',
-  'service_selection_description':"Based on your needs (carbon footprint calculation, carbon footprint certification, carbon data audit), select the service provider you need.",
+  'service_selection_description': 'Choose a suitable service provider based on your needs (carbon footprint calculation, carbon footprint certification, carbon data audit)',
+  'per_product': 'per product',
   
   'service_orders': 'Service Orders',
   'order_management': 'Order Management',
