@@ -19,11 +19,14 @@ export const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => 
         } else if (line.startsWith('### ')) {
           return <h3 key={index} className="text-base font-medium mt-3 mb-1">{line.replace('### ', '')}</h3>;
         } else if (line.startsWith('- **')) {
-          const parts = line.replace('- **', '').split('**:');
+          const parts = line.replace('- **', '').split('**');
+          const iconText = parts[0];
+          const content = parts.length > 1 ? parts[1] : '';
+          
           return (
-            <div key={index} className="flex mb-1">
-              <span className="font-medium mr-2">{parts[0]}:</span>
-              <span>{parts[1]}</span>
+            <div key={index} className="flex items-start gap-2 text-sm mb-2 pb-2 border-b last:border-b-0">
+              <div className="mt-0.5">{iconText}</div>
+              <div>{content}</div>
             </div>
           );
         } else if (line.startsWith('- ')) {
@@ -34,7 +37,7 @@ export const MarkdownContent: React.FC<MarkdownContentProps> = ({ content }) => 
         } else if (line.startsWith('1. **')) {
           const parts = line.split('**');
           const title = parts[1];
-          const rest = parts[2].replace(' (', '').replace(')', '');
+          const rest = parts[2] ? parts[2].replace(' (', '').replace(')', '') : '';
           return (
             <div key={index} className="mb-2">
               <p className="font-medium">{title}</p>

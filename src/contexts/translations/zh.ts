@@ -1,4 +1,3 @@
-
 export const zh = {
   home: '首页',
   workspace: '工作台',
@@ -110,8 +109,13 @@ export const zh = {
   calculating_carbon_emissions: '计算碳排放量...',
   footprint_calculation_complete: '碳足迹计算完成',
   generating_report_summary: '生成报告摘要...',
-  optimization_opportunities_found: '发现优化机会: 材料替换, 能源效率, 包装优化',
+  optimization_opportunities_found: '发现优化机会:',
   final_result_summary: '最终结果生成完毕',
+  
+  // Optimization suggestions
+  material_substitution: '用可回收替代品替换铝组件可减少15%的足迹',
+  energy_efficiency: '采用节能制造工艺可节省25%的排放量',
+  packaging_optimization: '通过重新设计减少30%的包装材料',
   
   // Result section
   carbon_footprint_result: '碳足迹结果',

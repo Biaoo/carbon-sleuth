@@ -1,4 +1,3 @@
-
 export const en = {
   home_title: 'Empower Sustainable Decisions with Carbon Footprint Tracking',
   home_subtitle: 'Analyze, Reduce, and Showcase Your Environmental Impact',
@@ -166,8 +165,13 @@ export const en = {
   calculating_carbon_emissions: 'Calculating carbon emissions...',
   footprint_calculation_complete: 'Carbon footprint calculation complete',
   generating_report_summary: 'Generating report summary...',
-  optimization_opportunities_found: 'Optimization opportunities found: Material substitution, Energy efficiency, Packaging optimization',
+  optimization_opportunities_found: 'Optimization opportunities found:',
   final_result_summary: 'Final result summary generated',
+  
+  // Optimization suggestions
+  material_substitution: 'Replace aluminum components with recycled alternatives to reduce footprint by 15%',
+  energy_efficiency: 'Implementing energy-efficient manufacturing can save 25% in emissions',
+  packaging_optimization: 'Reduce packaging materials by 30% through redesign',
   
   // Result section
   carbon_footprint_result: 'Carbon Footprint Result',

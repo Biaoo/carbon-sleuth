@@ -4,6 +4,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown, ChevronUp, Sparkles, Leaf, BarChart2, Cloud, Zap } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import MarkdownContent from '@/components/prediction-result/MarkdownContent';
 
 interface StreamingOutputProps {
   progress: number;
@@ -21,6 +22,8 @@ const StreamingOutput: React.FC<StreamingOutputProps> = ({ progress, stage }) =>
   const [streamedLines, setStreamedLines] = useState<StreamLine[]>([]);
   const [processingOpen, setProcessingOpen] = useState(true);
   const [result, setResult] = useState<any | null>(null);
+  const [processMarkdown, setProcessMarkdown] = useState<string>('');
+  const [resultMarkdown, setResultMarkdown] = useState<string>('');
 
   // Generate streaming content based on the current progress
   useEffect(() => {
@@ -70,6 +73,22 @@ const StreamingOutput: React.FC<StreamingOutputProps> = ({ progress, stage }) =>
         setStreamedLines(prev => [...prev, ...newLines]);
       }
     }
+    
+    // Generate process markdown text
+    if (streamedLines.length > 0) {
+      const processText = streamedLines.map(line => {
+        let icon = '';
+        switch (line.type) {
+          case 'info': icon = 'ℹ️'; break;
+          case 'data': icon = '📊'; break;
+          case 'analysis': icon = '✨'; break;
+          case 'result': icon = '🌱'; break;
+        }
+        return `- **${icon} ${line.content}**`;
+      }).join('\n');
+      
+      setProcessMarkdown(processText);
+    }
 
     // When we reach 100%, set the final result
     if (progress === 100) {
@@ -87,6 +106,27 @@ const StreamingOutput: React.FC<StreamingOutputProps> = ({ progress, stage }) =>
       
       setTimeout(() => {
         setResult(mockResult);
+        
+        // Set result markdown content
+        const resultText = `
+## ${t('carbon_footprint_result')}
+
+### ${t('total_carbon_footprint')}
+**${mockResult.carbonFootprint} ${mockResult.unit}** (${mockResult.reductionPotential}% ${t('reduction_potential')})
+
+### ${t('main_contributors')}
+1. **${mockResult.mainContributors[0].name}** (${mockResult.mainContributors[0].percentage}%)
+1. **${mockResult.mainContributors[1].name}** (${mockResult.mainContributors[1].percentage}%)
+1. **${mockResult.mainContributors[2].name}** (${mockResult.mainContributors[2].percentage}%)
+1. **${mockResult.mainContributors[3].name}** (${mockResult.mainContributors[3].percentage}%)
+
+## ${t('optimization_opportunities_found')}
+- ${t('material_substitution')}
+- ${t('energy_efficiency')}
+- ${t('packaging_optimization')}
+        `;
+        
+        setResultMarkdown(resultText);
       }, 500);
     }
   }, [progress, t, streamedLines]);
@@ -105,7 +145,7 @@ const StreamingOutput: React.FC<StreamingOutputProps> = ({ progress, stage }) =>
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Processing Section */}
+      {/* Processing Section - Collapsible Markdown */}
       <Collapsible 
         open={processingOpen} 
         onOpenChange={setProcessingOpen} 
@@ -126,63 +166,16 @@ const StreamingOutput: React.FC<StreamingOutputProps> = ({ progress, stage }) =>
         </div>
         
         <CollapsibleContent className="animate-accordion-down">
-          <div className="p-4 space-y-3 bg-white/50">
-            {streamedLines.map((line) => (
-              <div 
-                key={line.id} 
-                className="flex items-start gap-2 text-sm animate-fade-in pb-2 border-b last:border-b-0"
-              >
-                <div className="mt-0.5">{getIconForType(line.type)}</div>
-                <div>
-                  <span className="font-medium">{line.content}</span>
-                </div>
-              </div>
-            ))}
+          <div className="p-4 bg-white/50">
+            <MarkdownContent content={processMarkdown} />
           </div>
         </CollapsibleContent>
       </Collapsible>
 
-      {/* Result Section */}
+      {/* Result Section - Markdown */}
       {result && (
         <Card className="p-6 animate-fade-in border-2 border-primary/20 shadow-lg bg-gradient-to-br from-white to-primary/5">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <Leaf className="h-5 w-5 text-primary" />
-            </div>
-            <h2 className="text-xl font-semibold">{t('carbon_footprint_result')}</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="text-center p-4 border rounded-lg bg-white/80">
-              <h3 className="text-sm font-medium text-muted-foreground mb-2">{t('total_carbon_footprint')}</h3>
-              <div className="text-3xl font-bold text-primary">
-                {result.carbonFootprint} <span className="text-base font-normal">{result.unit}</span>
-              </div>
-              <p className="text-sm text-green-600 mt-2">
-                {result.reductionPotential}% {t('reduction_potential')}
-              </p>
-            </div>
-            
-            <div className="border rounded-lg p-4 bg-white/80">
-              <h3 className="text-sm font-medium text-muted-foreground mb-3">{t('main_contributors')}</h3>
-              <div className="space-y-2">
-                {result.mainContributors.map((contributor, index) => (
-                  <div key={index} className="space-y-1">
-                    <div className="flex justify-between text-xs">
-                      <span>{contributor.name}</span>
-                      <span>{contributor.percentage}%</span>
-                    </div>
-                    <div className="h-2 bg-secondary/50 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-primary/80 transition-all duration-300"
-                        style={{ width: `${contributor.percentage}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <MarkdownContent content={resultMarkdown} />
           
           <div className="mt-6 flex justify-end">
             <a 
