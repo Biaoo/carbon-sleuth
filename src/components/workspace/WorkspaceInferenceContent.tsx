@@ -6,6 +6,7 @@ import InferenceForm from '@/components/inference/InferenceForm';
 import ProgressTracker from '@/components/inference/ProgressTracker';
 import HistoryList, { HistoryItem } from '@/components/inference/HistoryList';
 import { useLanguage } from '@/contexts/LanguageContext';
+import StreamingOutput from '@/components/inference/StreamingOutput';
 
 interface WorkspaceInferenceContentProps {
   onStartPrediction: (productName: string, supplierName: string) => void;
@@ -46,16 +47,29 @@ const WorkspaceInferenceContent: React.FC<WorkspaceInferenceContentProps> = ({
       
       <div className="p-6">
         <TabsContent value="new-prediction" className="m-0">
-          <InferenceForm 
-            onStartPrediction={onStartPrediction}
-            isLoading={isLoading}
-          />
-          
-          <ProgressTracker 
-            isLoading={isLoading}
-            progress={progress}
-            stage={stage}
-          />
+          <div className="relative">
+            {!isLoading && (
+              <InferenceForm 
+                onStartPrediction={onStartPrediction}
+                isLoading={isLoading}
+              />
+            )}
+            
+            {isLoading && (
+              <div className="animate-fade-in">
+                <ProgressTracker 
+                  isLoading={isLoading}
+                  progress={progress}
+                  stage={stage}
+                />
+                
+                <StreamingOutput 
+                  progress={progress} 
+                  stage={stage} 
+                />
+              </div>
+            )}
+          </div>
         </TabsContent>
         
         <TabsContent value="history" className="m-0">
