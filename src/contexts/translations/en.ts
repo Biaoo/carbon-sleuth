@@ -1,3 +1,4 @@
+
 export const en = {
   home_title: 'Empower Sustainable Decisions with Carbon Footprint Tracking',
   home_subtitle: 'Analyze, Reduce, and Showcase Your Environmental Impact',
@@ -39,6 +40,10 @@ export const en = {
   reset_password: 'Reset Password',
   
   send_reset_link: 'Send Reset Link',
+  
+  home: 'Home',
+  workspace: 'Workspace',
+  prediction_result: 'Prediction Result',
   
   new_prediction: 'New Prediction',
   history_records: 'History Records',
@@ -101,15 +106,6 @@ export const en = {
   contact_email_label: 'Contact Email',
   contact_phone_label: 'Contact Phone',
   
-  supplier_name_placeholder: 'Enter supplier name',
-  product_name_placeholder: 'Enter product name',
-  contact_name_placeholder: 'Enter contact name',
-  contact_email_placeholder: 'Enter contact email',
-  contact_phone_placeholder: 'Enter contact phone number',
-  
-  request_items_label: 'Requested Data Items',
-  request_items_description: 'Select the data items you need from the supplier.',
-  
   urgency_label: 'Urgency',
   urgency_description: 'How urgent is this data request?',
   urgency_high: 'High',
@@ -156,7 +152,7 @@ export const en = {
   deadline: 'Deadline',
   set_deadline: 'Set Deadline',
   
-  // Add these new translations for streaming output
+  // Streaming output translations
   collecting_product_info: 'Collecting product information...',
   analyzing_supplier_data: 'Analyzing supplier data...',
   product_composition_analysis: 'Product composition analysis complete',
@@ -186,4 +182,7 @@ export const en = {
   materials: 'Materials',
   transportation: 'Transportation',
   packaging: 'Packaging',
+  
+  log_out: 'Log Out',
+  settings: 'Settings'
 };

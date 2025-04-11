@@ -1,3 +1,4 @@
+
 export const zh = {
   home: '首页',
   workspace: '工作台',
@@ -73,14 +74,6 @@ export const zh = {
   contact_phone_label: '联系人电话',
   additional_info_label: '附加信息',
   deadline_label: '回复截止日期',
-  
-  supplier_name_placeholder: '输入供应商名称',
-  product_name_placeholder: '输入产品名称',
-  contact_name_placeholder: '输入联系人姓名',
-  contact_email_placeholder: '输入联系人邮箱',
-  contact_phone_placeholder: '输入联系人电话',
-  additional_info_placeholder: '输入附加信息',
-  deadline_placeholder: '选择回复截止日期',
   
   request_items_materials: '材料组成情况',
   request_items_energy: '能源消耗数据',

@@ -1,37 +1,11 @@
 
-import { 
-  zhTranslations, 
-  zhEmailTranslations, 
-  zhPredictionTranslations, 
-  zhRecommendationTranslations 
-} from './zh';
-import { 
-  enTranslations, 
-  enEmailTranslations, 
-  enPredictionTranslations, 
-  enRecommendationTranslations 
-} from './en';
-
-// Merge all Chinese translations
-const mergedZhTranslations = {
-  ...zhTranslations,
-  ...zhEmailTranslations,
-  ...zhPredictionTranslations,
-  ...zhRecommendationTranslations
-};
-
-// Merge all English translations
-const mergedEnTranslations = {
-  ...enTranslations,
-  ...enEmailTranslations,
-  ...enPredictionTranslations,
-  ...enRecommendationTranslations
-};
+import { zh } from './zh';
+import { en } from './en';
 
 // Create combined translations object
 export const translations = {
-  zh: mergedZhTranslations,
-  en: mergedEnTranslations
+  zh,
+  en
 };
 
-export type TranslationKey = keyof typeof mergedEnTranslations;
+export type TranslationKey = keyof typeof en;
