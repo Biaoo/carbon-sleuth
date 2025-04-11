@@ -37,9 +37,10 @@ export const usePredictionSimulation = () => {
           clearInterval(interval);
           setTimeout(() => {
             setIsLoading(false);
-          }, 5000);
+            navigate('/prediction-result');
+          }, 500);
         }
-      }, 2000);
+      }, 800);
     };
     
     setTimeout(simulatePrediction, 500);
